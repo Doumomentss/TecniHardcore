@@ -23,4 +23,4 @@ Instalador: `TecniHardcore-Setup-2.2.0.exe`, SHA-256 `c04b20b910aa639bc7997f7ecd
 
 Mod: `tecnihardcore-2.2.0.jar`, SHA-256 `829e692336d16789f952c0cd9a0f7bb49391b30adb2cd3a5c740298121202e71`.
 
-El manifiesto y los hashes completos se distribuyen con la Release 2.2.0. La descarga y los hashes públicos se verifican antes de marcarla como última versión.
+El manifiesto y los hashes completos se distribuyen con la Release 2.2.0, publicada como última versión. Se verificaron los tamaños y SHA-256 de los siete archivos publicados. El actualizador detectó 2.2.0 desde 2.1.1 y descargó el instalador público sin autenticación: 305.748.480 bytes y SHA-256 coincidente. Desde 2.2.0 no ofrece reinstalar la misma versión. La instalación completa, reparación y conservación de preferencias se comprobaron en el destino aislado descrito arriba; esta última descarga pública verifica el mismo artefacto.
