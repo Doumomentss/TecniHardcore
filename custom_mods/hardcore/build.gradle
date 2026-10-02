@@ -1,0 +1,19 @@
+plugins { id 'fabric-loom' version '1.10.5' }
+version = '2.1.0'
+group = 'net.tecnihardcore'
+base { archivesName = 'tecnihardcore' }
+repositories { mavenCentral() }
+dependencies {
+    minecraft 'com.mojang:minecraft:1.20.1'
+    mappings 'net.fabricmc:yarn:1.20.1+build.10:v2'
+    modImplementation 'net.fabricmc:fabric-loader:0.19.5'
+    modImplementation 'net.fabricmc.fabric-api:fabric-api:0.92.12+1.20.1'
+    modImplementation files('../../client/mods/geckolib-fabric-1.20.1-4.8.4.jar')
+    // Only pure Java account/config APIs are used; production ships the verified
+    // original server JAR, rather than bundling or re-remapping EasyAuth.
+    compileOnly files('../../tools/vendor/easyauth-mc1.20-3.3.6.jar')
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+}
+java { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
+tasks.withType(JavaCompile).configureEach { options.release = 17; options.encoding = 'UTF-8' }
+test { useJUnitPlatform() }

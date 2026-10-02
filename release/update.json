@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "version": "2.1.1",
+  "packVersion": "2.1.0",
+  "minecraft": "1.20.1",
+  "ritualProtocol": 2,
+  "notes": "Santuarios 3D, resurrecciones ilimitadas, reliquias y actualizaciones desde el launcher. Conserva tus ajustes y el botón de conexión.",
+  "installer": {
+    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.1.1/TecniHardcore-Setup-2.1.1.exe",
+    "bytes": 305730048,
+    "sha256": "f66151e29c3957d26331d6dda7bb4509d3637912075fccac36932be0170f4e9f"
+  }
+}

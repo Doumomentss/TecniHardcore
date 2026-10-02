@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "tecnihardcore",
+  "version": "2.1.0",
+  "name": "TecniHardcore: Reliquias y Almas",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.tecnihardcore.Hardcore"
+    ],
+    "client": [
+      "net.tecnihardcore.HardcoreClient"
+    ]
+  },
+  "mixins": [
+    "tecnihardcore.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.0",
+    "minecraft": "1.20.1",
+    "fabric-api": "*",
+    "java": ">=17",
+    "geckolib": ">=4.8.4"
+  }
+}

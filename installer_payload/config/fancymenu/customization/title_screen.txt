@@ -1,0 +1,256 @@
+type = fancymenu_layout
+
+layout-meta {
+  identifier = title_screen
+  is_enabled = true
+  layout_index = 0
+  render_custom_elements_behind_vanilla = false
+}
+
+menu_background {
+  background_type = image
+  instance_identifier = th-landscape
+  show_background = true
+  image_path = [source:local]/config/fancymenu/assets/launcher_bg_epic.jpg
+  slide = false
+  repeat_texture = false
+  parallax = false
+}
+
+customization {
+  action = backgroundoptions
+  keepaspectratio = true
+}
+
+scroll_list_customization {
+  show_screen_background_overlay_on_custom_background = false
+  apply_vanilla_background_blur = false
+}
+
+element {
+  element_type = text_v2
+  instance_identifier = th-eyebrow
+  anchor_point = mid-left
+  x = 30
+  y = -124
+  width = 330
+  height = 18
+  stay_on_screen = true
+  appearance_delay = no_delay
+  fade_in_v2 = no_fading
+  base_opacity = 1.0
+  source = S U R V I V A L   /   T E C H   /   H A R D C O R E
+  source_mode = direct
+  scale = 0.7
+  base_color = #D5B27A
+  shadow = false
+  text_border = 0
+  enable_scrolling = false
+  auto_line_wrapping = false
+  parse_markdown = false
+}
+
+element {
+  element_type = image
+  instance_identifier = th-logo
+  anchor_point = mid-left
+  x = 26
+  y = -101
+  width = 246
+  height = 82
+  stay_on_screen = true
+  appearance_delay = no_delay
+  fade_in_v2 = no_fading
+  base_opacity = 1.0
+  source = [source:local]/config/fancymenu/assets/tecniharcore_menu.png
+}
+
+element {
+  element_type = text_v2
+  instance_identifier = th-tagline
+  anchor_point = mid-left
+  x = 32
+  y = -8
+  width = 260
+  height = 18
+  stay_on_screen = true
+  appearance_delay = no_delay
+  fade_in_v2 = no_fading
+  base_opacity = 1.0
+  source = Construye tu legado.
+  source_mode = direct
+  scale = 1.35
+  base_color = #E5E0D6
+  shadow = false
+  text_border = 0
+  enable_scrolling = false
+  auto_line_wrapping = false
+  parse_markdown = false
+}
+
+element {
+  element_type = text_v2
+  instance_identifier = th-description
+  anchor_point = mid-left
+  x = 32
+  y = 15
+  width = 330
+  height = 18
+  stay_on_screen = true
+  appearance_delay = no_delay
+  fade_in_v2 = no_fading
+  base_opacity = 1.0
+  source = Tres vidas. Un mundo sin segundas oportunidades.
+  source_mode = direct
+  scale = 0.68
+  base_color = #A9B0B3
+  shadow = false
+  text_border = 0
+  enable_scrolling = false
+  auto_line_wrapping = false
+  parse_markdown = false
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = mc_titlescreen_options_button
+  anchor_point = mid-left
+  x = 32
+  y = 110
+  width = 110
+  height = 24
+  is_hidden = false
+  label = Opciones
+  label_base_color = #DDD7CC
+  label_hover_color = #FFFFFF
+  label_shadow = false
+  backgroundnormal = [source:local]/config/fancymenu/assets/button.png
+  backgroundhovered = [source:local]/config/fancymenu/assets/button-hover.png
+  restartbackgroundanimations = true
+  loopbackgroundanimations = false
+  nine_slice_custom_background = true
+  nine_slice_border_x = 3
+  nine_slice_border_y = 3
+  navigatable = true
+  stretch_x = false
+  stretch_y = false
+  fade_in = false
+  fade_in_speed = 1.0
+  fade_out = false
+  fade_out_speed = 1.0
+  stay_on_screen = true
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = mc_titlescreen_quit_button
+  anchor_point = mid-left
+  x = 148
+  y = 110
+  width = 110
+  height = 24
+  is_hidden = false
+  label = Salir
+  label_base_color = #DDD7CC
+  label_hover_color = #FFFFFF
+  label_shadow = false
+  backgroundnormal = [source:local]/config/fancymenu/assets/button.png
+  backgroundhovered = [source:local]/config/fancymenu/assets/button-hover.png
+  restartbackgroundanimations = true
+  loopbackgroundanimations = false
+  nine_slice_custom_background = true
+  nine_slice_border_x = 3
+  nine_slice_border_y = 3
+  navigatable = true
+  stretch_x = false
+  stretch_y = false
+  fade_in = false
+  fade_in_speed = 1.0
+  fade_out = false
+  fade_out_speed = 1.0
+  stay_on_screen = true
+}
+
+element {
+  element_type = text_v2
+  instance_identifier = th-footer
+  anchor_point = bottom-left
+  x = 18
+  y = -17
+  width = 350
+  height = 18
+  stay_on_screen = true
+  appearance_delay = no_delay
+  fade_in_v2 = no_fading
+  base_opacity = 1.0
+  source = TECNIHARDCORE   /   MINECRAFT 1.20.1 · FABRIC
+  source_mode = direct
+  scale = 0.65
+  base_color = #A9B0B3
+  shadow = false
+  text_border = 0
+  enable_scrolling = false
+  auto_line_wrapping = false
+  parse_markdown = false
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = mc_titlescreen_singleplayer_button
+  is_hidden = true
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = mc_titlescreen_multiplayer_button
+  is_hidden = true
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = mc_titlescreen_realms_button
+  is_hidden = true
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = mc_titlescreen_language_button
+  is_hidden = true
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = mc_titlescreen_accessibility_button
+  is_hidden = true
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = minecraft_logo_widget
+  is_hidden = true
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = minecraft_splash_widget
+  is_hidden = true
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = minecraft_branding_widget
+  is_hidden = true
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = minecraft_realms_notification_icons_widget
+  is_hidden = true
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = title_screen_copyright_button
+  is_hidden = true
+}
+

@@ -1,0 +1,35 @@
+param([switch]$BuildOnly)
+$ErrorActionPreference='Stop'
+$root=Split-Path -Parent $PSScriptRoot
+Push-Location $root
+try {
+  node --test launcher/test/updater.test.js
+  if($LASTEXITCODE -ne 0){throw 'Updater tests failed'}
+  python tools/test-installer-transactions.py
+  if($LASTEXITCODE -ne 0){throw 'Installer transaction tests failed'}
+  & (Join-Path $PSScriptRoot 'package-launcher.ps1')
+  python tools/build-installer.py
+  if($LASTEXITCODE -ne 0){throw 'Installer build failed'}
+  python tools/create-release-manifest.py
+  if($LASTEXITCODE -ne 0){throw 'Manifest generation failed'}
+  python tools/export-public-repo.py
+  if($LASTEXITCODE -ne 0){throw 'Public export failed'}
+  if($BuildOnly){return}
+  $version=(Get-Content launcher/package.json -Raw | ConvertFrom-Json).version
+  $repo=Join-Path $root 'publish/TecniHardcore'
+  if(-not (Test-Path -LiteralPath (Join-Path $repo '.git'))){throw 'Initialize the curated public repository first.'}
+  git -C $repo add --all
+  git -C $repo diff --cached --quiet
+  if($LASTEXITCODE -eq 1){git -C $repo commit -m "Release $version";if($LASTEXITCODE -ne 0){throw 'Git commit failed'}}
+  git -C $repo push origin main
+  if($LASTEXITCODE -ne 0){throw 'Git push failed'}
+  $assets=@("dist/TecniHardcore-Setup-$version.exe",'dist/update.json',"dist/SHA256SUMS-$version.txt","dist/manifest-$version.json",'dist/THIRD-PARTY-MODS.json','custom_mods/hardcore/build/libs/tecnihardcore-2.1.0.jar','installer_payload/mods/tecni-death-overlay-1.0.0.jar')
+  $notes=Join-Path $root 'dist/release-notes.md'
+  Set-Content -LiteralPath $notes -Encoding utf8 -Value "TecniHardcore $version incluye el launcher con actualizaciones, el paquete completo y Santuarios de las Almas 2.1.0. Descarga el instalador. Cierra Minecraft antes de actualizar. Los mods externos se descargan desde sus fuentes oficiales con hashes verificados."
+  gh release create "v$version" @assets --repo Doumomentss/TecniHardcore --draft --target main --title "TecniHardcore $version" --notes-file $notes
+  if($LASTEXITCODE -ne 0){throw 'Draft release upload failed. No release was published.'}
+  gh release view "v$version" --repo Doumomentss/TecniHardcore --json assets,isDraft --jq '.assets[] | {name,size}'
+  if($LASTEXITCODE -ne 0){throw 'Draft release verification failed'}
+  gh release edit "v$version" --repo Doumomentss/TecniHardcore --draft=false --latest
+  if($LASTEXITCODE -ne 0){throw 'Release publication failed'}
+} finally {Pop-Location}

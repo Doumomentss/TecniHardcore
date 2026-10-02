@@ -1,0 +1,27 @@
+{
+  "name": "tecnihardcore-launcher",
+  "version": "2.1.1",
+  "description": "Launcher Nativo TecniHardcore 1.20.1 Fabric",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/*.test.js"
+  },
+  "keywords": [
+    "minecraft",
+    "launcher",
+    "fabric",
+    "tecnihardcore"
+  ],
+  "author": "Doumoment",
+  "license": "MIT",
+  "dependencies": {
+    "minecraft-launcher-core": "^3.12.0"
+  },
+  "devDependencies": {
+    "asar": "^3.2.0",
+    "electron": "^41.1.0",
+    "rcedit": "^5.0.2"
+  },
+  "repository": "https://github.com/Doumomentss/TecniHardcore"
+}

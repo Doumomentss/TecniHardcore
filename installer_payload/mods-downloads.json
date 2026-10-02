@@ -1,0 +1,465 @@
+{
+  "schema": 1,
+  "packVersion": "2.1.0",
+  "files": [
+    {
+      "name": "appleskin-fabric-mc1.20.1-2.5.2.jar",
+      "url": "https://cdn.modrinth.com/data/EsAfCjCV/versions/N5XeV21r/appleskin-fabric-mc1.20.1-2.5.2.jar",
+      "bytes": 1097240,
+      "sha512": "712ca0f86050ab3c6dbdbe62c5d9fabe77837d70529d1cd686f915a5f09d3a4f71ad4d3866984fbdded63ae2eb1c1ceedfb3386253510ee3a54857f77677e4f4",
+      "sha256": "821241285f534fd04aa15a91f3d1a6059135bce2d4b6e409fa1ae8825b4c9702",
+      "project": "EsAfCjCV",
+      "version": "N5XeV21r"
+    },
+    {
+      "name": "architectury-9.2.14-fabric.jar",
+      "url": "https://cdn.modrinth.com/data/lhGA9TYQ/versions/WbL7MStR/architectury-9.2.14-fabric.jar",
+      "bytes": 585207,
+      "sha512": "4cb8f009fd522d68a795d2cf5a657bdbe248b32ba7c33cd968f5ab521e9d60e198f8a3f6c50e7d960a2b8f50375116be0db1fd44b5710ea758697d8ea70d15de",
+      "sha256": "bd7a7032bedb2ff96c6991a846a44c857336a51442a105f5859017e8ba9d1321",
+      "project": "lhGA9TYQ",
+      "version": "WbL7MStR"
+    },
+    {
+      "name": "artifacts-fabric-9.5.17.jar",
+      "url": "https://cdn.modrinth.com/data/P0Mu4wcQ/versions/txBP6ArM/artifacts-fabric-9.5.17.jar",
+      "bytes": 960096,
+      "sha512": "061e4f7a8b4db566273e04029e679774abe257413eeebd6141ec6de024020bc0a6d48b5dbd0ed470430f9b52737892ee04bde8d559eb7aa68aba4d85dd318754",
+      "sha256": "7a2ce37ac5a0a762546df8c0f974d3466056457d85c7af22cbef669640a71d66",
+      "project": "P0Mu4wcQ",
+      "version": "txBP6ArM"
+    },
+    {
+      "name": "awesomedungeon-fabric-1.20.1-3.2.0.jar",
+      "url": "https://cdn.modrinth.com/data/ptzsjBKT/versions/3ctNVLfK/awesomedungeon-fabric-1.20.1-3.2.0.jar",
+      "bytes": 422180,
+      "sha512": "7b7cf20be50ad3d1383c986a529ebe495aa1f0325cb53525e37af9fd5c84e0296bea0d006ca2663600ae33fe22d12e816ede8f1a9a754d23cf26a3be3f104786",
+      "sha256": "9777681f44b2ae54194d0fc14820757c5de73fb3c9f398ffef982c99384e05ca",
+      "project": "ptzsjBKT",
+      "version": "3ctNVLfK"
+    },
+    {
+      "name": "awesomedungeonnether-fabric-1.20.1-3.1.1.jar",
+      "url": "https://cdn.modrinth.com/data/gW1httFP/versions/MmGUMBF2/awesomedungeonnether-fabric-1.20.1-3.1.1.jar",
+      "bytes": 239627,
+      "sha512": "8c49654e16016f0e31db9c3f52c587ab3b85e3a10702165f5be81901da811b335c874a8aae2df004117f66603d3b1b226ba10c6b3f84ea8f47de71f67a4fd569",
+      "sha256": "ae69bc020ba1f4c2dd3a13b443e2c8304401dc671fe85501dc5bebbf563715bb",
+      "project": "gW1httFP",
+      "version": "MmGUMBF2"
+    },
+    {
+      "name": "Bookshelf-Fabric-1.20.1-20.2.15.jar",
+      "url": "https://cdn.modrinth.com/data/uy4Cnpcm/versions/A4nZEDyK/Bookshelf-Fabric-1.20.1-20.2.15.jar",
+      "bytes": 315041,
+      "sha512": "560d3a96857aca8049a485525a73b393d475c7cecb0b6c30808d51192277e3cc18cc1471556e9bdbb11e4013ecc60428dc0040f2b42f43978b15e66701a56db4",
+      "sha256": "bfdcaea401be95943503cce660a68add5e8cdc08a2a8112b1d80dd63d7d63766",
+      "project": "uy4Cnpcm",
+      "version": "A4nZEDyK"
+    },
+    {
+      "name": "cloth-config-11.1.136-fabric.jar",
+      "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/2xQdCMyG/cloth-config-11.1.136-fabric.jar",
+      "bytes": 1172214,
+      "sha512": "2da85c071c854223cc30c8e46794391b77e53f28ecdbbde59dc83b3dbbdfc74be9e68da9ed464e7f98b4361033899ba4f681ebff1f35edc2c60e599a59796f1c",
+      "sha256": "844f49c339c8f3144e167ab21b7d0059f0d571054e26285a0749348da25c49fa",
+      "project": "9s6osm5g",
+      "version": "2xQdCMyG"
+    },
+    {
+      "name": "collective-1.20.1-8.40.jar",
+      "url": "https://cdn.modrinth.com/data/e0M1UDsY/versions/lRfwtGI8/collective-1.20.1-8.40.jar",
+      "bytes": 745947,
+      "sha512": "b86778d226436c05f49cab9698e179834010891ba8bfd709bd8c6ed9eeeebf950c793b56d6247e121bd080fd50e95c97715bebd06fa93012300b0d52452ceaa9",
+      "sha256": "bb530e601fdd1217cdac24d700ad2888ac3ccc23f255869ab9947e4028267198",
+      "project": "e0M1UDsY",
+      "version": "lRfwtGI8"
+    },
+    {
+      "name": "Controlling-fabric-1.20.1-12.0.2.jar",
+      "url": "https://cdn.modrinth.com/data/xv94TkTM/versions/6ipZLQSK/Controlling-fabric-1.20.1-12.0.2.jar",
+      "bytes": 122778,
+      "sha512": "1e3da9b2b50488daa7b9165930a48158330404110912037cf42543c6acf649ad79019a324ee42e5ef88ad51bb64ee40684a147bfb7847412259b7cebff0134ee",
+      "sha256": "f7bbb7e37f2118af29450ec468d3ce4ec2606fead2861f4092a43509c6803ed6",
+      "project": "xv94TkTM",
+      "version": "6ipZLQSK"
+    },
+    {
+      "name": "CreativeCore_FABRIC_v2.12.39_mc1.20.1.jar",
+      "url": "https://cdn.modrinth.com/data/OsZiaDHq/versions/XdbR4wAI/CreativeCore_FABRIC_v2.12.39_mc1.20.1.jar",
+      "bytes": 1197255,
+      "sha512": "2368a12742ef1f1b1a033c6c6f68a953e0b9b0a2ca5d0cb092cd901be411edcbcd9a9c323d07b34957b208cefdb1670aacd31bdde2e522c8aca7cb7dc51c103c",
+      "sha256": "c6780ecc0487e40b132dc2ed41692b14f4cdb37d95758cda86a8d55f9138a61f",
+      "project": "OsZiaDHq",
+      "version": "XdbR4wAI"
+    },
+    {
+      "name": "drippyloadingscreen_fabric_3.1.5_MC_1.20.1.jar",
+      "url": "https://cdn.modrinth.com/data/v3CYg2V9/versions/ewn2Ljq2/drippyloadingscreen_fabric_3.1.5_MC_1.20.1.jar",
+      "bytes": 277393,
+      "sha512": "671ffaba463d605d1f14f44f6188f1b0de17910fd1543393bf0996a1af236762979bb92da9ea77646dc31c5cb85d934f5183cab5be5cd1bcd3c1e1ffe8e160c3",
+      "sha256": "554702a7c0d1b74e683291b261d8af8ea262cac74a8ea5fcfb0c6b8206e098e4",
+      "project": "v3CYg2V9",
+      "version": "ewn2Ljq2"
+    },
+    {
+      "name": "DungeonsArise-1.20.1-2.1.57-fabric-release.jar",
+      "url": "https://cdn.modrinth.com/data/8DfbfASn/versions/Vd5XOXlj/DungeonsArise-1.20.1-2.1.57-fabric-release.jar",
+      "bytes": 9005634,
+      "sha512": "83509ed624236c32277906d8a39a81c55deb5b13782506aba5a67728d8615f9cce76671fd52743caaa4d17516473fe248b3154400146adbabaa436a652aa9837",
+      "sha256": "e8efd54576797faff7cc221e26a41a097e985baa7889398defb15da4135d7cf8",
+      "project": "8DfbfASn",
+      "version": "Vd5XOXlj"
+    },
+    {
+      "name": "DungeonsAriseSevenSeas-1.20.x-1.0.2-fabric.jar",
+      "url": "https://cdn.modrinth.com/data/ZsrrjDbP/versions/ZQjAxRej/DungeonsAriseSevenSeas-1.20.x-1.0.2-fabric.jar",
+      "bytes": 250352,
+      "sha512": "2668f1392137f3713661bc0cf8604441f4365bd19a597d5af747571453cf256311171ee6639f7d28924067074ad3243336e1bf3420c55aab9230281cea35d5da",
+      "sha256": "e1d06438a5a9618fca45e754e7698b68b82eed15b3971ab742174c54d41d6ac9",
+      "project": "ZsrrjDbP",
+      "version": "ZQjAxRej"
+    },
+    {
+      "name": "easy_hammers-7.0.2-fabric-1.20.1.jar",
+      "url": "https://cdn.modrinth.com/data/gouTPqmV/versions/RbfEH2dv/easy_hammers-7.0.2-fabric-1.20.1.jar",
+      "bytes": 224059,
+      "sha512": "90366a235d336cad511c2eb1ab58f60efd296afe91810eb13ea21f913bc7f6d4a24c53d38c4e33468fb4533ab10e6c0b53640b96b6379f69cea3509aa3fdc9fe",
+      "sha256": "4d83429588c839af8a0459f5fe750d2aafea7ae45b870592d17508b15ff9afcd",
+      "project": "gouTPqmV",
+      "version": "RbfEH2dv"
+    },
+    {
+      "name": "EnchantingInfuser-v8.0.3-1.20.1-Fabric.jar",
+      "url": "https://cdn.modrinth.com/data/ePv85y52/versions/8ZYi5jjW/EnchantingInfuser-v8.0.3-1.20.1-Fabric.jar",
+      "bytes": 157962,
+      "sha512": "7e6583ad50c9b0fa6dfd0502a7cda32bf0006ce1e18fad567189c44dc5b99ecd15f5000ef337e47a77777d875229570842bf63d177a4fb2289dd416a5f20b5b9",
+      "sha256": "12ddb587239765a2f24e90f2689d6199515f66f84a6599d29937cee54ef250da",
+      "project": "ePv85y52",
+      "version": "8ZYi5jjW"
+    },
+    {
+      "name": "entityculling-fabric-1.11.2-mc1.20.1.jar",
+      "url": "https://cdn.modrinth.com/data/NNAgCjsB/versions/sV6RnlBw/entityculling-fabric-1.11.2-mc1.20.1.jar",
+      "bytes": 1516669,
+      "sha512": "98a0a83cdc637809e697565314a76c9a189847270896124a79976d56b3ded7c878a2ea9f79b497f856904e755623ab7a954018d395e2f2468b8dc00daa3df8d2",
+      "sha256": "637b6f30d8c7d51f107eddce095ab205f5768751aa3f9bd9ad11577da04dbbd0",
+      "project": "NNAgCjsB",
+      "version": "sV6RnlBw"
+    },
+    {
+      "name": "entity_texture_features-7.2.4-1.20.1-fabric.jar",
+      "url": "https://cdn.modrinth.com/data/BVzZfTc1/versions/iOlqSm7x/entity_texture_features-7.2.4-1.20.1-fabric.jar",
+      "bytes": 791015,
+      "sha512": "186970bcd95d9c3616517756eca23a7b6bad4ac3d18c23e3e08853be2e9c152513809a2749257fe32c393c15de69c28718bbf63b2d69a723084fba3fc5d16669",
+      "sha256": "c8bac35efcfb0bbef45b5253506015a0ddee386ff60577e2c2715e555ad51433",
+      "project": "BVzZfTc1",
+      "version": "iOlqSm7x"
+    },
+    {
+      "name": "fabric-api-0.92.12+1.20.1.jar",
+      "url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/rvI2dfzR/fabric-api-0.92.12%2B1.20.1.jar",
+      "bytes": 2137232,
+      "sha512": "de9da2344043b3e9ef9fb7dbfff5f2577b06000c4f73f2a37959a80123141169084cece19133bd299b45feaaa4648bdaca2ea085684888cc8c55cc9134a477ca",
+      "sha256": "4197ff4fbdac13cffccd267c1bc59e9fbabb2b5683a9d5f8023f4b5ea16a1c1e",
+      "project": "P7dR8mSH",
+      "version": "rvI2dfzR"
+    },
+    {
+      "name": "fabric-language-kotlin-1.10.19+kotlin.1.9.23.jar",
+      "url": "https://cdn.modrinth.com/data/Ha28R6CL/versions/ZMokinzs/fabric-language-kotlin-1.10.19%2Bkotlin.1.9.23.jar",
+      "bytes": 6734779,
+      "sha512": "0c31443b5061d85787de452d1dc0196a0e3391146aa5f030ef5fa95558b0f2b2bb9a0613fc0e5621e9d796d06e717fef0d0c98046f4ead04d150e0eb2d19abdc",
+      "sha256": "4cc86a5ca56236f776ec9b84370fb02ac4f7cdf88a3c82886da9c558e1e4f39c",
+      "project": "Ha28R6CL",
+      "version": "ZMokinzs"
+    },
+    {
+      "name": "fancymenu_fabric_3.9.14_MC_1.20.1.jar",
+      "url": "https://cdn.modrinth.com/data/Wq5SjeWM/versions/ywyEnvpm/fancymenu_fabric_3.9.14_MC_1.20.1.jar",
+      "bytes": 26225066,
+      "sha512": "202a628c2647c317b2572b862bac7519d87030fdf5d002211ba658cfb01f87b38c0d905befcb198514ee4d0cbe2a7b210f20233d1d18ae86909c726ad36a2a37",
+      "sha256": "24e6bf2904252ae567419e3d9b83f08276e5be9eee0a48ab0a785ba2d07a5026",
+      "project": "Wq5SjeWM",
+      "version": "ywyEnvpm"
+    },
+    {
+      "name": "FarmersDelight-1.20.1-2.5.7+refabricated.jar",
+      "url": "https://cdn.modrinth.com/data/7vxePowz/versions/7H1g1o5h/FarmersDelight-1.20.1-2.5.7%2Brefabricated.jar",
+      "bytes": 6117761,
+      "sha512": "f7197d9d5443626212c87ed1745cd3af14f549e62039bfd332d34cc0870f351afbc5ea5e856cac18831f572e006bb7a08457ff93346a29ac855baddee3b67ad0",
+      "sha256": "7f5c6cf0e05f66c11925c6e1e66c513fa4f9660a742e38762c929b3ca37de2d9",
+      "project": "7vxePowz",
+      "version": "7H1g1o5h"
+    },
+    {
+      "name": "ferritecore-6.0.1-fabric.jar",
+      "url": "https://cdn.modrinth.com/data/uXXizFIs/versions/unerR5MN/ferritecore-6.0.1-fabric.jar",
+      "bytes": 125197,
+      "sha512": "9b7dc686bfa7937815d88c7bbc6908857cd6646b05e7a96ddbdcada328a385bd4ba056532cd1d7df9d2d7f4265fd48bd49ff683f217f6d4e817177b87f6bc457",
+      "sha256": "c7ba1118a05b2da900d1c369fbe1017a3e3ec3cafe5e51398b851279b9becf24",
+      "project": "uXXizFIs",
+      "version": "unerR5MN"
+    },
+    {
+      "name": "ForgeConfigAPIPort-v8.0.3-1.20.1-Fabric.jar",
+      "url": "https://cdn.modrinth.com/data/ohNO6lps/versions/HvR3IdRE/ForgeConfigAPIPort-v8.0.3-1.20.1-Fabric.jar",
+      "bytes": 396628,
+      "sha512": "15144d6d7b74dfbe2eede6e3b0aa0c841670be1bd6121608bc28f3b1e46846ccd36b506060a081c988da96cf46fce8bf2e55601e3934b9a52d22dc2fa6cbfd32",
+      "sha256": "337a8f6c5ba48ef3b3da828f4f6a75d0552ba33f48ce97d3195befdb570e427a",
+      "project": "ohNO6lps",
+      "version": "HvR3IdRE"
+    },
+    {
+      "name": "fzzy_config-0.7.7+1.20.1.jar",
+      "url": "https://cdn.modrinth.com/data/hYykXjDp/versions/JHYH0fYB/fzzy_config-0.7.7%2B1.20.1.jar",
+      "bytes": 2395040,
+      "sha512": "3bea9ff4ea20f696780f7ee77b3faffb4f1a3d3a81199f2c987a0bbd4f16b02e09dde1d7c2f92a3fa4661c085c89f51650c8b219b58463d4b4f7ae17614ed161",
+      "sha256": "719e2b5faa36104551f8f49e1c5f9189f8dcac65fcb648d61e1bae4d41aea1fa",
+      "project": "hYykXjDp",
+      "version": "JHYH0fYB"
+    },
+    {
+      "name": "geckolib-fabric-1.20.1-4.8.4.jar",
+      "url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/SD2lOScS/geckolib-fabric-1.20.1-4.8.4.jar",
+      "bytes": 969016,
+      "sha512": "757cf010eef44500c0722afc193d874b62fb1b3e61ba8dea952f8434b2a939536e3440e04c01bc58922d75bb76c16c605d72f9fa9157ac62806e862d9652d13f",
+      "sha256": "ee8495a8db7a83aa63e8ef248d4eadda665ff57c5911b8e59fd608806137baa6",
+      "project": "8BmcQJ2H",
+      "version": "SD2lOScS"
+    },
+    {
+      "name": "graves-fabric-1.20-1.20.1-1.0.0.jar",
+      "url": "https://cdn.modrinth.com/data/YQybd3R7/versions/r8smB0qB/graves-fabric-1.20-1.20.1-1.0.0.jar",
+      "bytes": 53434,
+      "sha512": "4d7f0d6cacfe87ca447cf02b7de43929b63d40ea3c40649a4ac04ae06ab6aed986b8618dc2322fb895d5d4b1d52dacf4987e0e293a9a00d588fd456cb7e614f7",
+      "sha256": "21cb9f8eae8603ea2d1803271aba793068447b3946052594be18c207c674cb4e",
+      "project": "YQybd3R7",
+      "version": "r8smB0qB"
+    },
+    {
+      "name": "Jade-1.20-Fabric-11.13.3.jar",
+      "url": "https://cdn.modrinth.com/data/nvQzSEkH/versions/ahavHbAT/Jade-1.20-Fabric-11.13.3.jar",
+      "bytes": 553868,
+      "sha512": "50d3917fa89fa382ab972ea4029eb4a5a0a9d74dde1d1e38ab5aa898b953dd0b7ee62565fbffb9b990829f95b298a6ac5ff34ecc8eecb35082cca1f7e15ffbeb",
+      "sha256": "5a2830f6e5edabbb632c33eed5b9cabf45495ccb937c976a3656efe74a183375",
+      "project": "nvQzSEkH",
+      "version": "ahavHbAT"
+    },
+    {
+      "name": "jei-1.20.1-fabric-15.62.0.217.jar",
+      "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/fNAl3RfF/jei-1.20.1-fabric-15.62.0.217.jar",
+      "bytes": 2262344,
+      "sha512": "39e8168214e5a8406029e7ad84de06a3f671d3a455d01e12a4d3e02058440d36799d30209dcf3946633651ff4997319c07beffd08fa908ab2227a775ef449602",
+      "sha256": "14e85f737accd9354f5d8d1ea43d68d81b8405223254b7092f6a6680de723ce8",
+      "project": "u6dRKJwZ",
+      "version": "fNAl3RfF"
+    },
+    {
+      "name": "konkrete_fabric_1.8.1_MC_1.20.1.jar",
+      "url": "https://cdn.modrinth.com/data/J81TRJWm/versions/RlBGFlWp/konkrete_fabric_1.8.1_MC_1.20.1.jar",
+      "bytes": 892067,
+      "sha512": "ca65343bd3b063f3e0f68cc1d40da1969cf07ca038670f22a2bac91c2f34162f2c455ceb309680d57da13267ffc99fc7f8d40bb9451e93ff56ab2a688c0e3a45",
+      "sha256": "f87fc3ab29a8df63a5214fdfa58d2f9fa645255af64d38ba598a9f56fafccdb6",
+      "project": "J81TRJWm",
+      "version": "RlBGFlWp"
+    },
+    {
+      "name": "libraryferret-fabric-1.20.1-4.0.0.jar",
+      "url": "https://cdn.modrinth.com/data/DOB2l4oJ/versions/edE8fBJQ/libraryferret-fabric-1.20.1-4.0.0.jar",
+      "bytes": 226325,
+      "sha512": "4ef0630f10b9bc63bfbe4d128e304cbd7cf5e3df1ea232c6ef0e9f5e8ab7f1213f6d6450a9a09e7e854a92e68bf6601b2856021919abfcc09b55e08eb9c4c859",
+      "sha256": "194a4291dc0d3e47abf63266f16e06b16dcff4d6f05bb667c972743835eeca0e",
+      "project": "DOB2l4oJ",
+      "version": "edE8fBJQ"
+    },
+    {
+      "name": "lithium-fabric-mc1.20.1-0.11.4.jar",
+      "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/iEcXOkz4/lithium-fabric-mc1.20.1-0.11.4.jar",
+      "bytes": 691483,
+      "sha512": "31938b7e849609892ffa1710e41f2e163d11876f824452540658c4b53cd13c666dbdad8d200989461932bd9952814c5943e64252530c72bdd5d8641775151500",
+      "sha256": "76133efe92aea907cf75562d9e26517deb170e2580e1ecd4979da2c8902de782",
+      "project": "gvQqBUqZ",
+      "version": "iEcXOkz4"
+    },
+    {
+      "name": "mcpitanlib-4.0.9-1.20.1-fabric.jar",
+      "url": "https://cdn.modrinth.com/data/uNRoUnGT/versions/LkIiuphJ/mcpitanlib-4.0.9-1.20.1-fabric.jar",
+      "bytes": 2887300,
+      "sha512": "5f5da51f74cf80593e8f1eb5b332eac5383af35c6964dad6d9bb9fbd70bc748a624313bad43d900f11d6094681042555d669a4b39a9ecfd300da27e2c8bc1c16",
+      "sha256": "1593ce12e4e190ba170884e2ba36a8b206a20cc48733d9bc27f4b20712abb2e1",
+      "project": "uNRoUnGT",
+      "version": "LkIiuphJ"
+    },
+    {
+      "name": "melody_fabric_1.0.4_MC_1.20.1-1.20.4.jar",
+      "url": "https://cdn.modrinth.com/data/CVT4pFB2/versions/2o0oW8Yv/melody_fabric_1.0.4_MC_1.20.1-1.20.4.jar",
+      "bytes": 39696,
+      "sha512": "3d3379e07eae001860aa71379abe310cda6642965cd55a8d274dacef1b63d8c85fd0663abeec2d247ac1a631bd08b12dace8758f4a035d344e27db5edfe581c5",
+      "sha256": "3f7f5bab77a01a26af4702a70af5a7fd0a6f04f4fde51a4180113790e0c9e1e7",
+      "project": "CVT4pFB2",
+      "version": "2o0oW8Yv"
+    },
+    {
+      "name": "modernfix-fabric-5.25.2+mc1.20.1.jar",
+      "url": "https://cdn.modrinth.com/data/nmDcB62a/versions/rPmgLeZC/modernfix-fabric-5.25.2%2Bmc1.20.1.jar",
+      "bytes": 545175,
+      "sha512": "878e39d182767ffd08ad6a3539fae780739129db133abe02b9b73dc3df6e1ac9ddbe509620356b0aae5e7bfbed535d0e18741703334317a16fefef820269da2d",
+      "sha256": "5c1f852046e62a17056bb6b571164e61644076c5eb9029c92b31e337cc62c0d9",
+      "project": "nmDcB62a",
+      "version": "rPmgLeZC"
+    },
+    {
+      "name": "nether_ores_reborn-1.0.2-1.20.1-Fabric.jar",
+      "url": "https://cdn.modrinth.com/data/EUV7foM2/versions/vChB1Gu4/nether_ores_reborn-1.0.2-1.20.1-Fabric.jar",
+      "bytes": 68735,
+      "sha512": "0184f0016b0dc0182dc6061566ecaa92ee8d26eadfd2b9279de200cc4190d4b5f874b8258e3854e5d6e9d384e5efb91ecb45adb6fc5c13405a3364d5b136ca88",
+      "sha256": "e113fed0f5449c38c3cf4297f3d4fdb0a5decc29ecf411ab0598f8caf50c69eb",
+      "project": "EUV7foM2",
+      "version": "vChB1Gu4"
+    },
+    {
+      "name": "Patchouli-1.20.1-85-FABRIC.jar",
+      "url": "https://cdn.modrinth.com/data/nU0bVIaL/versions/nm6fiGRx/Patchouli-1.20.1-85-FABRIC.jar",
+      "bytes": 857123,
+      "sha512": "b287e86e71865d7bb0caa2b7722c8940f51e72fd2a534e22c22c04dc9536e53137bacaada24f3cfd8a5133d3135bc6b5b235d4a42fb7e84924ca560df00d5c1e",
+      "sha256": "485e23ab9727c7e9f585f435020d733706a80c7f0a1dc20e85c7398e1d76b919",
+      "project": "nU0bVIaL",
+      "version": "nm6fiGRx"
+    },
+    {
+      "name": "PuzzlesLib-v8.1.33-1.20.1-Fabric.jar",
+      "url": "https://cdn.modrinth.com/data/QAGBst4M/versions/N8gFdljq/PuzzlesLib-v8.1.33-1.20.1-Fabric.jar",
+      "bytes": 1084397,
+      "sha512": "86e57fcf41a1b1f6f33375a10e3eba5c78b7e634b5c694d9082e7f56f77aa6339a5d0bbfe4e50978154e3246a70d5a4a7b6570b56fd70ae41033f870de3178d2",
+      "sha256": "855034e7a858f2f9ee76c1181aa1f4d5b9e605d63d8a81f7bba155faba2da7c5",
+      "project": "QAGBst4M",
+      "version": "N8gFdljq"
+    },
+    {
+      "name": "RoguelikeDungeons-2.1.0-1.20.1-fabric.jar",
+      "url": "https://cdn.modrinth.com/data/MFpvbNGE/versions/3cXBjCfG/RoguelikeDungeons-2.1.0-1.20.1-fabric.jar",
+      "bytes": 697709,
+      "sha512": "13cd2b9c39cdb3badb29c5269f8e565c407d3545789f3afbee689dbc9a506e50bd14ddbce949cb32a45b24a7812a14015751044991e0511939a2f2eb0abc422c",
+      "sha256": "f2c3042a435098f376f017ef2e7de295862b7981678b1a7322c5081f6d760127",
+      "project": "MFpvbNGE",
+      "version": "3cXBjCfG"
+    },
+    {
+      "name": "Searchables-fabric-1.20.1-1.0.3.jar",
+      "url": "https://cdn.modrinth.com/data/fuuu3xnx/versions/eh4IBlu2/Searchables-fabric-1.20.1-1.0.3.jar",
+      "bytes": 80283,
+      "sha512": "94a44b9ad58507a28ffb6e1a48b28b23740d4192c5511012b0eb8db33360200232ec84ceba121368fa3e54d1b845458434950ad1f6702d0e8ad5746843480bf3",
+      "sha256": "f32e0b0c9bebc99944ddc6a9dba8f8336af666aaba151c6839b8353a2acdd53a",
+      "project": "fuuu3xnx",
+      "version": "eh4IBlu2"
+    },
+    {
+      "name": "simpleores-2.1.0-1.20.1-fabric.jar",
+      "url": "https://cdn.modrinth.com/data/Boe3chj8/versions/Yxlmc51B/simpleores-2.1.0-1.20.1-fabric.jar",
+      "bytes": 978953,
+      "sha512": "9fb66f42c14117684006c05e9291c0ee0236d8d51fb5d3f44bff8a6f24b43778337a2488b98f8489a263317316a53628ad2570627a0e75559d7fc09a8e5e188a",
+      "sha256": "6ebda2f83654713472e3a7010f8577ac4d927e5939d259c04007b0f672c231e7",
+      "project": "Boe3chj8",
+      "version": "Yxlmc51B"
+    },
+    {
+      "name": "sodium-fabric-0.5.13+mc1.20.1.jar",
+      "url": "https://cdn.modrinth.com/data/AANobbMI/versions/OihdIimA/sodium-fabric-0.5.13%2Bmc1.20.1.jar",
+      "bytes": 971552,
+      "sha512": "81c64f9c2d3402dfa43ee54d8f5a054f5243bfb08984e3addcab9fe885073c79c43c1c8c41e8f30b625d26a656f82a8e5f370bbbbf222ff1c08f4b324edb7ea4",
+      "sha256": "688c26029ce69f0b1f7cf936866656ca6723228ac46c4aef5b5f793b1e6abd22",
+      "project": "AANobbMI",
+      "version": "OihdIimA"
+    },
+    {
+      "name": "sophisticatedbackpacks-1.20.1-3.23.4.5.110.jar",
+      "url": "https://cdn.modrinth.com/data/ouNrBQtq/versions/Jk6o7s4h/sophisticatedbackpacks-1.20.1-3.23.4.5.110.jar",
+      "bytes": 986101,
+      "sha512": "651a6121533e5693c26bde85141339cb89b5cfee5a750d67cbdad12a97a51ec8a0a3b3b59845afe9013b477fce9570f80ae0047e1c7054f458bc9c1b93ef748c",
+      "sha256": "1e4e268d079ebef8a21f41f6a7a35528435733a124a134e3ef240389f3aa87c1",
+      "project": "ouNrBQtq",
+      "version": "Jk6o7s4h"
+    },
+    {
+      "name": "sophisticatedcore-1.20.1-1.2.7.15.166.jar",
+      "url": "https://cdn.modrinth.com/data/9jxwkYQL/versions/BP3CQI2v/sophisticatedcore-1.20.1-1.2.7.15.166.jar",
+      "bytes": 2858683,
+      "sha512": "892dda2bfa2a49ed66e869877fc6309cfc3af11fe61859c3b1be341baf689a693fda30902dec5c9ec6f737fd8fe451615ceb3d1c31c51e40c38e68b59dfcf134",
+      "sha256": "dafca4311f94ed5eff18f34077e7ab91a169863a4bde2cc82ae525d869ee9396",
+      "project": "9jxwkYQL",
+      "version": "BP3CQI2v"
+    },
+    {
+      "name": "trinkets-3.7.2.jar",
+      "url": "https://cdn.modrinth.com/data/5aaWibi9/versions/AHxQGtuC/trinkets-3.7.2.jar",
+      "bytes": 238532,
+      "sha512": "bedf97c87c5e556416410267108ad358b32806448be24ef8ae1a79ac63b78b48b9c851c00c845b8aedfc7805601385420716b9e65326fdab21340e8ba3cc4274",
+      "sha256": "a6f11a4206c1285cd260a60d9bfe9cefa9914d2190d08b3c52050f42044b53b3",
+      "project": "5aaWibi9",
+      "version": "AHxQGtuC"
+    },
+    {
+      "name": "UncraftingTable-fabric-1.5.6.jar",
+      "url": "https://cdn.modrinth.com/data/d0f1a75r/versions/Tv5AwjFD/UncraftingTable-fabric-1.5.6.jar",
+      "bytes": 147099,
+      "sha512": "27004a8d1fd45b0c452d28a6cac9bd2d77bf0126c6e5ae4897bcc7b99597c572f7157993d737509508ded3e3c69484add2adc358df4ad2e7dc1d7df199b4e1bf",
+      "sha256": "21e9f883549f0f89a6f71dd13676e6d272783ac74ba2f20e711e26f8d8678022",
+      "project": "d0f1a75r",
+      "version": "Tv5AwjFD"
+    },
+    {
+      "name": "voicechat-fabric-1.20.1-2.6.24.jar",
+      "url": "https://cdn.modrinth.com/data/9eGKb6K1/versions/Xb9IEz9H/voicechat-fabric-1.20.1-2.6.24.jar",
+      "bytes": 5296614,
+      "sha512": "6cb21c149f65ca7d930c3d5fc0ad79d6f0f8e5f5cb6722344e5ab762f734447826656fd833f79f68b59b25138312e6200b7a757f9849468852fa4a1766ceadfd",
+      "sha256": "d7cb238ab224d898210cecdf8ea8c0b4cbdf7839ee3cea36f44e63e1f1bd23dc",
+      "project": "9eGKb6K1",
+      "version": "Xb9IEz9H"
+    },
+    {
+      "name": "yet_another_config_lib_v3-3.6.6+1.20.1-fabric.jar",
+      "url": "https://cdn.modrinth.com/data/1eAoo2KR/versions/dvS5DjUA/yet_another_config_lib_v3-3.6.6%2B1.20.1-fabric.jar",
+      "bytes": 1294234,
+      "sha512": "20f282b3cdaec7c83a96840edb756336677c5816ed943145022f1ce1eafac0c9aa7c621939e15abe6f4309626738bc56d3d1b8434f5175d22e7409108630b02b",
+      "sha256": "7a2389ca436ea8f7abee787d6373f9526deece5d06785f3623b7fe89bd9b31ac",
+      "project": "1eAoo2KR",
+      "version": "dvS5DjUA"
+    },
+    {
+      "name": "YungsApi-1.20-Fabric-4.0.6.jar",
+      "url": "https://cdn.modrinth.com/data/Ua7DFN59/versions/lscV1N5k/YungsApi-1.20-Fabric-4.0.6.jar",
+      "bytes": 1396331,
+      "sha512": "90fea70f21cd09bdeefe9cb6bd23677595b32156b1b8053611449504ba84a21ee1e13e5a620851299090ce989f41b97b9b4bdc98def1ccecb33115e19553c64e",
+      "sha256": "26b6dc81f876aabf3d53ead59e5908a8b0f5434d46c150cfd376c027ac54053e",
+      "project": "Ua7DFN59",
+      "version": "lscV1N5k"
+    },
+    {
+      "name": "YungsBetterDungeons-1.20-Fabric-4.0.4.jar",
+      "url": "https://cdn.modrinth.com/data/o1C1Dkj5/versions/nidyvq2m/YungsBetterDungeons-1.20-Fabric-4.0.4.jar",
+      "bytes": 944170,
+      "sha512": "02ee00641aea2e80806923c1d97a366b82eb6d6e1d749fc8fb4eeddeddea718c08f5a87ba5189427f747801b899abe5a6138a260c7e7f949e5e69b4065ac5464",
+      "sha256": "6c69fd0316c448cf9c70b72dbea424a85be881f9adc3e7a56e8f0b08e3611fff",
+      "project": "o1C1Dkj5",
+      "version": "nidyvq2m"
+    },
+    {
+      "name": "YungsBetterMineshafts-1.20-Fabric-4.0.4.jar",
+      "url": "https://cdn.modrinth.com/data/HjmxVlSr/versions/qLnQnqXS/YungsBetterMineshafts-1.20-Fabric-4.0.4.jar",
+      "bytes": 621495,
+      "sha512": "82d6e361ef403471beaaf2fa86964af541df167da56f53b820e5abfac693f63dd5d6c0aafbc9e9baa947b42a57c79f069ed6ede55e680a2523d2ca7f2e538b13",
+      "sha256": "0a4657689217339a1f6079a2d9dda03f6d01beacac59c14e093ded3357db2b86",
+      "project": "HjmxVlSr",
+      "version": "qLnQnqXS"
+    },
+    {
+      "name": "YungsBetterNetherFortresses-1.20-Fabric-2.0.6.jar",
+      "url": "https://cdn.modrinth.com/data/Z2mXHnxP/versions/FL88RLRu/YungsBetterNetherFortresses-1.20-Fabric-2.0.6.jar",
+      "bytes": 760974,
+      "sha512": "a752f0dea20fa86e6d3a4f87d180af706b2ad5e3d434185aaa624692fc55329a2e2e410e67f843ec982e7b90ae63565b4aed43adbee6c50ded403ef50d91d7fd",
+      "sha256": "93e0e537fcf20b18c0ea340e6d4f2c20225a29c45252b9cf78e205107ab4f03a",
+      "project": "Z2mXHnxP",
+      "version": "FL88RLRu"
+    }
+  ]
+}

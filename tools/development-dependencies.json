@@ -1,0 +1,14 @@
+{
+  "files": [
+    {
+      "path": "client/mods/geckolib-fabric-1.20.1-4.8.4.jar",
+      "url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/SD2lOScS/geckolib-fabric-1.20.1-4.8.4.jar",
+      "sha256": "ee8495a8db7a83aa63e8ef248d4eadda665ff57c5911b8e59fd608806137baa6"
+    },
+    {
+      "path": "tools/vendor/easyauth-mc1.20-3.3.6.jar",
+      "url": "https://cdn.modrinth.com/data/aZj58GfX/versions/Gxj49gBw/easyauth-mc1.20-3.3.6.jar",
+      "sha256": "337ad29d204e15e3c1d6f7d45ef891a1b1394eb678fbc3eeaf84d457ef9ef9f1"
+    }
+  ]
+}

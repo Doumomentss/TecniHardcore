@@ -1,0 +1,96 @@
+type = fancymenu_layout
+
+layout-meta {
+  identifier = death_screen
+  is_enabled = false
+  layout_index = 0
+  render_custom_elements_behind_vanilla = false
+}
+
+menu_background {
+  instance_identifier = th-death-dim
+  background_type = color_fancymenu
+  show_background = true
+  color = #070A0ECC
+}
+
+element {
+  element_type = image
+  instance_identifier = th-death-heart
+  anchor_point = mid-centered
+  x = 0
+  y = 0
+  width = 300
+  height = 300
+  stay_on_screen = true
+  appearance_delay = no_delay
+  fade_in_v2 = no_fading
+  base_opacity = 1.0
+  source = [source:local]/config/fancymenu/assets/video_sin_fondo_transparente.fma
+}
+
+
+element {
+  element_type = audio
+  instance_identifier = th-death-sound
+  anchor_point = mid-centered
+  x = 0
+  y = 0
+  width = 1
+  height = 1
+  stay_on_screen = true
+  appearance_delay = no_delay
+  fade_in_v2 = no_fading
+  base_opacity = 0.0
+  play_mode = normal
+  looping = false
+  sound_source = master
+  audio_instance_0 = [source:local]/config/fancymenu/assets/video_sin_fondo_transparente.ogg
+  audio_instance_0_weight = 1.0
+}
+element {
+  element_type = text_v2
+  instance_identifier = th-death-title
+  anchor_point = mid-centered
+  x = 0
+  y = 145
+  width = 360
+  height = 18
+  stay_on_screen = true
+  appearance_delay = no_delay
+  fade_in_v2 = no_fading
+  base_opacity = 1.0
+  source = TU CORAZÓN SE HA QUEBRADO
+  source_mode = direct
+  scale = 1.15
+  base_color = #F4CE8B
+  shadow = false
+  text_border = 0
+  enable_scrolling = false
+  auto_line_wrapping = false
+  parse_markdown = false
+}
+
+element {
+  element_type = text_v2
+  instance_identifier = th-death-note
+  anchor_point = mid-centered
+  x = 0
+  y = 168
+  width = 390
+  height = 18
+  stay_on_screen = true
+  appearance_delay = no_delay
+  fade_in_v2 = no_fading
+  base_opacity = 1.0
+  source = Una vida perdida. Elige tu siguiente destino.
+  source_mode = direct
+  scale = 0.72
+  base_color = #C3CCD2
+  shadow = false
+  text_border = 0
+  enable_scrolling = false
+  auto_line_wrapping = false
+  parse_markdown = false
+}
+

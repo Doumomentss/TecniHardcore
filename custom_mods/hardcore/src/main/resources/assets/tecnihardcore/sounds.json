@@ -1,0 +1,38 @@
+{
+  "sanctuary.wake": {
+    "sounds": [
+      {
+        "name": "tecnihardcore:sanctuary/wake",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.tecnihardcore.wake"
+  },
+  "sanctuary.channel": {
+    "sounds": [
+      {
+        "name": "tecnihardcore:sanctuary/channel",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.tecnihardcore.channel"
+  },
+  "sanctuary.complete": {
+    "sounds": [
+      {
+        "name": "tecnihardcore:sanctuary/complete",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.tecnihardcore.complete"
+  },
+  "sanctuary.cancel": {
+    "sounds": [
+      {
+        "name": "tecnihardcore:sanctuary/cancel",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.tecnihardcore.cancel"
+  }
+}

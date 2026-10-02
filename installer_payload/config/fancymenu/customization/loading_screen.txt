@@ -1,0 +1,108 @@
+type = fancymenu_layout
+
+layout-meta {
+  identifier = drippy_loading_overlay
+  is_enabled = true
+  layout_index = 0
+}
+
+menu_background {
+  instance_identifier = th-loading-dark
+  background_type = color_fancymenu
+  show_background = true
+  color = #090F16FF
+}
+
+element {
+  element_type = image
+  instance_identifier = th-loading-logo
+  anchor_point = mid-centered
+  x = -135
+  y = -83
+  width = 270
+  height = 90
+  stay_on_screen = true
+  appearance_delay = no_delay
+  fade_in_v2 = no_fading
+  base_opacity = 1.0
+  source = [source:local]/config/fancymenu/assets/tecnihardcore_logo.png
+}
+
+element {
+  element_type = text_v2
+  instance_identifier = th-loading-label
+  anchor_point = mid-centered
+  x = -104
+  y = 30
+  width = 240
+  height = 18
+  stay_on_screen = true
+  appearance_delay = no_delay
+  fade_in_v2 = no_fading
+  base_opacity = 1.0
+  source = PREPARANDO TU AVENTURA
+  source_mode = direct
+  scale = 0.85
+  base_color = #D5B27A
+  shadow = false
+  text_border = 0
+  enable_scrolling = false
+  auto_line_wrapping = false
+  parse_markdown = false
+}
+
+element {
+  element_type = progress_bar
+  instance_identifier = th-loading-progress
+  anchor_point = mid-centered
+  x = -135
+  y = 54
+  width = 270
+  height = 3
+  stay_on_screen = true
+  appearance_delay = no_delay
+  fade_in_v2 = no_fading
+  base_opacity = 1.0
+  progress_source = %drippy_gl_percent%
+  value_mode = percentage
+  direction = right
+  bar_color = #E5AE68FF
+  background_color = #24313EFF
+  smooth_filling_animation = true
+}
+
+element {
+  element_type = text_v2
+  instance_identifier = th-loading-note
+  anchor_point = mid-centered
+  x = -62
+  y = 73
+  width = 190
+  height = 18
+  stay_on_screen = true
+  appearance_delay = no_delay
+  fade_in_v2 = no_fading
+  base_opacity = 1.0
+  source = Cada vida cuenta.
+  source_mode = direct
+  scale = 0.75
+  base_color = #87939F
+  shadow = false
+  text_border = 0
+  enable_scrolling = false
+  auto_line_wrapping = false
+  parse_markdown = false
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = mojang_logo
+  is_hidden = true
+}
+
+vanilla_button {
+  element_type = vanilla_button
+  instance_identifier = progress_bar
+  is_hidden = true
+}
+

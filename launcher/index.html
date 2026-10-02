@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TecniHardcore Launcher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Canvas de fondo para partículas y ascuas mágicas -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Barra de Título Superior Personalizada (Frameless) -->
+  <div class="custom-titlebar">
+    <div class="titlebar-drag">
+      <img src="assets/tecnihardcore_logo.png" class="titlebar-icon" alt="TecniHardcore">
+      <span class="titlebar-text">TECNIHARDCORE <span>// CLIENT & LAUNCHER</span></span>
+    </div>
+    <div class="titlebar-controls">
+      <button id="btn-minimize" class="title-btn" title="Minimizar">─</button>
+      <button id="btn-maximize" class="title-btn" title="Maximizar">□</button>
+      <button id="btn-close" class="title-btn close-btn" title="Cerrar">✕</button>
+    </div>
+  </div>
+
+  <!-- Contenedor Principal de la Aplicación -->
+  <div class="app-layout">
+    <!-- Barra Lateral de Navegación -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-badge">TECNI-HARDCORE</div>
+        <img src="assets/tecnihardcore_logo.png" class="brand-logo" alt="Logo">
+        <h2 class="brand-title">TECNIHARDCORE</h2>
+        <span class="brand-sub">1.20.1 FABRIC</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="tab-play">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          <span>JUGAR</span>
+        </button>
+        <button class="nav-item" data-tab="tab-server">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+          <span>SERVIDOR</span>
+        </button>
+        <button class="nav-item" data-tab="tab-settings"><span>AJUSTES</span></button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="server-status-pill" id="live-server-pill">
+          <div class="status-indicator-dot online"></div>
+          <div class="status-pill-info">
+            <span class="status-pill-title" id="server-status-text">Verificando...</span>
+            <span class="status-pill-ping" id="server-ping-text">-- ms</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Contenido Principal Dinámico -->
+    <main class="content-viewport">
+      <div id="update-banner" class="update-banner hidden" role="status">
+        <div><strong id="update-title">Nueva versión disponible</strong><p id="update-notes"></p></div>
+        <button id="btn-update">ACTUALIZAR</button><button id="btn-cancel-update" class="hidden">Cancelar descarga</button>
+      </div>
+      <!-- Pestaña JUGAR (Dashboard) -->
+      <section id="tab-play" class="tab-panel active">
+        <div class="hero-banner">
+          <div class="hero-tag">MODPACK OFICIAL 1.20.1 FABRIC</div>
+          <h1 class="hero-headline"><span class="gradient-text">TECNIHARDCORE</span></h1>
+          <p class="hero-desc">
+            Cada decisión cuenta. Tienes 3 vidas sagradas antes del juicio final.
+            Construye maquinaria y explora mazmorras.
+          </p>
+        </div>
+
+        <!-- Panel de Lanzamiento del Jugador -->
+        <div class="launch-dock glass-card">
+          <div class="dock-player-col">
+            <div class="player-avatar-box">
+              <img id="avatar-preview" src="https://minotar.net/avatar/Jugador/64" alt="Skin">
+            </div>
+            <div class="player-input-box">
+              <label for="username-input">NOMBRE DE JUGADOR</label>
+              <input type="text" id="username-input" value="Jugador" maxlength="16">
+            </div>
+          </div>
+
+          <div class="dock-divider"></div>
+
+          <div class="dock-specs-col">
+            <div class="dock-spec-item">
+              <span class="spec-label">MOTOR</span>
+              <span class="spec-val">Fabric 1.20.1</span>
+            </div>
+            <div class="dock-spec-item">
+              <span class="spec-label">SERVIDOR</span>
+              <span class="spec-val highlight" id="dock-server-val">VERIFICANDO</span>
+            </div>
+          </div>
+
+          <button id="btn-play-game" class="play-button pulse-glow">
+            <div class="play-btn-glow"></div>
+            <div class="play-btn-content">
+              <span class="play-icon">▶</span>
+              <span class="play-text">JUGAR AHORA</span>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <!-- Pestaña SERVIDOR -->
+      <section id="tab-server" class="tab-panel">
+        <div class="panel-header">
+          <h2>ESTADO DEL SERVIDOR</h2>
+          <p>Información de conexión y tus estadísticas de supervivencia</p>
+        </div>
+
+        <div class="server-cards-grid">
+          <div class="glass-card stat-card">
+            <span class="stat-title">ESTADO DE CONEXIÓN</span>
+            <div class="stat-big-val" id="server-online-state">VERIFICANDO</div>
+            <span class="stat-sub" id="server-ping-big">Consultando servidor…</span>
+          </div>
+
+          <div class="glass-card stat-card highlight-card">
+            <span class="stat-title">VIDAS DISPONIBLES</span>
+            <div class="stat-big-val gold" id="player-lives-display">SIN DATOS</div>
+            <span class="stat-sub lives-display" id="player-lives-hearts" aria-label="Vidas disponibles"></span>
+          </div>
+        </div>
+      </section>
+      <section id="tab-settings" class="tab-panel">
+        <div class="panel-header"><h2>AJUSTES DEL CLIENTE</h2><p>Instalación independiente y paquete oficial verificado.</p></div>
+        <div class="glass-card" style="padding:24px;display:grid;gap:18px">
+          <label>Memoria: <span id="ram-slider-display">6 GB</span><input id="ram-slider" type="range" min="2" max="8" value="6" style="width:100%"></label>
+          <label>Java (vacío: detección e instalación automática)<input id="java-path-input" type="text" style="width:100%" placeholder="Ruta opcional a java.exe"></label>
+          <p id="connection-address">Consultando dirección…</p>
+          <button id="btn-copy-ip">Copiar dirección</button>
+          <button id="btn-save-settings">Guardar ajustes</button>
+          <button id="btn-repair">Verificar y reparar paquete</button>
+          <p id="repair-status"></p>
+          <button id="btn-check-update">Buscar actualizaciones</button>
+          <p id="update-status" role="status">Consultando actualizaciones…</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- PANTALLA DE CARGA PERSONALIZADA DESDE CERO (ESTILO EUFONIA STUDIO) -->
+  <!-- ================================================================= -->
+  <div id="custom-loading-screen" class="loading-overlay hidden">
+    <div class="loading-backdrop"></div>
+    <div class="loading-content">
+      <!-- Runa / Tótem Místico Giratorio -->
+      <div class="runic-ring-container">
+        <div class="runic-ring outer-ring"></div>
+        <div class="runic-ring inner-ring"></div>
+        <img src="assets/tecnihardcore_logo.png" class="loading-totem-img" alt="TecniHardcore">
+      </div>
+
+      <div class="loading-titles">
+        <h2 class="loading-main-title">INICIANDO TECNIHARDCORE</h2>
+        <span class="loading-status-text" id="loading-status-msg">Cargando Fabric Loader 1.20.1 y Mods...</span>
+      </div>
+
+      <!-- Barra de Progreso de Carga Estilo Eufonia -->
+      <div class="progress-container">
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="loading-progress-fill"></div>
+        </div>
+        <div class="progress-details">
+          <span class="progress-task-name" id="loading-task-name">Verificando librerías y entorno...</span>
+          <span class="progress-percentage" id="loading-percentage">0%</span>
+        </div>
+      </div>
+
+      <button id="btn-cancel-launch" class="btn-cancel">Cancelar</button>
+    </div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

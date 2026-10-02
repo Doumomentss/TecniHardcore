@@ -1,0 +1,22 @@
+node_modules/
+.gradle/
+**/build/
+**/pack/
+publish/
+dist/
+backups/
+logs/
+server/
+client/
+playit/
+installer_payload/mods/
+TecniHardcore Launcher/
+tools/test-runtime/
+tools/build-launcher-stage/
+tools/vendor/
+*.fma
+installer/*.zip
+connection.local.json
+*.sqlite*
+*.db
+.env*

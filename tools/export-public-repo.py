@@ -1,0 +1,27 @@
+"""Copy an explicit source allowlist. Never export the live server or authentication data."""
+from pathlib import Path
+import shutil,json
+root=Path(__file__).resolve().parents[1];target=root/'publish/TecniHardcore';target.mkdir(parents=True,exist_ok=True)
+def copy(relative,destination=None):
+    src=root/relative;dst=target/(destination or relative);dst.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(src,dst)
+for directory in ['launcher','custom_mods/hardcore/src','custom_mods/death-overlay/src','installer','installer_payload/config','installer_payload/resourcepacks']:
+    for src in (root/directory).rglob('*'):
+        if not src.is_file():continue
+        relative=src.relative_to(root)
+        if any(part in {'node_modules','pack','build','.gradle'} for part in relative.parts) or src.suffix in {'.zip','.fma'}:continue
+        copy(relative)
+for name in ['build.gradle','settings.gradle','gradle.properties']:copy('custom_mods/hardcore/'+name)
+copy('custom_mods/death-overlay/README.md')
+for name in ['mods-downloads.json','servers.dat']:copy('installer_payload/'+name)
+for name in ['video_sin_fondo_transparente.webm','video_sin_fondo_transparente.ogg','revive_heart_crystal.png']:copy('assets/'+name)
+for name in ['package-launcher.ps1','build-installer.py','create-release-manifest.py','build-sanctuary-assets.py','build-death-video.py','build-death-mod.py','fetch-development.cjs','development-dependencies.json','prepare-payload.cjs','export-public-repo.py','publish-release.ps1','test-installer-transactions.py','test-installer-transactions.cs','test-installation.cjs','verify-update-install.cjs','test-launcher-update-ui.cjs']:copy('tools/'+name)
+for name in ['ADMINISTRACION.md','RESULTADOS-2.1.md','RESULTADOS-ACTUALIZADOR.md']:copy(name)
+copy('README-PUBLIC.md','README.md');copy('dist/THIRD-PARTY-MODS.json','THIRD-PARTY-MODS.json')
+copy('dist/update.json','release/update.json')
+version=json.loads((root/'launcher/package.json').read_text())['version']
+copy(f'dist/manifest-{version}.json',f'release/manifest-{version}.json');copy(f'dist/SHA256SUMS-{version}.txt',f'release/SHA256SUMS-{version}.txt')
+(target/'.gitignore').write_text('node_modules/\n.gradle/\n**/build/\n**/pack/\npublish/\ndist/\nbackups/\nlogs/\nserver/\nclient/\nplayit/\ninstaller_payload/mods/\nTecniHardcore Launcher/\ntools/test-runtime/\ntools/build-launcher-stage/\ntools/vendor/\n*.fma\ninstaller/*.zip\nconnection.local.json\n*.sqlite*\n*.db\n.env*\n')
+(target/'.gitattributes').write_text('* text=auto\n*.png binary\n*.jpg binary\n*.gif binary\n*.ogg binary\n*.webm binary\n*.dat binary\n')
+files=[p for p in target.rglob('*') if p.is_file() and '.git' not in p.relative_to(target).parts]
+assert all(p.stat().st_size<100*1024**2 for p in files),'Oversize Git file'
+print('Public source export:',target,len(files),'files;',sum(p.stat().st_size for p in files)//1048576,'MiB')
