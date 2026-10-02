@@ -23,7 +23,7 @@ public final class Sanctuaries {
     public static final Feature<DefaultFeatureConfig> FEATURE=Registry.register(Registries.FEATURE,Hardcore.id("sanctuary"),new SanctuaryFeature());
     public static void init() {
         BiomeModifications.addFeature(BiomeSelectors.foundInOverworld().and(c->!c.getBiomeKey().getValue().getPath().contains("ocean")&&!c.getBiomeKey().equals(BiomeKeys.RIVER)&&!c.getBiomeKey().equals(BiomeKeys.FROZEN_RIVER)),GenerationStep.Feature.SURFACE_STRUCTURES,RegistryKey.of(RegistryKeys.PLACED_FEATURE,Hardcore.id("sanctuary")));
-        ServerChunkEvents.CHUNK_LOAD.register((world,chunk)->{if(Hardcore.souls!=null)for(var e:chunk.getBlockEntities().values())if(e instanceof SanctuaryEntity)remember(world,e.getPos());});
+        ServerChunkEvents.CHUNK_LOAD.register((world,chunk)->{if(Hardcore.souls!=null)for(var e:chunk.getBlockEntities().values())if(e instanceof SanctuaryEntity){remember(world,e.getPos());world.getChunkManager().getLightingProvider().checkBlock(e.getPos());}});
     }
     public static String key(World world,BlockPos p) {return world.getRegistryKey().getValue()+"|"+p.getX()+"|"+p.getY()+"|"+p.getZ();}
     public static void remember(World w,BlockPos p) {if(Hardcore.souls!=null && Hardcore.souls.data.sanctuaries.add(key(w,p)))Hardcore.souls.save();}
@@ -32,7 +32,7 @@ public final class Sanctuaries {
     private static boolean empty(BlockState s) {return s.isAir()||s.isOf(Blocks.GRASS)||s.isOf(Blocks.TALL_GRASS)||s.isOf(Blocks.FERN)||s.isOf(Blocks.SNOW)||s.isIn(BlockTags.FLOWERS);}
     /** Core position is one block above the platform. Never replace player blocks or containers. */
     public static String problem(WorldAccess w,BlockPos core) {
-        if(core.getY()<w.getBottomY()+2||core.getY()+8>=w.getTopY())return "Altura fuera del mundo.";
+        if(core.getY()<w.getBottomY()+2||core.getY()+14>=w.getTopY())return "Altura fuera del mundo.";
         for(int x=-5;x<=5;x++)for(int z=-5;z<=5;z++) {
             BlockPos floor=core.add(x,-1,z);
             boolean supported=false;
@@ -43,8 +43,8 @@ public final class Sanctuaries {
                 if(!empty(state))return "Necesita terreno natural seco de 11×11; no se sustituirán construcciones.";
             }
             if(!supported)return "Terreno demasiado irregular: máximo 3 bloques de desnivel.";
-            for(int y=0;y<=7;y++) {
-                BlockPos p=core.add(x,y,z);if(!empty(w.getBlockState(p))||w.getBlockEntity(p)!=null)return "Hay bloques ocupados en el espacio del santuario (11×11×8).";
+            for(int y=0;y<=13;y++) {
+                BlockPos p=core.add(x,y,z);if(!empty(w.getBlockState(p))||w.getBlockEntity(p)!=null)return "Hay bloques ocupados en el espacio del santuario (11×11×14).";
             }
         }
         return null;
@@ -57,7 +57,7 @@ public final class Sanctuaries {
             if((a==3&&b==3)||(a==0&&b==4)||(b==0&&a==4))block=Blocks.GILDED_BLACKSTONE;
             for(int depth=1;depth<4;depth++) {BlockPos support=core.add(x,-1-depth,z);if(ground(w.getBlockState(support)))break;w.setBlockState(support,Blocks.DEEPSLATE_BRICKS.getDefaultState(),3);}
             w.setBlockState(core.add(x,-1,z),block.getDefaultState(),3);
-            for(int y=0;y<=7;y++)if(!w.getBlockState(core.add(x,y,z)).isAir())w.setBlockState(core.add(x,y,z),Blocks.AIR.getDefaultState(),3);
+            for(int y=0;y<=13;y++)if(!w.getBlockState(core.add(x,y,z)).isAir())w.setBlockState(core.add(x,y,z),Blocks.AIR.getDefaultState(),3);
         }
         for(int x:new int[]{-4,4})for(int z:new int[]{-4,4}) {
             for(int y=0;y<4;y++)w.setBlockState(core.add(x,y,z),(y==0?Blocks.CHISELED_POLISHED_BLACKSTONE:y==3?Blocks.GILDED_BLACKSTONE:Blocks.POLISHED_BLACKSTONE_BRICKS).getDefaultState(),3);

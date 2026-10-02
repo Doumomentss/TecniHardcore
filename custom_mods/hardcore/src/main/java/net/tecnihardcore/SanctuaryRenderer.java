@@ -7,7 +7,11 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import net.minecraft.util.Identifier;
 
 public final class SanctuaryRenderer extends GeoBlockRenderer<SanctuaryEntity>{
-    public SanctuaryRenderer(BlockEntityRendererFactory.Context context){super(new Model());addRenderLayer(new AutoGlowingGeoLayer<>(this));}
+    public SanctuaryRenderer(BlockEntityRendererFactory.Context context){super(new Model());withScale((float)CinematicRules.CORE_SCALE);addRenderLayer(new AutoGlowingGeoLayer<>(this));}
+    @Override public boolean rendersOutsideBoundingBox(SanctuaryEntity entity){return true;}
+    @Override public void actuallyRender(net.minecraft.client.util.math.MatrixStack matrices,SanctuaryEntity entity,software.bernie.geckolib.cache.object.BakedGeoModel model,net.minecraft.client.render.RenderLayer layer,net.minecraft.client.render.VertexConsumerProvider consumers,net.minecraft.client.render.VertexConsumer buffer,boolean reRender,float delta,int light,int overlay,float red,float green,float blue,float alpha){
+        super.actuallyRender(matrices,entity,model,layer,consumers,buffer,reRender,delta,RitualVisuals.at(entity.getPos())==null?light:0xf000f0,overlay,red,green,blue,alpha);
+    }
     @Override public int getRenderDistance(){return 80;}
     private static final class Model extends GeoModel<SanctuaryEntity>{
         @Override public Identifier getModelResource(SanctuaryEntity e){return Hardcore.id("geo/santuario.geo.json");}

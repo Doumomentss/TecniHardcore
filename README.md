@@ -1,10 +1,10 @@
 # TecniHardcore
 
-Minecraft **1.20.1 Fabric** · mecánicas **2.1.0** · launcher **2.1.1**.
+Minecraft **1.20.1 Fabric** · mecánicas y launcher **2.2.0**.
 
 ## Descargar y jugar
 
-Descarga [el instalador de la última versión](https://github.com/Doumomentss/TecniHardcore/releases/latest). Ejecuta `TecniHardcore-Setup-2.1.1.exe`, elige una carpeta y abre el launcher. Escribe tu nombre y pulsa **JUGAR AHORA**. En el menú, **ENTRAR AL SERVIDOR** conecta directamente.
+Descarga [el instalador de la última versión](https://github.com/Doumomentss/TecniHardcore/releases/latest). Ejecuta `TecniHardcore-Setup-2.2.0.exe`, elige una carpeta y abre el launcher. Escribe tu nombre y pulsa **JUGAR AHORA**. En el menú, **ENTRAR AL SERVIDOR** conecta directamente.
 
 El instalador contiene launcher, menú, modelos, texturas, sonido y mods propios. El primer inicio descarga 51 mods externos de sus URLs oficiales de Modrinth, con SHA-512 y SHA-256; obtiene Java 17, Fabric y Minecraft desde sus proveedores oficiales cuando hacen falta. Necesitas Internet y una cuenta/licencia de Minecraft conforme a las condiciones de Mojang. El launcher no entrega cuentas ni incluye credenciales.
 
@@ -22,7 +22,9 @@ Los launchers antiguos necesitan instalar **2.1.1 una vez** para obtener el actu
 
 Tres vidas, dificultad difícil y resurrecciones ilimitadas. Un superviviente ofrece un Corazón Sagrado en un santuario, selecciona al eliminado cercano y canaliza 30 segundos. Cada ritual completo consume un corazón y devuelve una vida. Daño, distancia, desconexión o pérdida de la ofrenda cancelan sin coste.
 
-El núcleo 3D tiene cristal flotante, anillos animados, runas, fragmentos, silueta del jugador, iluminación emisiva y sonido posicional. Todos los jugadores cercanos pueden observarlo. También incluye Brasa, Bastión y Eco, enfriamiento compartido de tótems, indicador de vidas con cristales y video de muerte con audio.
+El núcleo monumental 3D tiene cristal flotante, anillos animados, runas, fragmentos, iluminación emisiva y sonido posicional. Al activarse expande una cúpula negra de 32 bloques. A los diez segundos ambos participantes ven una toma desde la espalda del oficiante. La skin del revivido aparece sobre el cristal y desciende con una hélice azul hasta el suelo. `Esc` recupera la cámara sin cancelar el ritual. Los observadores conservan su cámara. También incluye Brasa, Bastión y Eco, enfriamiento compartido de tótems, indicador de vidas con cristales y video de muerte con audio.
+
+![Descenso del alma en Minecraft](docs/ritual-descenso.png)
 
 Consulta [la guía de administración](ADMINISTRACION.md), [las pruebas de las mecánicas](RESULTADOS-2.1.md) y [las pruebas del actualizador](RESULTADOS-ACTUALIZADOR.md).
 

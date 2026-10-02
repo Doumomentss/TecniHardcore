@@ -16,8 +16,8 @@ import java.util.*;
 public final class Rituals {
     private static final class Ritual {
         final UUID id=UUID.randomUUID(),caster,target;final RegistryKey<World> dimension;final BlockPos altar;final Hand hand;final int startTick;
-        final String name;boolean committed;
-        Ritual(ServerPlayerEntity c,ServerPlayerEntity t,BlockPos p,Hand h){caster=c.getUuid();target=t.getUuid();dimension=c.getWorld().getRegistryKey();altar=p;hand=h;startTick=c.getServer().getTicks();name=t.getName().getString();}
+        final String name;boolean committed;net.minecraft.util.math.Vec3d anchor,landing;
+        Ritual(ServerPlayerEntity c,ServerPlayerEntity t,BlockPos p,Hand h){caster=c.getUuid();target=t.getUuid();dimension=c.getWorld().getRegistryKey();altar=p;hand=h;startTick=c.getServer().getTicks();name=t.getName().getString();anchor=c.getPos();landing=t.getPos();}
     }
     private static final Map<UUID,Ritual> active=new HashMap<>();
     public static void recoverPayments(MinecraftServer server) {
@@ -64,7 +64,7 @@ public final class Rituals {
     }
     public static int beginAt(ServerPlayerEntity c,ServerPlayerEntity t,BlockPos altar) {
         if(!AuthBootstrap.authenticated(c)||!AuthBootstrap.authenticated(t))return 0;
-        if(!RitualNetwork.compatible(c)||!RitualNetwork.compatible(t)){message(c,"Ambos necesitan TecniHardcore 2.1.0. Actualiza el launcher.");return 0;}
+        if(!RitualNetwork.compatible(c)||!RitualNetwork.compatible(t)){message(c,"Ambos necesitan TecniHardcore 2.2.0. Actualiza el launcher.");return 0;}
         if(!c.getWorld().getBlockState(altar).isOf(Sanctuaries.CORE)){message(c,"El núcleo ya no existe.");return 0;}
         String problem=casterProblem(c,altar);if(problem!=null){message(c,problem);return 0;}
         if(c==t||Hardcore.soul(t).lives!=0||!t.isSpectator()||c.getWorld()!=t.getWorld()||!near(t,altar)){message(c,"Elige un eliminado cercano, en espectador y autenticado.");return 0;}
@@ -74,7 +74,11 @@ public final class Rituals {
         message(c,"Ritual iniciado: sostén el corazón y permanece junto al núcleo durante 30 segundos.");message(t,"Tu alma está regresando. Permanece junto al santuario.");return 1;
     }
     private static void broadcast(MinecraftServer s,Ritual r,int elapsed,int state){
-        var w=s.getWorld(r.dimension);if(w!=null)for(var v:w.getPlayers())if(v.squaredDistanceTo(r.altar.getX()+.5,r.altar.getY()+.5,r.altar.getZ()+.5)<4096)RitualNetwork.visual(v,r.id,r.altar,r.target,elapsed,state,r.name);
+        var c=s.getPlayerManager().getPlayer(r.caster);if(c!=null&&!r.committed)r.anchor=c.getPos();
+        var w=s.getWorld(r.dimension);if(w!=null)for(var v:s.getPlayerManager().getPlayerList()){
+            boolean participant=v.getUuid().equals(r.caster)||v.getUuid().equals(r.target);
+            if(participant||(v.getWorld()==w&&v.squaredDistanceTo(r.altar.getX()+.5,r.altar.getY()+.5,r.altar.getZ()+.5)<4096))RitualNetwork.visual(v,r.id,r.altar,r.caster,r.target,r.anchor,r.landing,elapsed,state,r.name);
+        }
     }
     public static void cancelFor(UUID id){cancel(r->r.caster.equals(id)||r.target.equals(id));RitualNetwork.forget(id);}
     public static void cancelAt(RegistryKey<World> dim,BlockPos pos){cancel(r->r.dimension==dim&&r.altar.equals(pos));}
@@ -98,13 +102,19 @@ public final class Rituals {
             if(!valid){it.remove();cancelled(s,r);continue;}
             if(elapsed%10==0)broadcast(s,r,elapsed,0);
             if(elapsed<600)continue;
-            BlockPos safe=null;for(BlockPos p:BlockPos.iterate(r.altar.add(-2,0,-2),r.altar.add(2,1,2)))if(safe(w,p)){safe=p.toImmutable();break;}
+            net.minecraft.util.math.Vec3d front=c.getPos().add(net.minecraft.util.math.Vec3d.fromPolar(0,c.getYaw()).multiply(1.4));
+            BlockPos safe=null;double nearest=Double.MAX_VALUE;
+            for(BlockPos p:BlockPos.iterate(r.altar.add(-3,0,-3),r.altar.add(3,1,3)))if(safe(w,p)){
+                double score=p.toCenterPos().squaredDistanceTo(front);if(score<nearest){nearest=score;safe=p.toImmutable();}
+            }
             if(safe==null){it.remove();cancelled(s,r);message(c,"No hay espacio seguro. Libera suelo y dos bloques de altura junto al núcleo.");continue;}
             String payment=r.id.toString();var offering=c.getStackInHand(r.hand);offering.getOrCreateNbt().putString("TecniRitualPayment",payment);s.getPlayerManager().saveAllPlayerData();
             var soul=Hardcore.soul(t);Hardcore.souls.data.ritualPayments.put(payment,c.getUuidAsString());soul.resurrections++;soul.revived=true;soul.lives=1;
             soul.reviveDimension=w.getRegistryKey().getValue().toString();soul.revivePosition=new int[]{safe.getX(),safe.getY(),safe.getZ()};Hardcore.souls.save();
             offering.decrement(1);if(offering.hasNbt())offering.getNbt().remove("TecniRitualPayment");
             t.teleport(w,safe.getX()+.5,safe.getY(),safe.getZ()+.5,t.getYaw(),0);t.changeGameMode(GameMode.SURVIVAL);t.setHealth(t.getMaxHealth());t.getHungerManager().setFoodLevel(20);
+            r.anchor=c.getPos();r.landing=t.getPos();
+            t.addStatusEffect(new net.minecraft.entity.effect.StatusEffectInstance(net.minecraft.entity.effect.StatusEffects.RESISTANCE,80,4,false,false));
             s.getPlayerManager().saveAllPlayerData();soul.revivePosition=null;soul.reviveDimension=null;Hardcore.souls.data.ritualPayments.remove(payment);Hardcore.souls.save();
             r.committed=true;Hardcore.send(t);Hardcore.publish();broadcast(s,r,600,1);RitualNetwork.relic(t,3);
             Hardcore.LOG.info("Ritual {} committed: {} resurrected {} (total {})",r.id,c.getUuid(),t.getUuid(),soul.resurrections);

@@ -12,7 +12,7 @@ import net.minecraft.block.piston.PistonBehavior;
 import org.jetbrains.annotations.Nullable;
 
 public final class SanctuaryBlock extends BlockWithEntity {
-    public SanctuaryBlock() { super(AbstractBlock.Settings.create().strength(-1,3600000).nonOpaque().luminance(s->10).pistonBehavior(PistonBehavior.BLOCK)); }
+    public SanctuaryBlock() { super(AbstractBlock.Settings.create().strength(-1,3600000).nonOpaque().luminance(s->15).pistonBehavior(PistonBehavior.BLOCK)); }
     @Override public BlockEntity createBlockEntity(BlockPos pos,BlockState state) { return new SanctuaryEntity(pos,state); }
     @Override public BlockRenderType getRenderType(BlockState state) { return BlockRenderType.INVISIBLE; }
     @Override public VoxelShape getOutlineShape(BlockState s,BlockView w,BlockPos p,ShapeContext c) { return Block.createCuboidShape(0,0,0,16,32,16); }

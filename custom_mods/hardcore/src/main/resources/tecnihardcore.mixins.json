@@ -13,6 +13,15 @@
   },
   "client": [
     "QaRenderMixin",
-    "LoginThreadMixin"
+    "LoginThreadMixin",
+    "RitualCameraMixin",
+    "RitualInputMixin",
+    "RitualMouseMixin",
+    "RitualHandMixin",
+    "RitualHudMixin",
+    "RitualTerrainMixin",
+    "RitualFogMixin",
+    "RitualEntityMixin",
+    "RitualSodiumFogMixin"
   ]
 }

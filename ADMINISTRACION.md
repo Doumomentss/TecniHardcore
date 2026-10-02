@@ -1,6 +1,6 @@
-# TecniHardcore 2.1: Santuarios de las Almas
+# TecniHardcore 2.2: La cúpula de las almas
 
-Actualizado el 2 de octubre de 2026. Minecraft 1.20.1, Fabric 0.19.5, TecniHardcore 2.1.0, protocolo 2, GeckoLib 4.8.4 y EasyAuth 3.3.6.
+Actualizado el 2 de octubre de 2026. Minecraft 1.20.1, Fabric 0.19.5, TecniHardcore 2.2.0, protocolo de ritual 3, GeckoLib 4.8.4 y EasyAuth 3.3.6.
 
 ## Arranque y acceso
 
@@ -34,7 +34,11 @@ Las resurrecciones son ilimitadas, incluso para quien ya fue resucitado antes de
 
 Receta del Corazón Sagrado: cuatro estrellas del Nether en las esquinas, cuatro lingotes de netherita en los lados y un cristal del End en el centro. La guía nueva explica las reliquias, efectos, costes y reglas. Pedir una copia con `/tecni guia` si se conserva un libro antiguo.
 
-El núcleo no se fabrica, no suelta objetos y resiste minería, explosiones y pistones. La decoración exterior sí puede modificarse. Los efectos son visibles en el mundo para los jugadores cercanos, sin mover su cámara. `/tecni-efectos` alterna intensidad entre 100 %, 50 % y 25 %; se combina con las opciones de partículas y volumen del juego. El ajuste se conserva después de actualizar.
+El núcleo no se fabrica, no suelta objetos y resiste minería, explosiones y pistones. Su torre y anillos tienen escala 3,5, alcanzando aproximadamente 10–11 bloques durante la activación; la base conserva su tamaño. La decoración exterior sí puede modificarse. Los santuarios nuevos requieren espacio libre de 11×11×14. Los existentes se conservan y reciben el modelo nuevo sin regenerar el terreno.
+
+El ritual expande una cúpula negra de 32 bloques de radio en cuatro segundos. Oscurece el entorno de quienes entren, conservando la iluminación del artefacto. A los diez segundos comienza una cámara detrás del oficiante para ambos participantes; los demás observadores conservan su cámara. La toma busca ángulos libres antes de acortarse para evitar atravesar bloques. La skin del objetivo se materializa sobre el cristal y, tras confirmar el pago a los 30 segundos, desciende durante cuatro segundos con una hélice y aura azules hasta una posición segura próxima al frente del oficiante. La aparición es visual; la posición real de reaparición permanece en el suelo, con resistencia durante esos cuatro segundos.
+
+La cámara, movimiento y vista normal se recuperan al terminar, cancelar, desconectarse o abrir una pantalla. `Esc` permite salir de la cinemática sin cancelar el ritual. No se cambian las preferencias de perspectiva, la posición del oficiante ni la orientación guardada. `/tecni-efectos` alterna partículas entre 100 %, 50 % y 25 %; respeta las opciones de partículas y el volumen del juego. La cúpula, el núcleo y la aparición permanecen para conservar la presentación incluso con partículas reducidas.
 
 ## Comandos
 

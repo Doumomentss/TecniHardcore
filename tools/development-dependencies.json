@@ -9,6 +9,11 @@
       "path": "tools/vendor/easyauth-mc1.20-3.3.6.jar",
       "url": "https://cdn.modrinth.com/data/aZj58GfX/versions/Gxj49gBw/easyauth-mc1.20-3.3.6.jar",
       "sha256": "337ad29d204e15e3c1d6f7d45ef891a1b1394eb678fbc3eeaf84d457ef9ef9f1"
+    },
+    {
+      "path": "client/mods/sodium-fabric-0.5.13+mc1.20.1.jar",
+      "url": "https://cdn.modrinth.com/data/AANobbMI/versions/OihdIimA/sodium-fabric-0.5.13%2Bmc1.20.1.jar",
+      "sha256": "688c26029ce69f0b1f7cf936866656ca6723228ac46c4aef5b5f793b1e6abd22"
     }
   ]
 }

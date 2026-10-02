@@ -95,7 +95,7 @@ static class Payload {
      try {
       foreach(string relative in files){status("Instalando "+relative);Replace(root,stage,relative,stamp);}
       const string versionFile="installation-version.txt";
-      File.WriteAllText(Path.Combine(stage,versionFile),"TecniHardcore "+BuildInfo.Version+" / Minecraft 1.20.1 Fabric / mecánicas 2.1.0\r\n");
+      File.WriteAllText(Path.Combine(stage,versionFile),"TecniHardcore "+BuildInfo.Version+" / Minecraft 1.20.1 Fabric / mecánicas 2.2.0\r\n");
       Replace(root,stage,versionFile,stamp);
       File.Delete(journal);
      }catch{Recover(root);throw;}

@@ -15,8 +15,11 @@ copy('custom_mods/death-overlay/README.md')
 for name in ['mods-downloads.json','servers.dat']:copy('installer_payload/'+name)
 for name in ['video_sin_fondo_transparente.webm','video_sin_fondo_transparente.ogg','revive_heart_crystal.png']:copy('assets/'+name)
 for name in ['package-launcher.ps1','build-installer.py','create-release-manifest.py','build-sanctuary-assets.py','build-death-video.py','build-death-mod.py','fetch-development.cjs','development-dependencies.json','prepare-payload.cjs','export-public-repo.py','publish-release.ps1','test-installer-transactions.py','test-installer-transactions.cs','test-installation.cjs','verify-update-install.cjs','test-launcher-update-ui.cjs']:copy('tools/'+name)
-for name in ['ADMINISTRACION.md','RESULTADOS-2.1.md','RESULTADOS-ACTUALIZADOR.md']:copy(name)
+for name in ['ADMINISTRACION.md','RESULTADOS-2.1.md','RESULTADOS-2.2.md','RESULTADOS-ACTUALIZADOR.md']:copy(name)
 copy('README-PUBLIC.md','README.md');copy('dist/THIRD-PARTY-MODS.json','THIRD-PARTY-MODS.json')
+for src,dst in [('sanctuary-target-cinema-start.png','ritual-cupula.png'),('sanctuary-target-descent.png','ritual-descenso.png')]:
+    picture=root/'tools/test-runtime/visuals22'/src
+    if picture.exists():copy(picture.relative_to(root),'docs/'+dst)
 copy('dist/update.json','release/update.json')
 version=json.loads((root/'launcher/package.json').read_text())['version']
 copy(f'dist/manifest-{version}.json',f'release/manifest-{version}.json');copy(f'dist/SHA256SUMS-{version}.txt',f'release/SHA256SUMS-{version}.txt')

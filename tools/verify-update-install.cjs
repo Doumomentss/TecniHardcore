@@ -6,8 +6,9 @@ const installation=require(path.join(archive,'client-install'));
 const connection=require(path.join(archive,'connection')).getConnection(path.join(directory,'resources'));
 const hash=file=>crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 (async()=>{
-  assert.equal(require(path.join(archive,'package.json')).version,'2.1.1');
-  assert.equal(connection.profile,'public');assert.equal(connection.packVersion,'2.1.0');
+  const version=require('../launcher/package.json').version,packVersion=require('../installer_payload/config/tecnihardcore/connection.json').packVersion;
+  assert.equal(require(path.join(archive,'package.json')).version,version);
+  assert.equal(connection.profile,'public');assert.equal(connection.packVersion,packVersion);
   const payload=installation.findPayload(path.join(directory,'resources'));
   assert(payload.includes('app.asar'));
   assert.equal(fs.readdirSync(path.join(payload,'mods')).length,2,'foreign mods are fetched from official authors');
@@ -25,6 +26,6 @@ const hash=file=>crypto.createHash('sha256').update(fs.readFileSync(file)).diges
   assert.equal(hash(path.join(root,'mods',one.name)),one.sha256);
   assert.equal(fs.readFileSync(path.join(root,'options.txt'),'utf8'),original);
   await installation.prepareClient(root,payload,()=>{},connection);
-  fs.writeFileSync(path.join(directory,'qa-install-result.json'),JSON.stringify({version:'2.1.1',packVersion:'2.1.0',officialDownloads:catalog.files.length,mods:53,repair:true,preferencesPreserved:true,customButtonPreserved:true,profile:'public'},null,2));
+  fs.writeFileSync(path.join(directory,'qa-install-result.json'),JSON.stringify({version,packVersion,officialDownloads:catalog.files.length,mods:53,repair:true,preferencesPreserved:true,customButtonPreserved:true,profile:'public'},null,2));
   console.log('PASS: standalone install, 51 official downloads and hashes, 53 mods, repair and preserved preferences/menu');
 })().catch(error=>{console.error(error);process.exitCode=1;}).finally(()=>clearInterval(keepAlive));

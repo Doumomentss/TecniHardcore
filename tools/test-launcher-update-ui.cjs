@@ -14,7 +14,7 @@ app.whenReady().then(async()=>{
   await new Promise(resolve=>window.webContents.once('did-finish-load',resolve));
   await new Promise(resolve=>setTimeout(resolve,1800));
   let state=await window.webContents.executeJavaScript(`({visible:!document.getElementById('update-banner').classList.contains('hidden'),title:document.getElementById('update-title').textContent,cancelHidden:getComputedStyle(document.getElementById('btn-cancel-update')).display==='none',status:document.getElementById('update-status').textContent})`);
-  assert(state.visible);assert(state.title.includes('2.1.1'));assert(state.cancelHidden);assert(state.status.includes('2.1.0'));
+  assert(state.visible);assert(state.title.includes(require('../launcher/package.json').version));assert(state.cancelHidden);assert(state.status.includes('2.1.0'));
   fs.writeFileSync(path.join(dir,'update-available.png'),(await window.webContents.capturePage()).toPNG());
   offline=true;
   await window.webContents.executeJavaScript("document.querySelector('[data-tab=tab-settings]').click();document.getElementById('btn-check-update').click()");

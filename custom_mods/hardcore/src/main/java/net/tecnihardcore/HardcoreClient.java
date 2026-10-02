@@ -14,7 +14,7 @@ public final class HardcoreClient implements ClientModInitializer {
     private static int resurrections;
     private static long ready;
     public void onInitializeClient() {
-        ClientLoginNetworking.registerGlobalReceiver(RitualNetwork.HELLO,(c,h,b,listener)->{int protocol=b.readVarInt();var response=net.fabricmc.fabric.api.networking.v1.PacketByteBufs.create();response.writeVarInt(protocol==2?2:0);return java.util.concurrent.CompletableFuture.completedFuture(response);});
+        ClientLoginNetworking.registerGlobalReceiver(RitualNetwork.HELLO,(c,h,b,listener)->{int protocol=b.readVarInt();var response=net.fabricmc.fabric.api.networking.v1.PacketByteBufs.create();response.writeVarInt(protocol==3?3:0);return java.util.concurrent.CompletableFuture.completedFuture(response);});
         net.minecraft.client.render.block.entity.BlockEntityRendererFactories.register(Sanctuaries.ENTITY,SanctuaryRenderer::new);
         RitualVisuals.init();
         ClientPlayNetworking.registerGlobalReceiver(RitualNetwork.SOUL,(client,handler,buf,response)-> {
