@@ -8,11 +8,11 @@ Ejecutar `INICIAR_SERVIDOR.bat` y esperar `Done`. Se usa Java 17 y el agente de 
 
 Dirección pública: `rails-acorn.tun.ply.gg:6906`. Perfil local: `127.0.0.1:25565`. Conservar el agente y el túnel existentes para mantener la dirección asignada. No distribuir los secretos de Playit ni las carpetas privadas del servidor.
 
-Entregar a los jugadores `dist/TecniHardcore-Setup-2.1.1.exe` o el enlace de la [última Release de GitHub](https://github.com/Doumomentss/TecniHardcore/releases/latest). Este launcher incluye el actualizador; las mecánicas siguen en 2.1.0. El instalador incorpora modelos, texturas, sonido, menú y los dos mods propios. Los 51 mods externos se obtienen de sus fuentes oficiales en el primer preparado, con hashes fijados. La distribución usa el perfil público y conserva el botón personalizado ENTRAR AL SERVIDOR. Cerrar Minecraft antes de actualizar. Las copias de archivos sustituidos quedan en `backups`; las preferencias existentes se conservan y se activa el resource pack oficial sin borrar los demás.
+Entregar a los jugadores `dist/TecniHardcore-Setup-2.2.0.exe` o el enlace de la [última Release de GitHub](https://github.com/Doumomentss/TecniHardcore/releases/latest). Este launcher incluye el actualizador y las mecánicas 2.2.0. El instalador incorpora modelos, texturas, sonido, menú y los dos mods propios. Los 51 mods externos se obtienen de sus fuentes oficiales en el primer preparado, con hashes fijados. La distribución usa el perfil público y conserva el botón personalizado ENTRAR AL SERVIDOR. Cerrar Minecraft antes de actualizar. Las copias de archivos sustituidos quedan en `backups`; las preferencias existentes se conservan y se activa el resource pack oficial sin borrar los demás.
 
-El launcher consulta GitHub al abrirse, cada hora y desde Ajustes. Una Release posterior muestra ACTUALIZAR: descarga verificada, cierre del launcher, instalación con recuperación y reapertura. Los launchers antiguos necesitan instalar 2.1.1 una vez. Para publicar otra versión, actualizar `launcher/package.json` y `package-lock.json`, preparar el paquete y ejecutar `tools/publish-release.ps1`; no subir el workspace entero. El script publica exclusivamente la copia permitida de `publish/TecniHardcore`. La actualización no reinicia ni actualiza por sí sola el servidor del propietario.
+El launcher consulta GitHub al abrirse, cada hora y desde Ajustes. Una Release posterior muestra ACTUALIZAR: descarga verificada, cierre del launcher, instalación con recuperación y reapertura. Los launchers anteriores al actualizador necesitan instalar 2.2.0 una vez. Para publicar otra versión, actualizar `launcher/package.json` y `package-lock.json`, preparar el paquete y ejecutar `tools/publish-release.ps1`; no subir el workspace entero. El script publica exclusivamente la copia permitida de `publish/TecniHardcore`. La actualización no reinicia ni actualiza por sí sola el servidor del propietario.
 
-Los clientes anteriores reciben un mensaje para actualizar. No mezclar el mod 2.0 y el 2.1 en `mods`.
+Los clientes anteriores reciben un mensaje para actualizar. No mezclar distintas versiones del mod en `mods`.
 
 ## Registro y permisos
 
@@ -22,7 +22,7 @@ Las identidades anteriores reservadas que todavía no se registraron deben hacer
 
 ## Cómo resucitar
 
-El santuario inicial está en **X −22, Y 88, Z 38**, a unos 44 bloques horizontales del spawn, en terreno natural comprobado. También aparecen santuarios raros en terreno seco del Overworld, exclusivamente al generar chunks nuevos. La distribución utiliza regiones de 96 chunks y separación mínima de 32; el terreno inadecuado puede dejar una región sin santuario.
+El único santuario está en el centro del spawn: **X 0, Y 96, Z 0**. La plaza tiene 64 bloques de diámetro y conserva espacio abierto para la cámara, la aparición y el descenso. El núcleo anterior se trasladó y el datapack del mundo `tecni_spawn` desactiva la generación natural de nuevos santuarios. No hace falta actualizar el launcher por la construcción del spawn. La configuración y restauración están documentadas en [SPAWN.md](SPAWN.md).
 
 1. El eliminado debe estar autenticado, en espectador y a menos de cuatro bloques del núcleo.
 2. Otro jugador autenticado, con vidas y en supervivencia, se acerca al mismo núcleo con un Corazón Sagrado equipado en cualquiera de sus manos.
