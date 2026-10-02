@@ -32,3 +32,7 @@ El jefe continúa siendo un **prototipo para probar y equilibrar**. Faltan tus p
 Copia consistente previa: `server/backups/tecnihardcore/world-1790973420390.zip`, CRC comprobado. Copia posterior al despliegue: `world-1790973994187.zip`. Versiones anteriores del mod en `backups/pack-before-2.3`; no se incluyeron mundos, identidades ni credenciales en el repositorio público.
 
 Instalador: `dist/TecniHardcore-Setup-2.3.0.exe`. Versiones, tamaños y hashes finales: `dist/manifest-2.3.0.json` y `dist/SHA256SUMS-2.3.0.txt`. Instrucciones de la arena: [PRUEBA-JEFE.md](PRUEBA-JEFE.md). Administración y novedades: [ADMINISTRACION.md](ADMINISTRACION.md).
+
+## Publicación verificada
+
+Publicado en [GitHub Releases v2.3.0](https://github.com/Doumomentss/TecniHardcore/releases/tag/v2.3.0). Los siete archivos subidos coinciden en tamaño y SHA-256 con la entrega local, verificados antes de hacer pública la Release y después. El feed público ofrece actualizar de 2.2.0 a 2.3.0 y no vuelve a ofrecerla a un launcher 2.3.0.
