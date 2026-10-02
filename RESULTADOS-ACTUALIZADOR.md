@@ -14,7 +14,9 @@ Fecha: 2 de octubre de 2026. Mecánicas 2.1.0, Minecraft 1.20.1, ritual protocol
 | Mods oficiales | Primer preparado en carpeta vacía: 51 descargas desde Modrinth, hashes coincidentes y 53 mods finales. Nuestros dos mods vienen incluidos. |
 | Reparación | Mod externo alterado en la copia de pruebas: descarga y reparación correcta. Preferencias `options.txt` conservadas. |
 | Menú y conexión | Se conserva el custom button ENTRAR AL SERVIDOR y su conexión directa al perfil público. |
+| Publicación | Siete assets de la Release pública comparados con los originales: tamaños y SHA-256 idénticos. Repositorio creado con una lista explícita de fuentes y recursos permitidos. |
+| Actualización completa | Una copia del launcher con versión anterior detectó 2.1.1 desde el enlace público anónimo de GitHub; descargó el instalador de 305.730.048 bytes, verificó SHA-256, cerró el proceso, instaló y volvió a abrir el launcher. El `app.asar` final coincide con el distribuido; quedaron copia de seguridad y preferencias del juego, y se conservó el botón personalizado. |
 
-Las pruebas del ciclo de descarga pública, cierre, instalación y reapertura se incorporarán después de publicar la Release y verificar el enlace anónimo de GitHub. No se presenta esta prueba pendiente como completada.
+Release comprobada: [TecniHardcore 2.1.1](https://github.com/Doumomentss/TecniHardcore/releases/tag/v2.1.1). SHA-256 del instalador: `f66151e29c3957d26331d6dda7bb4509d3637912075fccac36932be0170f4e9f`.
 
 Las pruebas de los santuarios, efectos y video se documentan por separado en `RESULTADOS-2.1.md`. Sigue pendiente la comprobación desde un equipo ajeno a esta red; publicar el instalador no equivale a validar esa conexión externa.
