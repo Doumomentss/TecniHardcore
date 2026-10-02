@@ -1,10 +1,10 @@
 # TecniHardcore
 
-Minecraft **1.20.1 Fabric** · mecánicas y launcher **2.2.0**.
+Minecraft **1.20.1 Fabric** · mecánicas y launcher **2.3.0**.
 
 ## Descargar y jugar
 
-Descarga [el instalador de la última versión](https://github.com/Doumomentss/TecniHardcore/releases/latest). Ejecuta `TecniHardcore-Setup-2.2.0.exe`, elige una carpeta y abre el launcher. Escribe tu nombre y pulsa **JUGAR AHORA**. En el menú, **ENTRAR AL SERVIDOR** conecta directamente.
+Descarga [el instalador de la última versión](https://github.com/Doumomentss/TecniHardcore/releases/latest). Ejecuta `TecniHardcore-Setup-2.3.0.exe`, elige una carpeta y abre el launcher. Escribe tu nombre y pulsa **JUGAR AHORA**. En el menú, **ENTRAR AL SERVIDOR** conecta directamente.
 
 El instalador contiene launcher, menú, modelos, texturas, sonido y mods propios. El primer inicio descarga 51 mods externos de sus URLs oficiales de Modrinth, con SHA-512 y SHA-256; obtiene Java 17, Fabric y Minecraft desde sus proveedores oficiales cuando hacen falta. Necesitas Internet y una cuenta/licencia de Minecraft conforme a las condiciones de Mojang. El launcher no entrega cuentas ni incluye credenciales.
 
@@ -44,3 +44,7 @@ Para generar un instalador desde el repositorio, después de `npm ci` ejecuta `n
 `tools/package-launcher.ps1` construye `app.asar` con dependencias de producción. `tools/build-installer.py` toma la versión de `launcher/package.json`; `tools/create-release-manifest.py` genera hashes y el aviso. En el workspace del propietario, `tools/publish-release.ps1` reconstruye, verifica, exporta sólo archivos permitidos y publica la siguiente Release. Nunca añadas el workspace completo con `git add .`.
 
 Los mods externos conservan sus licencias y créditos en `THIRD-PARTY-MODS.json`; se descargan de sus autores. No se publican mundo, bases de cuentas, secretos de Playit, credenciales, logs ni copias privadas del servidor. Este repositorio corresponde al cliente y código propio; no es una copia del servidor personal.
+
+## Plaza y reliquias
+
+El spawn tiene un único santuario de resurrección y una plaza protegida. Su tablón muestra las texturas de Brasa, Bastión y Eco; al pulsarlo puedes consultar efectos, penalizaciones y recetas. La pestaña Servidor del launcher muestra estadísticas y novedades reales, actualizadas cada cinco segundos. El Custodio de Pizarra es un prototipo que solo se prueba en un mundo local separado; no aparece en el servidor.

@@ -34,5 +34,17 @@
       }
     ],
     "subtitle": "subtitles.tecnihardcore.cancel"
+  },
+  "boss.wake": {
+    "sounds": [
+      "tecnihardcore:boss/wake"
+    ],
+    "subtitle": "subtitles.tecnihardcore.boss_wake"
+  },
+  "boss.strike": {
+    "sounds": [
+      "tecnihardcore:boss/strike"
+    ],
+    "subtitle": "subtitles.tecnihardcore.boss_strike"
   }
 }

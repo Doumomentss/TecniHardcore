@@ -6,7 +6,11 @@
     "LivingMixin",
     "StatusMixin",
     "ClaimMixin",
-    "UncraftMixin"
+    "UncraftMixin",
+    "SpawnExplosionMixin",
+    "SpawnPistonMixin",
+    "SpawnFluidMixin",
+    "SpawnFireMixin"
   ],
   "injectors": {
     "defaultRequire": 1

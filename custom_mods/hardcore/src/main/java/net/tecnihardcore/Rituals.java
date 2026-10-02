@@ -64,7 +64,7 @@ public final class Rituals {
     }
     public static int beginAt(ServerPlayerEntity c,ServerPlayerEntity t,BlockPos altar) {
         if(!AuthBootstrap.authenticated(c)||!AuthBootstrap.authenticated(t))return 0;
-        if(!RitualNetwork.compatible(c)||!RitualNetwork.compatible(t)){message(c,"Ambos necesitan TecniHardcore 2.2.0. Actualiza el launcher.");return 0;}
+        if(!RitualNetwork.compatible(c)||!RitualNetwork.compatible(t)){message(c,"Ambos necesitan TecniHardcore 2.3.0. Actualiza el launcher.");return 0;}
         if(!c.getWorld().getBlockState(altar).isOf(Sanctuaries.CORE)){message(c,"El núcleo ya no existe.");return 0;}
         String problem=casterProblem(c,altar);if(problem!=null){message(c,problem);return 0;}
         if(c==t||Hardcore.soul(t).lives!=0||!t.isSpectator()||c.getWorld()!=t.getWorld()||!near(t,altar)){message(c,"Elige un eliminado cercano, en espectador y autenticado.");return 0;}

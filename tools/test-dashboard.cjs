@@ -1,0 +1,5 @@
+const assert=require('node:assert/strict'),s=require('../launcher/server-status');
+const now=Date.now(),status={online:true,status:{players:{online:2,max:20},tecnihardcore:{protocol:2,updatedAt:now,packVersion:'2.3.0',players:[{name:'Amigo',online:true,lives:1,resurrections:2},{name:'Ausente',online:false,lives:3},{name:'<script>',online:true,lives:3}],news:[{title:'Plaza',body:'Nueva protección'}]}}};
+assert.deepEqual(s.dashboard(status,now).players,[{name:'Amigo',lives:1,resurrections:2}]);assert.equal(s.livesFrom(status,'AMIGO').resurrections,2);assert.equal(s.dashboard(status,now+15001).fresh,false);assert.equal(s.dashboard({online:false}).players.length,0);
+status.status.tecnihardcore.players=null;assert.equal(s.livesFrom(status,'x').lives,null);assert.equal(s.dashboard(status,now).players.length,0);status.status.tecnihardcore.updatedAt=now+100000;assert.equal(s.dashboard(status,now).fresh,false);
+console.log('Dashboard: roster, resurrections, freshness, offline and malformed data passed.');

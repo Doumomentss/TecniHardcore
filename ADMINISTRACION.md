@@ -1,6 +1,6 @@
 # TecniHardcore 2.2: La cúpula de las almas
 
-Actualizado el 2 de octubre de 2026. Minecraft 1.20.1, Fabric 0.19.5, TecniHardcore 2.2.0, protocolo de ritual 3, GeckoLib 4.8.4 y EasyAuth 3.3.6.
+Actualizado el 2 de octubre de 2026. Minecraft 1.20.1, Fabric 0.19.5, TecniHardcore 2.3.0, protocolo de ritual 3, GeckoLib 4.8.4 y EasyAuth 3.3.6.
 
 ## Arranque y acceso
 
@@ -8,9 +8,9 @@ Ejecutar `INICIAR_SERVIDOR.bat` y esperar `Done`. Se usa Java 17 y el agente de 
 
 Dirección pública: `rails-acorn.tun.ply.gg:6906`. Perfil local: `127.0.0.1:25565`. Conservar el agente y el túnel existentes para mantener la dirección asignada. No distribuir los secretos de Playit ni las carpetas privadas del servidor.
 
-Entregar a los jugadores `dist/TecniHardcore-Setup-2.2.0.exe` o el enlace de la [última Release de GitHub](https://github.com/Doumomentss/TecniHardcore/releases/latest). Este launcher incluye el actualizador y las mecánicas 2.2.0. El instalador incorpora modelos, texturas, sonido, menú y los dos mods propios. Los 51 mods externos se obtienen de sus fuentes oficiales en el primer preparado, con hashes fijados. La distribución usa el perfil público y conserva el botón personalizado ENTRAR AL SERVIDOR. Cerrar Minecraft antes de actualizar. Las copias de archivos sustituidos quedan en `backups`; las preferencias existentes se conservan y se activa el resource pack oficial sin borrar los demás.
+Entregar a los jugadores `dist/TecniHardcore-Setup-2.3.0.exe` o el enlace de la [última Release de GitHub](https://github.com/Doumomentss/TecniHardcore/releases/latest). Este launcher incluye el actualizador y las mecánicas 2.3.0. El instalador incorpora modelos, texturas, sonido, menú y los dos mods propios. Los 51 mods externos se obtienen de sus fuentes oficiales en el primer preparado, con hashes fijados. La distribución usa el perfil público y conserva el botón personalizado ENTRAR AL SERVIDOR. Cerrar Minecraft antes de actualizar. Las copias de archivos sustituidos quedan en `backups`; las preferencias existentes se conservan y se activa el resource pack oficial sin borrar los demás.
 
-El launcher consulta GitHub al abrirse, cada hora y desde Ajustes. Una Release posterior muestra ACTUALIZAR: descarga verificada, cierre del launcher, instalación con recuperación y reapertura. Los launchers anteriores al actualizador necesitan instalar 2.2.0 una vez. Para publicar otra versión, actualizar `launcher/package.json` y `package-lock.json`, preparar el paquete y ejecutar `tools/publish-release.ps1`; no subir el workspace entero. El script publica exclusivamente la copia permitida de `publish/TecniHardcore`. La actualización no reinicia ni actualiza por sí sola el servidor del propietario.
+El launcher consulta GitHub al abrirse, cada hora y desde Ajustes. Una Release posterior muestra ACTUALIZAR: descarga verificada, cierre del launcher, instalación con recuperación y reapertura. Los launchers anteriores al actualizador necesitan instalar 2.3.0 una vez. Para publicar otra versión, actualizar `launcher/package.json` y `package-lock.json`, preparar el paquete y ejecutar `tools/publish-release.ps1`; no subir el workspace entero. El script publica exclusivamente la copia permitida de `publish/TecniHardcore`. La actualización no reinicia ni actualiza por sí sola el servidor del propietario.
 
 Los clientes anteriores reciben un mensaje para actualizar. No mezclar distintas versiones del mod en `mods`.
 
@@ -64,3 +64,13 @@ Para restaurar: detener el servidor, conservar la carpeta actual aparte y extrae
 La autoridad es `world/tecnihardcore-souls.json`, esquema 2. La migración conserva vidas y enfriamientos y convierte `revived=true` en una resurrección histórica. El registro de pagos permite recuperar un cobro interrumpido descontando solo una unidad de una pila. No editar este archivo mientras el servidor está encendido ni borrar transacciones pendientes.
 
 Los ensayos destructivos se hicieron en mundos aislados y cuentas TecniSoul de prueba. La copia en `tools/test-runtime/server` debe quedar apagada durante el uso normal; su puerto Minecraft es 25566 y el de voz 24455. Los resultados y límites de validación están en `RESULTADOS-2.1.md`.
+
+## Plaza, tablón y novedades (2.3)
+
+La plaza del Overworld está protegida en un radio de 32 bloques, entre Y90 e Y128. Los operadores pueden editarla. Los demás pueden usar el santuario, las mesas y el tablón; se bloquean roturas, colocaciones, explosiones, pistones y líquidos que invadan el área. El daño normal se cancela dentro de ella, y los monstruos se trasladan fuera; el resto del mundo conserva su dificultad. `/kill` administrativo conserva su comportamiento.
+
+El tablón de reliquias está en **6, 96, −17**, orientado hacia el norte. Se puede pulsar tanto abajo como sobre sus imágenes. `/tecni tablon crear x y z` exige un espacio libre de 3×3 y suelo sólido. Para retirarlo, eliminar su bloque central elimina también sus paneles auxiliares.
+
+El launcher muestra jugadores autenticados, vidas, contador de resurrecciones, versión y novedades usando el puerto Minecraft. Las novedades se editan en `server/config/tecnihardcore/public-news.json`, como una lista de objetos con `title` y `body`; máximo cinco anuncios, 100 caracteres de título y 600 de texto. No admite HTML. El servidor relee el archivo cada cinco segundos. No añadir datos privados a este archivo público.
+
+Para el jefe experimental, consultar [PRUEBA-JEFE.md](PRUEBA-JEFE.md). No se puede invocar en producción.

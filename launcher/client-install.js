@@ -56,6 +56,7 @@ async function ensureJava(root,preferred,status) {
 }
 
 async function prepareClient(root, payload, status, endpoint) {
+  if(endpoint&&(!/^[a-zA-Z0-9.:-]+$/.test(endpoint.host||'')||!Number.isInteger(endpoint.port)||endpoint.port<1||endpoint.port>65535))throw new Error('Dirección de conexión inválida. Revisa el perfil del servidor antes de reparar.');
   await fsp.mkdir(root, {recursive:true});
   const shared = path.join(process.env.APPDATA || '', '.minecraft');
   const profile = path.join(root,'versions',PROFILE,`${PROFILE}.json`);

@@ -574,6 +574,15 @@ body {
 }
 
 .stat-big-val.green { color: var(--accent-green); }
+.server-detail-grid {display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+.server-detail {padding:22px;color:#bdc7ce;font-size:12px;line-height:1.6}
+.server-detail h3 {font-size:11px;letter-spacing:1.2px;color:#f3d196;margin-bottom:12px}
+.detail-heading {display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.online-roster {display:grid;gap:8px;max-height:180px;overflow:auto}
+.roster-player {display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;background:#ffffff07;padding:8px 10px;border-radius:6px}
+.roster-player strong {color:#e8f5ed}.roster-player span{font-size:11px;color:#90baa8}
+#server-news article+article {border-top:1px solid #ffffff10;padding-top:10px;margin-top:12px}
+#server-news h4 {color:#e7eee7;margin:0 0 4px}#server-news p{margin:0}
 .stat-big-val.gold { color: var(--accent-gold); }
 
 .stat-sub {

@@ -10,5 +10,10 @@
   "subtitles.tecnihardcore.wake": "El santuario despierta",
   "subtitles.tecnihardcore.channel": "Las almas convergen",
   "subtitles.tecnihardcore.complete": "Un alma regresa",
-  "subtitles.tecnihardcore.cancel": "El ritual se desvanece"
+  "subtitles.tecnihardcore.cancel": "El ritual se desvanece",
+  "entity.tecnihardcore.custodio_pizarra": "Custodio de Pizarra",
+  "block.tecnihardcore.tablon_reliquias": "Tablón de reliquias",
+  "subtitles.tecnihardcore.boss_wake": "El custodio prepara un ataque",
+  "subtitles.tecnihardcore.boss_strike": "El cristal golpea",
+  "block.tecnihardcore.tablon_panel": "Tablón de reliquias"
 }

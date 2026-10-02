@@ -10,6 +10,15 @@ public final class QaCapture {
         c.options.pauseOnLostFocus=false;
         if(c.currentScreen instanceof net.minecraft.client.gui.screen.GameMenuScreen)c.setScreen(null);
         ticks++;
+        if(ticks%30==0)try{var request=c.runDirectory.toPath().resolve("qa-capture-request.txt");if(java.nio.file.Files.exists(request)){String phase=java.nio.file.Files.readString(request).trim();java.nio.file.Files.delete(request);if(phase.equals("board-open")){var pos=new net.minecraft.util.math.BlockPos(6,96,-17);c.interactionManager.interactBlock(c.player,net.minecraft.util.Hand.MAIN_HAND,new net.minecraft.util.hit.BlockHitResult(net.minecraft.util.math.Vec3d.ofCenter(pos),net.minecraft.util.math.Direction.NORTH,pos,false));}else if(phase.equals("board-scale4")){c.options.getGuiScale().setValue(4);c.onResolutionChanged();}else if(phase.equals("board-close")){c.setScreen(null);c.options.getGuiScale().setValue(2);c.onResolutionChanged();}else if(phase.matches("[a-z0-9-]{1,50}")){captured.remove(phase);capture(c,phase);}}}catch(Exception e){Hardcore.LOG.warn("QA request failed: {}",e.getClass().getSimpleName());}
+        if(Boolean.getBoolean("tecni.bossVisual")){
+            if(ticks==180){c.options.getGuiScale().setValue(2);c.onResolutionChanged();}
+            if(ticks==220)capture(c,"boss-overview");
+            for(var b:c.world.getEntities())if(b instanceof TrialBoss boss){
+                if(boss.attack()!=0&&boss.attackAge()>15&&boss.attackAge()<28)capture(c,"boss-attack-"+boss.attack()+"-phase-"+boss.phase());
+            }
+            return;
+        }
         if(ticks==180){c.options.getGuiScale().setValue(2);c.onResolutionChanged();}
         if(ticks==220)capture(c,"idle-scale2");
         if(ticks==260)c.getWindow().toggleFullscreen();

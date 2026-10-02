@@ -14,9 +14,13 @@ public final class HardcoreClient implements ClientModInitializer {
     private static int resurrections;
     private static long ready;
     public void onInitializeClient() {
-        ClientLoginNetworking.registerGlobalReceiver(RitualNetwork.HELLO,(c,h,b,listener)->{int protocol=b.readVarInt();var response=net.fabricmc.fabric.api.networking.v1.PacketByteBufs.create();response.writeVarInt(protocol==3?3:0);return java.util.concurrent.CompletableFuture.completedFuture(response);});
+        ClientLoginNetworking.registerGlobalReceiver(RitualNetwork.HELLO,(c,h,b,listener)->{int protocol=b.readVarInt();var response=net.fabricmc.fabric.api.networking.v1.PacketByteBufs.create();response.writeVarInt(protocol==4?4:0);return java.util.concurrent.CompletableFuture.completedFuture(response);});
         net.minecraft.client.render.block.entity.BlockEntityRendererFactories.register(Sanctuaries.ENTITY,SanctuaryRenderer::new);
         RitualVisuals.init();
+        net.minecraft.client.render.block.entity.BlockEntityRendererFactories.register(TotemBoard.ENTITY,TotemBoardRenderer::new);
+        net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry.register(TrialBoss.TYPE,TrialBossRenderer::new);
+        net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry.register(TrialShard.TYPE,TrialBossRenderer.ShardRenderer::new);
+        ClientPlayNetworking.registerGlobalReceiver(TotemBoard.OPEN,(client,h,b,response)->client.execute(()->client.setScreen(new TotemGuideScreen())));
         ClientPlayNetworking.registerGlobalReceiver(RitualNetwork.SOUL,(client,handler,buf,response)-> {
             int n=buf.readInt(); int r=buf.readVarInt(); long remaining=buf.readLong();
             client.execute(()->{lives=n;resurrections=r;ready=System.nanoTime()+remaining*1_000_000;});

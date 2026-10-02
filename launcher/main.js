@@ -103,7 +103,7 @@ ipcMain.handle('get-player-lives', async (event, username) => {
   catch(error) { return {lives:null,max:3,display:'SIN DATOS',description:error.message}; }
 });
 ipcMain.handle('ping-server', async () => {
-  try { return await serverStatus.snapshot(getConnection(process.resourcesPath)); }
+  try { const result=await serverStatus.snapshot(getConnection(process.resourcesPath)); return {...result,dashboard:serverStatus.dashboard(result),launcherVersion:app.getVersion()}; }
   catch(error) { return {online:false,error:error.message}; }
 });
 

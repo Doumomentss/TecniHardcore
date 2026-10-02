@@ -16,6 +16,7 @@ const hash=file=>crypto.createHash('sha256').update(fs.readFileSync(file)).diges
   await installation.prepareClient(root,payload,console.log,connection);
   const catalog=JSON.parse(fs.readFileSync(path.join(payload,'mods-downloads.json')));
   for(const mod of catalog.files)assert.equal(hash(path.join(root,'mods',mod.name)),mod.sha256);
+  assert.equal(hash(path.join(root,'mods',`tecnihardcore-${packVersion}.jar`)),hash(path.resolve('installer_payload/mods',`tecnihardcore-${packVersion}.jar`)),'Installed core must match the final compiled delivery');
   assert.equal(fs.readdirSync(path.join(root,'mods')).filter(f=>f.endsWith('.jar')).length,53);
   const title=fs.readFileSync(path.join(root,'config/fancymenu/customization/title_screen_layout.txt'),'utf8');
   assert(title.includes('label = ENTRAR AL SERVIDOR'));assert(title.includes('[action_type:joinserver] = rails-acorn.tun.ply.gg:6906'));
@@ -26,6 +27,6 @@ const hash=file=>crypto.createHash('sha256').update(fs.readFileSync(file)).diges
   assert.equal(hash(path.join(root,'mods',one.name)),one.sha256);
   assert.equal(fs.readFileSync(path.join(root,'options.txt'),'utf8'),original);
   await installation.prepareClient(root,payload,()=>{},connection);
-  fs.writeFileSync(path.join(directory,'qa-install-result.json'),JSON.stringify({version,packVersion,officialDownloads:catalog.files.length,mods:53,repair:true,preferencesPreserved:true,customButtonPreserved:true,profile:'public'},null,2));
+  fs.writeFileSync(path.join(directory,'qa-install-result.json'),JSON.stringify({version,packVersion,coreSha256:hash(path.join(root,'mods',`tecnihardcore-${packVersion}.jar`)),officialDownloads:catalog.files.length,mods:53,repair:true,preferencesPreserved:true,customButtonPreserved:true,profile:'public'},null,2));
   console.log('PASS: standalone install, 51 official downloads and hashes, 53 mods, repair and preserved preferences/menu');
 })().catch(error=>{console.error(error);process.exitCode=1;}).finally(()=>clearInterval(keepAlive));

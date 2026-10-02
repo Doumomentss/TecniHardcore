@@ -110,6 +110,7 @@ if (btnCopyIp) {
 async function updateLivesDisplay(user) {
   try {
     const livesInfo = await ipcRenderer.invoke('get-player-lives', user || currentUsername);
+    document.getElementById('resurrection-count').textContent=Number.isInteger(livesInfo.resurrections)?String(livesInfo.resurrections):'SIN DATOS';
     if (playerLivesDisplay && playerLivesHearts) {
       playerLivesDisplay.textContent = livesInfo.display;
       playerLivesHearts.replaceChildren();
@@ -139,6 +140,14 @@ async function updateLivesDisplay(user) {
 async function checkServerStatus() {
   try {
     const res = await ipcRenderer.invoke('ping-server');
+    const panel=res.dashboard||{fresh:false,players:[],news:[],version:'SIN DATOS'};
+    document.getElementById('online-count').textContent=Number.isInteger(panel.online)?`${panel.online} / ${panel.max??'—'}`:'SIN DATOS';
+    document.getElementById('server-pack-versions').textContent=`Paquete del servidor: ${panel.version} · Launcher: ${res.launcherVersion||'SIN DATOS'}`;
+    const roster=document.getElementById('online-roster');roster.replaceChildren();
+    if(!panel.fresh||!panel.players.length)roster.textContent=panel.fresh?'No hay jugadores autenticados conectados.':'Sin datos vigentes.';
+    for(const p of panel.players){const row=document.createElement('div');row.className='roster-player';const name=document.createElement('strong');name.textContent=p.name;const stats=document.createElement('span');stats.textContent=`${p.lives??'—'}/3 vidas · ${p.resurrections??'—'} resurrecciones`;row.append(name,stats);roster.append(row);}
+    const news=document.getElementById('server-news');news.replaceChildren();if(!panel.fresh||!panel.news.length)news.textContent=panel.fresh?'Sin novedades publicadas.':'Sin datos vigentes.';
+    for(const n of panel.news){const item=document.createElement('article');const title=document.createElement('h4');title.textContent=n.title;const body=document.createElement('p');body.textContent=n.body;item.append(title,body);news.append(item);}
     const dot = liveServerPill.querySelector('.status-indicator-dot');
 
     if (res.online) {

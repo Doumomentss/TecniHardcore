@@ -20,9 +20,17 @@ function query(endpoint){return new Promise(resolve=>{
 let cache=null,pending=null;
 async function snapshot(endpoint){let key=endpoint.host+':'+endpoint.port;if(cache?.key===key&&Date.now()-cache.time<4000)return cache.value;if(pending?.key===key)return pending.promise;
   const promise=query(endpoint).then(value=>{cache={key,time:Date.now(),value};return value;}).finally(()=>{pending=null;});pending={key,promise};return promise;}
-function livesFrom(status,username){const extra=status.online&&status.status?.tecnihardcore;const player=[1,2].includes(extra?.protocol)&&Date.now()-extra.updatedAt<15000&&extra.players?.find(p=>p.name.toLowerCase()===username.toLowerCase());
+function fresh(extra,now=Date.now()){return [1,2].includes(extra?.protocol)&&Number.isFinite(extra.updatedAt)&&now-extra.updatedAt>=-5000&&now-extra.updatedAt<15000;}
+function livesFrom(status,username){const extra=status.online&&status.status?.tecnihardcore;const player=fresh(extra)&&Array.isArray(extra.players)&&extra.players.find(p=>typeof p?.name==='string'&&p.name.toLowerCase()===String(username).toLowerCase());
   if(!player||!Number.isInteger(player.lives)||player.lives<0||player.lives>3)return {lives:null,max:3,display:'SIN DATOS',description:status.online?'El servidor todavía no tiene datos de este jugador':'Servidor sin conexión'};
   const resurrections=Number.isInteger(player.resurrections)&&player.resurrections>=0?player.resurrections:(player.revived?1:0);
   return {lives:player.lives,max:3,resurrections,display:player.lives+' / 3 VIDAS',description:(player.lives===0?'Eliminado · Ritual disponible':player.lives===1?'Última vida':player.lives+' vidas disponibles')+' · '+resurrections+' resurrecciones'};
 }
-module.exports={query,snapshot,livesFrom,varint,readVarint};
+function dashboard(status,now=Date.now()){
+  const extra=status.online&&status.status?.tecnihardcore;
+  if(!fresh(extra,now))return {fresh:false,version:'SIN DATOS',players:[],news:[],online:status.online?status.status?.players?.online:null,max:status.status?.players?.max??null};
+  const players=(Array.isArray(extra.players)?extra.players:[]).filter(p=>p?.online===true&&/^[a-zA-Z0-9_]{1,16}$/.test(p.name)).slice(0,128).map(p=>({name:p.name,lives:Number.isInteger(p.lives)&&p.lives>=0&&p.lives<=3?p.lives:null,resurrections:Number.isInteger(p.resurrections)&&p.resurrections>=0?p.resurrections:null}));
+  const news=(Array.isArray(extra.news)?extra.news:[]).filter(n=>typeof n?.title==='string'&&typeof n?.body==='string').slice(0,5).map(n=>({title:n.title.slice(0,100),body:n.body.slice(0,600)}));
+  return {fresh:true,version:/^\d+\.\d+\.\d+$/.test(extra.packVersion)?extra.packVersion:'SIN DATOS',players,news,online:status.status?.players?.online??players.length,max:status.status?.players?.max??null};
+}
+module.exports={query,snapshot,livesFrom,dashboard,varint,readVarint};
