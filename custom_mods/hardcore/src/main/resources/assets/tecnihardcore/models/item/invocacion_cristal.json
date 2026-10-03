@@ -1,6 +1,38 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "tecnihardcore:item/invocacion_cristal"
-  }
+    "layer0": "tecnihardcore:item/mount_token_1"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "tecnihardcore:mount_tier": 0.2
+      },
+      "model": "tecnihardcore:item/mount_token_1"
+    },
+    {
+      "predicate": {
+        "tecnihardcore:mount_tier": 0.4
+      },
+      "model": "tecnihardcore:item/mount_token_2"
+    },
+    {
+      "predicate": {
+        "tecnihardcore:mount_tier": 0.6
+      },
+      "model": "tecnihardcore:item/mount_token_3"
+    },
+    {
+      "predicate": {
+        "tecnihardcore:mount_tier": 0.8
+      },
+      "model": "tecnihardcore:item/mount_token_4"
+    },
+    {
+      "predicate": {
+        "tecnihardcore:mount_tier": 1.0
+      },
+      "model": "tecnihardcore:item/mount_token_5"
+    }
+  ]
 }

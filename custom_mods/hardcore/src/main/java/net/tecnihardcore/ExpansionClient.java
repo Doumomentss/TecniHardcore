@@ -12,8 +12,10 @@ public final class ExpansionClient {
     private static final KeyBinding DOWN=new KeyBinding("key.tecnihardcore.mount_down",InputUtil.Type.KEYSYM,GLFW.GLFW_KEY_Z,"category.tecnihardcore");
     private static final KeyBinding BOOST=new KeyBinding("key.tecnihardcore.mount_boost",InputUtil.Type.KEYSYM,GLFW.GLFW_KEY_R,"category.tecnihardcore");
     private static int qaTicks;private static float qaForward,qaSide,qaVertical;private static boolean qaBoost;
+    public static void mirrorAscent(InputUtil.Key key,boolean pressed){if(KeyBindingHelper.getBoundKeyOf(UP).equals(key))UP.setPressed(pressed);}
     static void qaDrive(float forward,float side,float vertical,boolean boost,int ticks){if(!Boolean.getBoolean("tecni.expansionVisual"))return;qaForward=forward;qaSide=side;qaVertical=vertical;qaBoost=boost;qaTicks=ticks;}
     public static void init(){
+        net.minecraft.client.item.ModelPredicateProviderRegistry.register(CrystalMount.TOKEN,Hardcore.id("mount_tier"),(stack,world,entity,seed)->(stack.hasNbt()?Math.max(1,Math.min(5,stack.getNbt().getInt("CrystalTier"))):1)/5F);
         KeyBindingHelper.registerKeyBinding(UP);KeyBindingHelper.registerKeyBinding(DOWN);KeyBindingHelper.registerKeyBinding(BOOST);
         EntityRendererRegistry.register(CrystalMount.TYPE,CrystalMountRenderer::new);CataclysmVisuals.init();EventPresentation.init();
         ClientTickEvents.END_CLIENT_TICK.register(c->{if(c.player!=null&&c.player.getVehicle() instanceof CrystalMount m&&ClientPlayNetworking.canSend(CrystalMount.INPUT)){var b=net.fabricmc.fabric.api.networking.v1.PacketByteBufs.create();b.writeVarInt(m.getId());b.writeFloat(c.currentScreen==null?(qaTicks>0?qaForward:c.player.input.movementForward):0);b.writeFloat(c.currentScreen==null?(qaTicks>0?qaSide:c.player.input.movementSideways):0);b.writeFloat(c.currentScreen==null?(qaTicks>0?qaVertical:UP.isPressed()?1:DOWN.isPressed()?-1:0):0);b.writeBoolean(c.currentScreen==null&&(qaTicks>0?qaBoost:BOOST.isPressed()));ClientPlayNetworking.send(CrystalMount.INPUT,b);if(qaTicks>0)qaTicks--;}});

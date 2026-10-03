@@ -1,12 +1,12 @@
 # TecniHardcore
 
-Minecraft **1.20.1 Fabric** · paquete y launcher **2.5.0**.
+Minecraft **1.20.1 Fabric** · paquete y launcher **2.6.0**.
 
 ## Descargar y jugar
 
-Descarga [el instalador de la última versión publicada](https://github.com/Doumomentss/TecniHardcore/releases/latest), elige una carpeta y abre el launcher. Escribe tu nombre y pulsa **JUGAR AHORA**. En el menú, **ENTRAR AL SERVIDOR** conecta directamente. La versión 2.5 solo se anuncia como disponible cuando aparece su Release.
+Descarga [el instalador de la última versión publicada](https://github.com/Doumomentss/TecniHardcore/releases/latest), elige una carpeta y abre el launcher. Escribe tu nombre y pulsa **JUGAR AHORA**. En el menú, **ENTRAR AL SERVIDOR** conecta directamente. La versión 2.6 solo se anuncia como disponible cuando aparece su Release.
 
-El instalador contiene launcher, menú, modelos, texturas, sonido y mods propios. El primer inicio descarga 65 mods externos de sus URLs oficiales de Modrinth, con SHA-512 y SHA-256; obtiene Java 17, Fabric y Minecraft desde sus proveedores oficiales cuando hacen falta. Necesitas Internet y una cuenta/licencia de Minecraft conforme a las condiciones de Mojang. El launcher no entrega cuentas ni incluye credenciales.
+El instalador contiene launcher, menú, modelos, texturas, sonido y mods propios. El primer inicio descarga 66 mods externos de sus URLs oficiales de Modrinth, con SHA-512 y SHA-256; obtiene Java 17, Fabric y Minecraft desde sus proveedores oficiales cuando hacen falta. Necesitas Internet y una cuenta/licencia de Minecraft conforme a las condiciones de Mojang. El launcher no entrega cuentas ni incluye credenciales.
 
 Servidor público: `rails-acorn.tun.ply.gg:6906`. Primera conexión: `/register CONTRASEÑA CONTRASEÑA` (12–128 caracteres); siguientes: `/login CONTRASEÑA`.
 
@@ -58,3 +58,5 @@ Cinco desastres activados por operadores: tornado monumental, terremoto, lluvia 
 El Custodio ofrece botín personal según participación y una tirada de cinco monturas cristalinas: mantarraya, ave, grifo, wyvern y dragón. Su registro por UUID evita duplicar criaturas mediante objetos copiados. Pueden intercambiarse guardadas, volar con controles configurables y llevar un jugador que utilice sus propias armas. Una montura muerta se pierde definitivamente.
 
 La dimensión de eventos incluye Ojo de la tormenta, Circuito de cristal y Defensa del núcleo. El operador anuncia **ENSAYO** o **HARDCORE** antes de la inscripción. Ensayo guarda y restaura el estado original; hardcore utiliza vidas y objetos reales. Los biomas de Nature’s Spirit y Regions Unexplored aparecen en terreno nuevo; Handcrafted y Chipped aportan decoración. Consulta [comandos, reglas y recuperación](EVENTOS-Y-MONTURAS.md) y [el estado verificable de las pruebas 2.5](RESULTADOS-2.5.md).
+
+Novedades y comandos actuales: [TecniHardcore 2.6](NOVEDADES-2.6.md). Pruebas y límites: [resultados 2.6](RESULTADOS-2.6.md).

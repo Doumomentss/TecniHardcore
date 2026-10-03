@@ -1,0 +1,16 @@
+{
+  "source": "https://commons.wikimedia.org/wiki/File:Rain_and_thunder.ogg",
+  "author": "Caesar",
+  "license": "Public domain (PD-self)",
+  "originalSha1": "5cee3290a09118a6d2fcdcbaa17f451f9ec09499",
+  "changes": "Converted to mono, compressed and excerpted into rain/storm/thunder game sounds. Wind, quake and alarm are original TecniHardcore synthesis.",
+  "files": {
+    "quake_real.ogg": "65acecf759a18db6cba09295aa8f9babfa8a9d4afa0884a11d93993cdfbc62d3",
+    "rain_real.ogg": "93cabab31be7a692b8524ddd34cdc8699dee0e57c5ae0ddbb6bf4cddd1be65ec",
+    "storm_real.ogg": "05a4ab8c3bb488e6d6db947056d58044e37e7d3db7a40f0b7a25f00ce287992e",
+    "thunder_real_1.ogg": "adef1fd5ebb7c5f8e016fcb7c3dbbb00034dd4a4bc81e8ccb1b67f0f8ce98435",
+    "thunder_real_2.ogg": "93945f578a1df22946e5c3ee4cd18df69a4bd174e7fdc59ce339bfc8c034420e",
+    "thunder_real_3.ogg": "6196fad3acfc94a1cea918457460bee9145812257eead7b39ad18952e563e8e3",
+    "wind_real.ogg": "3014c9a03e5da5dada63dc9c4d5f3b6db3d3c90569d93e5397443d4d5e902da2"
+  }
+}

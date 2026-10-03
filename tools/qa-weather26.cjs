@@ -1,0 +1,24 @@
+const fs=require('fs'),path=require('path'),assert=require('assert'),mc=require('./test-runtime/node_modules/minecraft-protocol');
+const server=path.resolve('tools/test-runtime/expansion25/server'),out=path.resolve('tools/test-runtime/weather26'),rows=[],clients=[];assert(fs.existsSync(path.join(server,'.tecni-test-world')));const output=console.log.bind(console);console.log=()=>{};console.warn=()=>{};console.error=()=>{};const sleep=ms=>new Promise(r=>setTimeout(r,ms));const log=()=>fs.readFileSync(path.join(server,'logs/latest.log'),'utf8');
+async function until(fn,ms=60000){let end=Date.now()+ms;while(Date.now()<end){if(fn())return;await sleep(200);}throw Error('timeout');}
+async function command(...lines){let f=path.join(server,'qa-commands.txt');await until(()=>!fs.existsSync(f));fs.writeFileSync(f,lines.join('\n')+'\n');await until(()=>!fs.existsSync(f));await sleep(300);}
+function check(name,ok,detail){rows.push({name,ok:!!ok,detail});output((ok?'PASS':'FAIL')+' '+name);if(!ok)throw Error(name);}
+let blocks=0,recording=false,texture=false,packet;
+function client(name){const c=mc.createClient({host:'127.0.0.1',port:25568,username:name,auth:'offline',version:'1.20.1'});require('./test-pack-handshake.cjs')(c);clients.push(c);c.on('login',()=>{c.ready=true;c.write('custom_payload',{channel:'minecraft:register',data:Buffer.from('tecnihardcore:soul_v3\0tecnihardcore:ritual_v3\0tecnihardcore:altar_open_v3\0tecnihardcore:cataclysm_v2\0tecnihardcore:rescue_v1')});});c.on('position',p=>c.write('teleport_confirm',{teleportId:p.teleportId}));c.on('block_change',()=>{if(recording)blocks++;});c.on('multi_block_change',p=>{if(recording)blocks+=p.records.length;});c.on('player_info',p=>{for(const e of p.data||[])if((e.player?.properties||[]).some(v=>v.name==='textures'))texture=true;});c.on('custom_payload',p=>{if(p.channel==='tecnihardcore:cataclysm_v2')packet=p.data;});c.on('error',e=>console.log('Client '+e.message));return c;}
+(async()=>{
+ await until(()=>log().includes('Done ('));const c=client('E25Destr');await until(()=>c.ready);await sleep(2000);
+ await command('tecni desastre detener todos','tecni vidas E25Destr 3','gamemode spectator E25Destr','execute in tecnihardcore:eventos run tp E25Destr 10000.5 100 0.5','execute in tecnihardcore:eventos run forceload add 9952 -48 10048 48');await sleep(2500);
+ await command('execute in tecnihardcore:eventos run fill 9960 91 -40 10040 94 40 stone','execute in tecnihardcore:eventos run fill 9960 95 -40 10040 95 40 dirt','execute in tecnihardcore:eventos run setblock 10000 96 0 chest','execute in tecnihardcore:eventos run setblock 10001 96 0 tecnihardcore:santuario');
+ const offset=log().length;await command('tecni desastre iniciar tornado 0 96 0 512 30 ancho 600 destruccion 4');check('Protected spawn rejects destructive giant',log().slice(offset).includes('spawn'));
+ for(const type of ['tornado','terremoto'])for(const level of [0,1,2,3,4]){
+  await command('execute in tecnihardcore:eventos run fill 9960 95 -40 10040 95 40 dirt');await sleep(1000);blocks=0;recording=true;
+  await command(`execute in tecnihardcore:eventos run tecni desastre iniciar ${type} 10000 96 0 32 30 ${type==='tornado'?'ancho 120 ':''}destruccion ${level}`);await sleep(16000);recording=false;
+  check(type+' destruction '+level,level===0?blocks===0:blocks>0,{updates:blocks});
+  await command('execute in tecnihardcore:eventos run execute if block 10000 96 0 chest run say QA_CHEST_SAFE','execute in tecnihardcore:eventos run execute if block 10001 96 0 tecnihardcore:santuario run say QA_CORE_SAFE');
+  const recent=log().slice(-5000);check(type+' '+level+' containers and core intact',recent.includes('QA_CHEST_SAFE')&&recent.includes('QA_CORE_SAFE'));
+  await command('tecni desastre detener todos');await sleep(3500);
+ }
+ await command('execute in tecnihardcore:eventos run tecni desastre iniciar tornado 10000 96 0 512 30 ancho 600 destruccion 0');await sleep(1000);check('Expanded 512 radius / 600 width accepts and synchronizes v2',packet&&packet.length>25);await command('tecni desastre detener todos');await sleep(3500);
+ await command('execute as E25Destr run skin set player Notch');await sleep(15000);check('Skin properties delivered without identity changes',texture,{uuid:c.uuid});
+ await command('qa25 benchmark E25Destr weather26 200');await sleep(11000);const ticks=JSON.parse(fs.readFileSync(path.join(server,'qa-results/weather26-ticks.json')));check('Tick p95 remains below 50ms',ticks.p95Ms<50,ticks);
+})().catch(e=>{console.error(e.stack);rows.push({name:'error',ok:false,detail:e.message});process.exitCode=1;}).finally(async()=>{await command('tecni desastre detener todos');clients.forEach(c=>c.end());fs.writeFileSync(path.join(out,'server-results.json'),JSON.stringify(rows,null,2));process.exit(process.exitCode||0);});

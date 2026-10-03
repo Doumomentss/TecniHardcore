@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 public final class LibraryShutdown {
     public static void init(){ServerLifecycleEvents.SERVER_STOPPED.register(server->{
         if(!server.isDedicated())return;
+        try{var pool=(java.util.concurrent.ExecutorService)Class.forName("org.samo_lego.fabrictailor.FabricTailor").getField("THREADPOOL").get(null);pool.shutdownNow();}catch(ClassNotFoundException ignored){}catch(Exception e){Hardcore.LOG.warn("Skin worker shutdown failed: {}",e.getClass().getSimpleName());}
         try{
             var type=Class.forName("me.fzzyhmstrs.fzzy_config.util.ThreadingUtils");var instance=type.getField("INSTANCE").get(null);
             var pool=(java.util.concurrent.ExecutorService)type.getMethod("getEXECUTOR$fzzy_config").invoke(instance);

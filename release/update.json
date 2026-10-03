@@ -1,15 +1,15 @@
 {
   "schema": 1,
-  "version": "2.5.0",
-  "packVersion": "2.5.0",
+  "version": "2.6.0",
+  "packVersion": "2.6.0",
   "minecraft": "1.20.1",
   "ritualProtocol": 3,
   "soulProtocol": 3,
-  "packProtocol": 6,
-  "notes": "Cataclismos administrativos sin destrucción, cinco monturas de cristal y botín personal del Custodio; eventos en ensayo o hardcore, biomas y decoración. Conserva identidad portable, gráficos, conexión directa y el parche del actualizador 2.4.1.",
+  "packProtocol": 7,
+  "notes": "Tormentas con alarma y audio real, tornado de ancho configurable y escombros visuales, destrucción opcional por niveles, baliza de largo alcance, skins, iconos originales y corrección de Espacio. Eventos sin ID obligatorio; conserva mundo, identidades y actualización segura.",
   "installer": {
-    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.5.0/TecniHardcore-Setup-2.5.0.exe",
-    "bytes": 307038208,
-    "sha256": "29c8e126592b768f807c62fe5dc6d33822cce2deb0f2d9458b75a6bbfdb21f0f"
+    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.6.0/TecniHardcore-Setup-2.6.0.exe",
+    "bytes": 307686912,
+    "sha256": "3fa3dc8f8a4b705f96795f4cb0a7e7ed2e4ca256f7b3b48fda9001f646986b90"
   }
 }

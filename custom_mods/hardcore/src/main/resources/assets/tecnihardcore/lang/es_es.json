@@ -1,8 +1,8 @@
 {
   "item.tecnihardcore.brasa": "Reliquia de Brasa",
-  "item.tecnihardcore.bastion": "Reliquia de BastiÃ³n",
+  "item.tecnihardcore.bastion": "Reliquia de Bastión",
   "item.tecnihardcore.eco": "Reliquia de Eco",
-  "item.tecnihardcore.corazon_sagrado": "CorazÃ³n Sagrado de ResurrecciÃ³n",
+  "item.tecnihardcore.corazon_sagrado": "Corazón Sagrado de Resurrección",
   "item.tecnihardcore.sello_brasa": "Sello de Brasa",
   "item.tecnihardcore.sello_bastion": "Sello de Bastion",
   "item.tecnihardcore.sello_eco": "Sello de Eco",
@@ -12,10 +12,10 @@
   "subtitles.tecnihardcore.complete": "Un alma regresa",
   "subtitles.tecnihardcore.cancel": "El ritual se desvanece",
   "entity.tecnihardcore.custodio_pizarra": "Custodio de Pizarra",
-  "block.tecnihardcore.tablon_reliquias": "TablÃ³n de reliquias",
+  "block.tecnihardcore.tablon_reliquias": "Tablón de reliquias",
   "subtitles.tecnihardcore.boss_wake": "El custodio prepara un ataque",
   "subtitles.tecnihardcore.boss_strike": "El cristal golpea",
-  "block.tecnihardcore.tablon_panel": "TablÃ³n de reliquias",
+  "block.tecnihardcore.tablon_panel": "Tablón de reliquias",
   "effect.tecnihardcore.rooted": "Prisión del núcleo",
   "subtitles.tecnihardcore.boss_melee": "Golpe de coraza",
   "subtitles.tecnihardcore.boss_warning": "Runas de advertencia",
@@ -37,5 +37,9 @@
   "subtitles.tecnihardcore.disaster_quake": "La tierra tiembla",
   "subtitles.tecnihardcore.disaster_rain": "Lluvia corrosiva",
   "subtitles.tecnihardcore.disaster_thunder": "Descarga eléctrica",
-  "subtitles.tecnihardcore.disaster_impact": "Impacto de meteorito"
+  "subtitles.tecnihardcore.disaster_impact": "Impacto de meteorito",
+  "subtitles.tecnihardcore.disaster.alarm": "Alarma de cataclismo",
+  "subtitles.tecnihardcore.disaster.storm": "Tormenta intensa",
+  "subtitles.tecnihardcore.disaster_alarm": "Alarma de cataclismo",
+  "subtitles.tecnihardcore.disaster_storm": "Tormenta intensa"
 }

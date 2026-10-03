@@ -12,7 +12,7 @@ public abstract class RitualSodiumFogMixin {
     @Shadow @Final private GlUniformFloat4v uFogColor;
     @Shadow @Final private GlUniformFloat uFogStart,uFogEnd;
     @Inject(method="setup",at=@At("TAIL"),remap=false) private void dome(CallbackInfo ci){
-        float darkness=(float)RitualVisuals.darkness();if(darkness<=0)return;float mix=darkness/.96F;float[] color=RenderSystem.getShaderFogColor();
+        float darkness=(float)Math.max(RitualVisuals.darkness(),net.tecnihardcore.CataclysmVisuals.darkness()*.55F);if(darkness<=0)return;float mix=darkness/.96F;float[] color=RenderSystem.getShaderFogColor();
         uFogColor.set(new float[]{color[0]*(1-darkness),color[1]*(1-darkness),color[2]*(1-darkness),color[3]});
         uFogStart.setFloat(RenderSystem.getShaderFogStart()*(1-mix));
         uFogEnd.setFloat(RenderSystem.getShaderFogEnd()*(1-mix)+1.2F*mix);

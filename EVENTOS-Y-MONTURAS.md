@@ -1,6 +1,6 @@
-# TecniHardcore 2.5: guía de cataclismos, monturas y eventos
+# TecniHardcore 2.6: guía de cataclismos, monturas y eventos
 
-Minecraft 1.20.1 Fabric. Estas funciones requieren el mod 2.5.0 en servidor y cliente. Los desastres y eventos solo se inician por orden administrativa; no existe un temporizador de aparición aleatoria.
+Minecraft 1.20.1 Fabric. Estas funciones requieren el mod 2.6.0 en servidor y cliente. Los desastres y eventos solo se inician por orden administrativa; no existe un temporizador de aparición aleatoria.
 
 ## Cataclismos
 
@@ -16,11 +16,11 @@ Ejemplo en una zona cargada y suficientemente baja:
 /tecni desastre detener todos
 ```
 
-Los primeros dos ejemplos son alternativas: no pueden estar activos simultáneamente en la misma zona. Puedes omitir radio y segundos para usar 96 bloques y 180 segundos. Radio permitido: 32–128. Duración: 30–600 segundos, incluidos diez de advertencia. Máximo dos desastres activos sin superposición. El evento Ojo de la tormenta reserva un espacio de desastre mientras está preparado o activo.
+Los primeros dos ejemplos son alternativas: no pueden estar activos simultáneamente en la misma zona. Puedes omitir radio y segundos para usar 192 bloques y 180 segundos. Radio permitido: 32–512. Duración: 30–600 segundos, incluidos diez de advertencia. Máximo dos desastres activos sin superposición. El evento Ojo de la tormenta reserva un espacio de desastre mientras está preparado o activo.
 
-El tornado necesita 200 bloques de altura disponibles bajo el techo del mundo; rechaza lugares demasiado altos. Su embudo alcanza 120 bloques de diámetro en la parte superior. Su trayectoria circular permanece en la zona y su fuerza afecta a quienes estén a menos de 48 bloques del embudo. El núcleo hace 2 puntos de daño por segundo. No arranca bloques: los fragmentos son visuales.
+El tornado necesita 200 bloques de altura disponibles bajo el techo del mundo; rechaza lugares demasiado altos. Su embudo alcanza 120 bloques de diámetro en la parte superior. Su trayectoria circular permanece en la zona y su fuerza afecta a quienes estén a menos de 48 bloques del embudo. El núcleo hace 2 puntos de daño por segundo. En destrucción 0 no arranca bloques: los fragmentos son visuales. Ancho configurable de 40–600 con `ancho N`; niveles destructivos 1–4 requieren `destruccion N`. Ver [la guía 2.6](NOVEDADES-2.6.md) para límites y ejemplos.
 
-El terremoto anuncia cada pulso y golpea a quienes están en el suelo. Agacharse reduce el daño de 6 a 3. La lluvia ácida causa 2 puntos cada dos segundos a quienes estén expuestos; un techo protege. Las descargas eléctricas anuncian círculos de dos bloques y hacen 10 de daño. Los meteoritos anuncian círculos de cuatro bloques y hacen 14. Estos valores se aplican antes de armadura. Los fenómenos no destruyen construcciones ni encienden fuego. Los jugadores creativos, espectadores y sin autenticar quedan excluidos.
+El terremoto anuncia cada pulso y golpea a quienes están en el suelo. Agacharse reduce el daño de 6 a 3. La lluvia ácida causa 2 puntos cada dos segundos a quienes estén expuestos; un techo protege. Las descargas eléctricas anuncian círculos de dos bloques y hacen 10 de daño. Los meteoritos anuncian círculos de cuatro bloques y hacen 14. Estos valores se aplican antes de armadura. Tornado y terremoto sólo destruyen bloques si se elige un nivel 1–4 explícitamente; los demás fenómenos no destruyen construcciones ni encienden fuego. Los jugadores creativos, espectadores y sin autenticar quedan excluidos.
 
 Una montura también puede sufrir el daño del desastre. Morir consume vidas normalmente y activa el video existente. Los tótems mantienen sus reglas habituales. `/tecni-sacudida` permite desactivar o activar la sacudida de cámara; los avisos importantes siguen visibles con partículas mínimas. El volumen utiliza la categoría Clima del juego.
 
@@ -70,10 +70,10 @@ El panel `/tecni evento panel` permite seleccionar tipo y modo, preparar, inicia
 ```mcfunction
 /tecni evento preparar tormenta ensayo
 /tecni evento listar
-/tecni evento entrar ID
-/tecni evento iniciar ID
+/tecni evento entrar
+/tecni evento iniciar
 /tecni evento salir
-/tecni evento detener ID
+/tecni evento detener
 ```
 
 Preparar, iniciar, detener y abrir el panel requieren operador nivel 4. Entrar exige autenticación, vidas disponibles, inventario sin una operación de cursor pendiente y ninguna montura personal activa. La inscripción es voluntaria y se cierra al iniciar. Tras iniciar hay diez segundos de cuenta atrás.

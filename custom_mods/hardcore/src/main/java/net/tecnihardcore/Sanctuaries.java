@@ -18,13 +18,19 @@ import net.minecraft.world.biome.BiomeKeys;
 import java.util.*;
 
 public final class Sanctuaries {
+    private record Repair(ServerWorld world,BlockPos pos){}
+    private static final Set<Repair> repairs=new LinkedHashSet<>();
     public static final SanctuaryBlock CORE=Registry.register(Registries.BLOCK,Hardcore.id("santuario"),new SanctuaryBlock());
     public static final SanctuaryCollision COLLISION=Registry.register(Registries.BLOCK,Hardcore.id("santuario_soporte"),new SanctuaryCollision());
     public static final BlockEntityType<SanctuaryEntity> ENTITY=Registry.register(Registries.BLOCK_ENTITY_TYPE,Hardcore.id("santuario"),FabricBlockEntityTypeBuilder.create(SanctuaryEntity::new,CORE).build());
     public static final Feature<DefaultFeatureConfig> FEATURE=Registry.register(Registries.FEATURE,Hardcore.id("sanctuary"),new SanctuaryFeature());
     public static void init() {
         BiomeModifications.addFeature(BiomeSelectors.foundInOverworld().and(c->!c.getBiomeKey().getValue().getPath().contains("ocean")&&!c.getBiomeKey().equals(BiomeKeys.RIVER)&&!c.getBiomeKey().equals(BiomeKeys.FROZEN_RIVER)),GenerationStep.Feature.SURFACE_STRUCTURES,RegistryKey.of(RegistryKeys.PLACED_FEATURE,Hardcore.id("sanctuary")));
-        ServerChunkEvents.CHUNK_LOAD.register((world,chunk)->{if(Hardcore.souls!=null)for(var e:chunk.getBlockEntities().values())if(e instanceof SanctuaryEntity){remember(world,e.getPos());BlockPos p=e.getPos();world.getServer().execute(()->{if(world.getBlockState(p).isOf(CORE))SanctuaryCollision.install(world,p);});world.getChunkManager().getLightingProvider().checkBlock(e.getPos());}});
+        // execute() runs immediately on the server thread. Reading the loading chunk
+        // inside CHUNK_LOAD can wait on its own unfinished future and deadlock.
+        ServerChunkEvents.CHUNK_LOAD.register((world,chunk)->{for(var e:chunk.getBlockEntities().values())if(e instanceof SanctuaryEntity)repairs.add(new Repair(world,e.getPos().toImmutable()));});
+        net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.END_SERVER_TICK.register(server->{if(Hardcore.souls==null||server.getTicks()%20!=0)return;int work=0;for(var repair:new ArrayList<>(repairs)){var w=repair.world;var p=repair.pos;if(!w.isChunkLoaded(p)){repairs.remove(repair);continue;}if(!w.isChunkLoaded(p.add(-3,0,-3))||!w.isChunkLoaded(p.add(3,0,3)))continue;repairs.remove(repair);if(w.getBlockState(p).isOf(CORE)){remember(w,p);SanctuaryCollision.install(w,p);w.getChunkManager().getLightingProvider().checkBlock(p);}if(++work>=2)break;}});
+        net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STOPPED.register(server->repairs.clear());
     }
     public static String key(World world,BlockPos p) {return world.getRegistryKey().getValue()+"|"+p.getX()+"|"+p.getY()+"|"+p.getZ();}
     public static void remember(World w,BlockPos p) {if(Hardcore.souls!=null && Hardcore.souls.data.sanctuaries.add(key(w,p)))Hardcore.souls.save();}
@@ -34,7 +40,7 @@ public final class Sanctuaries {
             String[] parts=key.split("\\|");if(parts.length!=4)continue;
             var world=server.getWorld(RegistryKey.of(RegistryKeys.WORLD,new net.minecraft.util.Identifier(parts[0])));if(world==null)continue;
             var p=new BlockPos(Integer.parseInt(parts[1]),Integer.parseInt(parts[2]),Integer.parseInt(parts[3]));
-            if(world.getChunkManager().isChunkLoaded(p.getX()>>4,p.getZ()>>4)&&world.getBlockState(p).isOf(CORE))SanctuaryCollision.install(world,p);
+            repairs.add(new Repair(world,p));
         }
     }
     private static boolean ground(BlockState s) {return s.isIn(BlockTags.DIRT)||s.isOf(Blocks.STONE)||s.isOf(Blocks.SAND)||s.isOf(Blocks.GRAVEL)||s.isOf(Blocks.DEEPSLATE)||s.isOf(Blocks.SNOW_BLOCK);}

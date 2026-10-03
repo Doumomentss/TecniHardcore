@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "tecnihardcore:item/mount_token_4"
+  }
+}

@@ -4,11 +4,12 @@ import net.minecraft.client.util.ScreenshotRecorder;
 import java.util.*;
 /** Opt-in framebuffer capture for reproducible visual tests, inactive in normal launches. */
 public final class QaCapture {
-    private static int ticks,screenTicks;private static UUID ritualId;private static final Set<String> captured=new HashSet<>();
+    private static int ticks,screenTicks;private static long keyRelease;private static int heldKey;private static UUID ritualId;private static final Set<String> captured=new HashSet<>();
     private static long benchmarkStart,benchmarkEnd,lastFrame;private static String benchmarkName;private static final java.util.List<Double> frames=new java.util.ArrayList<>();
     public static void frame(MinecraftClient c){
         if(!Boolean.getBoolean("tecni.visualTest")||c.world==null||c.player==null)return;
         c.options.pauseOnLostFocus=false;
+        if(keyRelease>0&&c.world.getTime()>=keyRelease){net.minecraft.client.option.KeyBinding.setKeyPressed(net.minecraft.client.util.InputUtil.Type.KEYSYM.createFromCode(heldKey),false);keyRelease=0;}
         if(c.currentScreen instanceof net.minecraft.client.gui.screen.GameMenuScreen)c.setScreen(null);
         ticks++;
         long now=System.nanoTime();if(benchmarkEnd>0){if(now>benchmarkStart&&lastFrame>=benchmarkStart)frames.add((now-lastFrame)/1e6);lastFrame=now;if(now>=benchmarkEnd){benchmarkEnd=0;try{var sorted=new java.util.ArrayList<>(frames);java.util.Collections.sort(sorted);var result=new com.google.gson.JsonObject();result.addProperty("frames",sorted.size());double mean=sorted.stream().mapToDouble(Double::doubleValue).average().orElse(0);result.addProperty("meanFrameMs",mean);result.addProperty("meanFps",1000/mean);result.addProperty("p95FrameMs",sorted.get(Math.min(sorted.size()-1,(int)Math.ceil(sorted.size()*.95)-1)));java.nio.file.Files.writeString(c.runDirectory.toPath().resolve("qa-"+benchmarkName+"-frames.json"),result.toString());}catch(Exception error){Hardcore.LOG.warn("QA frame benchmark failed",error);}}}
@@ -16,6 +17,7 @@ public final class QaCapture {
             var file=c.runDirectory.toPath().resolve("qa-action.json");if(java.nio.file.Files.exists(file)){
                 var action=com.google.gson.JsonParser.parseString(java.nio.file.Files.readString(file)).getAsJsonObject();java.nio.file.Files.delete(file);
                 switch(action.get("type").getAsString()){
+                    case "key"->{heldKey=action.get("code").getAsInt();keyRelease=c.world.getTime()+action.get("ticks").getAsInt();net.minecraft.client.option.KeyBinding.setKeyPressed(net.minecraft.client.util.InputUtil.Type.KEYSYM.createFromCode(heldKey),true);}
                     case "altar"->{var pos=new net.minecraft.util.math.BlockPos(3,97,0);c.interactionManager.interactBlock(c.player,net.minecraft.util.Hand.MAIN_HAND,new net.minecraft.util.hit.BlockHitResult(net.minecraft.util.math.Vec3d.ofCenter(pos),net.minecraft.util.math.Direction.EAST,pos,false));}
                     case "use"->c.interactionManager.interactItem(c.player,net.minecraft.util.Hand.MAIN_HAND);
                     case "inventory"->c.setScreen(new net.minecraft.client.gui.screen.ingame.InventoryScreen(c.player));

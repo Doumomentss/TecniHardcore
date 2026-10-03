@@ -16,6 +16,7 @@ import java.util.*;
 public final class RescueBeacon extends Item {
     public static final Identifier CHANNEL=Hardcore.id("rescue_v1");
     public static final Item ITEM=Registry.register(Registries.ITEM,Hardcore.id("baliza_auxilio"),new RescueBeacon());
+    public static final int RANGE=100_000;
     private record Signal(UUID owner,String name,World world,Vec3d position,long end){}
     private static final Map<UUID,Signal> active=new LinkedHashMap<>();
     private static int ticks;
@@ -26,7 +27,7 @@ public final class RescueBeacon extends Item {
     }
     private static void send(ServerPlayerEntity p,long now){
         if(!AuthBootstrap.authenticated(p)||!ServerPlayNetworking.canSend(p,CHANNEL))return;
-        var signals=active.values().stream().filter(v->v.world==p.getWorld()&&p.squaredDistanceTo(v.position)<=256*256).limit(16).toList();
+        var signals=active.values().stream().filter(v->v.world==p.getWorld()&&p.squaredDistanceTo(v.position)<=(double)RANGE*RANGE).sorted(Comparator.comparingDouble(v->p.squaredDistanceTo(v.position))).limit(16).toList();
         var b=PacketByteBufs.create();b.writeVarInt(signals.size());
         for(var v:signals){b.writeUuid(v.owner);b.writeString(v.name,16);b.writeDouble(v.position.x);b.writeDouble(v.position.y);b.writeDouble(v.position.z);b.writeVarInt((int)Math.max(0,(v.end-now)/1000));}ServerPlayNetworking.send(p,CHANNEL,b);
     }
@@ -39,11 +40,11 @@ public final class RescueBeacon extends Item {
         Hardcore.soul(p).rescueUsedAt=now;Hardcore.souls.save();
         stack.damage(1,p,e->e.sendToolBreakStatus(hand));active.put(p.getUuid(),new Signal(p.getUuid(),p.getGameProfile().getName(),world,p.getPos(),now+60_000));
         world.playSound(null,p.getBlockPos(),SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME,SoundCategory.PLAYERS,1,.7F);
-        for(var other:p.getServer().getPlayerManager().getPlayerList())if(other.getWorld()==world&&AuthBootstrap.authenticated(other)&&other.squaredDistanceTo(p)<=256*256){other.sendMessage(Text.literal("Auxilio: "+p.getGameProfile().getName()+" solicita compañía. La señal dura 60 segundos."),false);send(other,now);}
+        for(var other:p.getServer().getPlayerManager().getPlayerList())if(other.getWorld()==world&&AuthBootstrap.authenticated(other)&&other.squaredDistanceTo(p)<=(double)RANGE*RANGE){other.sendMessage(Text.literal("Auxilio: "+p.getGameProfile().getName()+" solicita compañía. La señal dura 60 segundos."),false);send(other,now);}
         return TypedActionResult.success(stack);
     }
     @Override public void appendTooltip(ItemStack stack,World world,List<Text> lines,net.minecraft.client.item.TooltipContext context){
-        lines.add(Text.literal("Señala tu ubicación durante 60 s a 256 bloques."));
+        lines.add(Text.literal("Haz y dirección visibles hasta 100.000 bloques durante 60 s."));
         lines.add(Text.literal("16 usos · enfriamiento compartido de 10 min."));
         lines.add(Text.literal("No recupera vidas ni transporta jugadores."));
     }

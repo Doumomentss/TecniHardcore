@@ -10,7 +10,7 @@ public final class ExpansionRules {
     public static int mountRoll(int roll){if(roll<0||roll>=100)throw new IllegalArgumentException("roll");int sum=0;for(int i=0;i<5;i++){sum+=CHANCES[i];if(roll<sum)return i+1;}return 0;}
     public static int tier(int n){return Math.max(1,Math.min(5,n));}
     public static boolean eligible(double damage,double total){return total>0&&damage>=total*.05;}
-    public static boolean hazardBounds(int radius,int seconds){return radius>=32&&radius<=128&&seconds>=30&&seconds<=600;}
+    public static boolean hazardBounds(int radius,int seconds){return radius>=32&&radius<=WeatherRules.MAX_RADIUS&&seconds>=30&&seconds<=600;}
     public static boolean overlaps(double distance,int a,int b){return distance<a+b;}
     public static boolean plaza(double x,double z,int radius){return Math.hypot(x,z)<radius+32;}
     public static int waveSize(int players){return Math.min(24,6+4*players);}

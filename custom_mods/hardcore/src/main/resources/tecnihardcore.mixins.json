@@ -14,12 +14,14 @@
     "BossRootMixin",
     "BossRootMoveMixin",
     "EventIsolationMixin",
-    "MountVehicleMixin"
+    "MountVehicleMixin",
+    "SkinAuthMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "client": [
+    "MountKeyMixin",
     "QaRenderMixin",
     "LoginThreadMixin",
     "RitualCameraMixin",

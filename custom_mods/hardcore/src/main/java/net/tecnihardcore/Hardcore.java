@@ -48,7 +48,7 @@ public final class Hardcore implements ModInitializer {
 
     @Override public void onInitialize() {
         Sanctuaries.init(); RitualNetwork.init(); SanctuaryEffects.init(); SpawnProtection.init(); TotemBoard.init(); TrialBoss.init(); TrialShard.init(); TrialArena.init(); BossRoots.init(); RescueBeacon.init(); LibraryShutdown.init(); Expansion.init(); EventDirector.init();
-        for(String sound:new String[]{"boss.wake","boss.strike","boss.melee","boss.warning","boss.prison","boss.volley","boss.phase","boss.transform","boss.death","disaster.wind","disaster.quake","disaster.rain","disaster.thunder","disaster.impact"})Registry.register(Registries.SOUND_EVENT,id(sound),SoundEvent.of(id(sound)));
+        for(String sound:new String[]{"boss.wake","boss.strike","boss.melee","boss.warning","boss.prison","boss.volley","boss.phase","boss.transform","boss.death","disaster.wind","disaster.quake","disaster.rain","disaster.thunder","disaster.impact","disaster.alarm","disaster.storm"})Registry.register(Registries.SOUND_EVENT,id(sound),SoundEvent.of(id(sound)));
         ServerLifecycleEvents.SERVER_STARTED.register(s -> {
             server = s;
             AuthBootstrap.start(s);
@@ -63,7 +63,7 @@ public final class Hardcore implements ModInitializer {
             s.getGameRules().get(GameRules.DO_IMMEDIATE_RESPAWN).set(true, s);
             publish();
             BackupService.start(s);
-            LOG.info("TecniHardcore 2.5.0: unlimited resurrections and Sanctuaries of Souls ready");
+            LOG.info("TecniHardcore 2.6.0: unlimited resurrections and Sanctuaries of Souls ready");
         });
         ServerLifecycleEvents.SERVER_STOPPING.register(s -> { if (souls != null) souls.save(); BackupService.stop(); });
         ServerPlayConnectionEvents.JOIN.register((h, sender, s) -> {
@@ -103,7 +103,7 @@ public final class Hardcore implements ModInitializer {
             if (++ticks % 20 == 0) {
                 // Disconnecting an outdated client removes it from the live player list.
                 for (ServerPlayerEntity p : new ArrayList<>(s.getPlayerManager().getPlayerList())) {
-                    if(p.age>120&&!RitualNetwork.compatible(p)){p.networkHandler.disconnect(Text.literal("Necesitas TecniHardcore 2.5.0. Cierra el juego y ejecuta el launcher actualizado para instalar el paquete."));continue;}
+                    if(p.age>120&&!RitualNetwork.compatible(p)){p.networkHandler.disconnect(Text.literal("Necesitas TecniHardcore 2.6.0. Cierra el juego y ejecuta el launcher actualizado para instalar el paquete."));continue;}
                     Rituals.finishRecovery(p);
                     if(soul(p).lives==0 && AuthBootstrap.authenticated(p) && !p.isSpectator())p.changeGameMode(GameMode.SPECTATOR);
                     soul(p).seen=System.currentTimeMillis();send(p);
@@ -155,7 +155,7 @@ public final class Hardcore implements ModInitializer {
     }
     public static void publish() {
         if (souls == null) return;
-        JsonObject root = new JsonObject(); root.addProperty("protocol",2); root.addProperty("packVersion","2.5.0"); root.addProperty("updatedAt", System.currentTimeMillis());
+        JsonObject root = new JsonObject(); root.addProperty("protocol",2); root.addProperty("packVersion","2.6.0"); root.addProperty("updatedAt", System.currentTimeMillis());
         JsonArray players = new JsonArray();
         souls.data.players.entrySet().stream().sorted(Comparator.comparingLong((Map.Entry<String,SoulStore.Soul> e) -> e.getValue().seen).reversed()).limit(128).forEach(e -> {
             JsonObject v=new JsonObject(); v.addProperty("name",e.getValue().name); v.addProperty("lives",e.getValue().lives); v.addProperty("resurrections",e.getValue().resurrections); v.addProperty("seenAt",e.getValue().seen); var online=server.getPlayerManager().getPlayer(java.util.UUID.fromString(e.getKey()));v.addProperty("online",online!=null&&AuthBootstrap.authenticated(online));players.add(v);
@@ -199,7 +199,7 @@ public final class Hardcore implements ModInitializer {
             "BESTIAS DE CRISTAL\nCustodio: tirada personal 20/15/8/4/1 % para niveles 1–5; 52 % sin montura. Requiere 5 % de daño efectivo. /tecni recompensas entrega tu botín. Invoca con el objeto y monta con clic. Espacio asciende; Z desciende; R impulsa. Controles configurables.",
             "MONTURAS\nSe pueden intercambiar guardadas. Amatista cura 4 puntos fuera de combate. Para guardar: aterriza, desmonta, espera 15 s sin daño y agáchate + clic. Si muere se pierde. Permiten combatir desde el aire; el Custodio responde con ataques a distancia.",
             "CATACLISMOS\nTornado, terremoto, lluvia ácida, tormenta eléctrica y meteoritos: solo por operador. Pueden consumir vidas; no rompen construcciones. Refúgiate bajo techo de la lluvia ácida y esquiva los círculos anunciados. /tecni-sacudida alterna sacudida de cámara.",
-            "EVENTOS\nOjo de la tormenta, Circuito de cristal y Defensa del núcleo. /tecni evento listar muestra la inscripción. /tecni evento entrar ID y /tecni evento salir. ENSAYO conserva vidas e inventario y no da premios; HARDCORE usa tus vidas y equipo reales. Nuevos muebles en Handcrafted y bloques en Chipped."}) pages.add(NbtString.of(Text.Serializer.toJson(Text.literal(page))));
+            "EVENTOS\nOjo de la tormenta, Circuito de cristal y Defensa del núcleo. /tecni evento listar muestra la inscripción. /tecni evento entrar y /tecni evento salir. ENSAYO conserva vidas e inventario y no da premios; HARDCORE usa tus vidas y equipo reales. Nuevos muebles en Handcrafted y bloques en Chipped."}) pages.add(NbtString.of(Text.Serializer.toJson(Text.literal(page))));
         n.put("pages",pages); return book;
     }
 }

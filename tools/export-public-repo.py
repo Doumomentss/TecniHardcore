@@ -19,6 +19,14 @@ for name in ['ADMINISTRACION.md','RESULTADOS-2.1.md','RESULTADOS-2.2.md','RESULT
 for name in ['build-spawn.py','find-sanctuary-site.py','build-trial-assets.py','preview-boss.cjs','test-dashboard.cjs','test-dashboard-ui.cjs','verify-release.cjs','build-espectro-assets.py','add-graphics24.py','test-launcher24.cjs','add-content24.py','content24-lock.json','improve-boss24-assets.py','build-spawn24.py','preview-spawn24.cjs','qa-content24.cjs']:copy('tools/'+name)
 for name in ['build-expansion25-assets.py','add-content25.py','content25-lock.json','stage-expansion25.py','start-expansion25.ps1','backup-before25.py','preview-expansion25.cjs','qa-expansion25.cjs','qa-native-mounts25.py','qa-disconnect25.cjs','qa-weather25.cjs','qa-shaders25.py','qa-shader-actors25.cjs','qa-event-mail25.cjs','qa-boss-loot25.cjs','qa-restart25.cjs','qa-storm-events25.cjs','qa-mount-safety25.cjs','qa-worldgen25.cjs','qa-preservation25.py','verify-world25.py','test-pack-handshake.cjs']:copy('tools/'+name)
 for name in ['EVENTOS-Y-MONTURAS.md','RESULTADOS-2.5.md']:copy(name)
+
+for name in ['NOVEDADES-2.6.md','RESULTADOS-2.6.md']:copy(name)
+for name in ['qa-event-commands251.cjs','qa-weather26.cjs','qa-native-weather26.cjs','qa-native-final26.cjs','build-weather26-audio.py','qa-native-beacon26.cjs','backup-before26.py']:copy('tools/'+name)
+copy('tools/server-control/GracefulStop.java');copy('tools/server-control/MANIFEST.MF')
+for name in ['w26-icons-final','w26-tornado','w26-electric-ultra-quality','w26-beacon-99000-six-chunks','w26-skin-full-final']:
+    src=f'tools/test-runtime/expansion25/game/screenshots/sanctuary-{name}.png'
+    if (root/src).exists():copy(src,f'docs/{name}.png')
+copy('assets/icons26/PROMPTS.md','docs/iconos-2.6-prompts.md')
 copy('PROBAR_JEFE.bat');copy('README-PUBLIC.md','README.md');copy('dist/THIRD-PARTY-MODS.json','THIRD-PARTY-MODS.json')
 for src,dst in [('sanctuary-target-cinema-start.png','ritual-cupula.png'),('sanctuary-target-descent.png','ritual-descenso.png')]:
     picture=root/'tools/test-runtime/visuals22'/src

@@ -91,25 +91,36 @@
   },
   "disaster.wind": {
     "sounds": [
-      "tecnihardcore:disaster/wind"
+      {
+        "name": "tecnihardcore:disaster/wind_real",
+        "stream": true
+      }
     ],
     "subtitle": "subtitles.tecnihardcore.disaster_wind"
   },
   "disaster.quake": {
     "sounds": [
-      "tecnihardcore:disaster/quake"
+      {
+        "name": "tecnihardcore:disaster/quake_real",
+        "stream": true
+      }
     ],
     "subtitle": "subtitles.tecnihardcore.disaster_quake"
   },
   "disaster.rain": {
     "sounds": [
-      "tecnihardcore:disaster/rain"
+      {
+        "name": "tecnihardcore:disaster/rain_real",
+        "stream": true
+      }
     ],
     "subtitle": "subtitles.tecnihardcore.disaster_rain"
   },
   "disaster.thunder": {
     "sounds": [
-      "tecnihardcore:disaster/thunder"
+      "tecnihardcore:disaster/thunder_real_1",
+      "tecnihardcore:disaster/thunder_real_2",
+      "tecnihardcore:disaster/thunder_real_3"
     ],
     "subtitle": "subtitles.tecnihardcore.disaster_thunder"
   },
@@ -118,5 +129,23 @@
       "tecnihardcore:disaster/impact"
     ],
     "subtitle": "subtitles.tecnihardcore.disaster_impact"
+  },
+  "disaster.storm": {
+    "sounds": [
+      {
+        "name": "tecnihardcore:disaster/storm_real",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.tecnihardcore.disaster_storm"
+  },
+  "disaster.alarm": {
+    "sounds": [
+      {
+        "name": "tecnihardcore:disaster/alarm",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.tecnihardcore.disaster_alarm"
   }
 }

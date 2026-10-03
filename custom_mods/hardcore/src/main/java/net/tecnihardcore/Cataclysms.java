@@ -15,15 +15,15 @@ import java.util.*;
 import static net.minecraft.server.command.CommandManager.*;
 import com.mojang.brigadier.arguments.*;
 
-/** No terrain mutations, weather changes, chunk tickets or random scheduling. */
+/** Operator-only weather. Destruction is opt-in; no chunk tickets or random scheduling. */
 public final class Cataclysms {
     public static final net.minecraft.particle.DefaultParticleType ACID_DROP=net.minecraft.registry.Registry.register(net.minecraft.registry.Registries.PARTICLE_TYPE,Hardcore.id("acid_drop"),net.fabricmc.fabric.api.particle.v1.FabricParticleTypes.simple());
-    public static final Identifier CHANNEL=Hardcore.id("cataclysm_v1");
+    public static final Identifier CHANNEL=Hardcore.id("cataclysm_v2");
     public static final String[] TYPES={"tornado","terremoto","acida","electrica","meteoritos"};
     public static final class Hazard {
-        public final UUID id=UUID.randomUUID();public final ServerWorld world;public final BlockPos center;public final int type,radius,duration;
-        public int age;public boolean stopping;public final List<Vec3d> marks=new ArrayList<>();
-        Hazard(ServerWorld w,int t,BlockPos c,int r,int seconds){world=w;type=t;center=c;radius=r;duration=seconds*20;}
+        public final UUID id=UUID.randomUUID();public final ServerWorld world;public final BlockPos center;public final int type,radius,duration,width,destruction;
+        public int age,destroyed;public boolean stopping;public final List<Vec3d> marks=new ArrayList<>();
+        Hazard(ServerWorld w,int t,BlockPos c,int r,int seconds,int width,int destruction){world=w;type=t;center=c;radius=t==0?WeatherRules.envelope(r,width):r;duration=seconds*20;this.width=width;this.destruction=destruction;}
         public Vec3d position(){double a=age/600.0,orbit=Math.min(radius*.25,24);return Vec3d.ofBottomCenter(center).add(type==0?Math.cos(a)*orbit:0,0,type==0?Math.sin(a)*orbit:0);}
     }
     public static final Map<UUID,Hazard> active=new LinkedHashMap<>();
@@ -32,8 +32,11 @@ public final class Cataclysms {
             var root=literal("desastre").requires(s->s.hasPermissionLevel(4));
             var start=literal("iniciar");for(int t=0;t<5;t++){
                 final int type=t;
-                var position=argument("pos",BlockPosArgumentType.blockPos()).executes(c->command(c.getSource(),type,BlockPosArgumentType.getLoadedBlockPos(c,"pos"),96,180));
-                position.then(argument("radio",IntegerArgumentType.integer(32,128)).then(argument("segundos",IntegerArgumentType.integer(30,600)).executes(c->command(c.getSource(),type,BlockPosArgumentType.getLoadedBlockPos(c,"pos"),IntegerArgumentType.getInteger(c,"radio"),IntegerArgumentType.getInteger(c,"segundos")))));
+                var position=argument("pos",BlockPosArgumentType.blockPos()).executes(c->command(c.getSource(),type,BlockPosArgumentType.getLoadedBlockPos(c,"pos"),WeatherRules.DEFAULT_RADIUS,180,120,0));
+                var seconds=argument("segundos",IntegerArgumentType.integer(30,600)).executes(c->command(c.getSource(),type,BlockPosArgumentType.getLoadedBlockPos(c,"pos"),IntegerArgumentType.getInteger(c,"radio"),IntegerArgumentType.getInteger(c,"segundos"),120,0));
+                if(type<=1)seconds.then(literal("destruccion").then(argument("nivel",IntegerArgumentType.integer(0,4)).executes(c->command(c.getSource(),type,BlockPosArgumentType.getLoadedBlockPos(c,"pos"),IntegerArgumentType.getInteger(c,"radio"),IntegerArgumentType.getInteger(c,"segundos"),120,IntegerArgumentType.getInteger(c,"nivel")))));
+                if(type==0)seconds.then(literal("ancho").then(argument("ancho",IntegerArgumentType.integer(40,600)).executes(c->command(c.getSource(),type,BlockPosArgumentType.getLoadedBlockPos(c,"pos"),IntegerArgumentType.getInteger(c,"radio"),IntegerArgumentType.getInteger(c,"segundos"),IntegerArgumentType.getInteger(c,"ancho"),0)).then(literal("destruccion").then(argument("nivel",IntegerArgumentType.integer(0,4)).executes(c->command(c.getSource(),type,BlockPosArgumentType.getLoadedBlockPos(c,"pos"),IntegerArgumentType.getInteger(c,"radio"),IntegerArgumentType.getInteger(c,"segundos"),IntegerArgumentType.getInteger(c,"ancho"),IntegerArgumentType.getInteger(c,"nivel")))))));
+                position.then(argument("radio",IntegerArgumentType.integer(32,WeatherRules.MAX_RADIUS)).then(seconds));
                 start.then(literal(TYPES[t]).then(position));
             }
             root.then(start).then(literal("listar").executes(c->{for(var h:active.values())c.getSource().sendFeedback(()->Text.literal(h.id+" · "+TYPES[h.type]+" · "+h.center.toShortString()+" · "+Math.max(0,(h.duration-h.age)/20)+" s"),false);return active.size();}))
@@ -44,10 +47,10 @@ public final class Cataclysms {
         ServerLifecycleEvents.SERVER_STOPPING.register(s->{for(var h:active.values())send(h,2);active.clear();});
         ServerPlayConnectionEvents.JOIN.register((h,sender,s)->{for(var v:active.values())send(v,0);});
     }
-    private static int command(ServerCommandSource s,int type,BlockPos pos,int r,int seconds){String problem=problem(s.getWorld(),type,pos,r,seconds);if(problem!=null){s.sendError(Text.literal(problem));return 0;}var h=start(s.getWorld(),type,pos,r,seconds);s.sendFeedback(()->Text.literal("Desastre preparado: "+h.id+". Comienza en 10 segundos."),true);Hardcore.LOG.warn("ADMIN {} starts {} {} {}",s.getName(),TYPES[type],h.id,pos);return 1;}
+    private static int command(ServerCommandSource s,int type,BlockPos pos,int r,int seconds,int width,int destruction){if(!WeatherRules.settings(type,r,seconds,width,destruction)){s.sendError(Text.literal("Configuración inválida: radio 32–512, ancho 40–600 y destrucción 0–4."));return 0;}int area=type==0?WeatherRules.envelope(r,width):r;String problem=problem(s.getWorld(),type,pos,area,seconds);if(problem!=null){s.sendError(Text.literal(problem));return 0;}var h=start(s.getWorld(),type,pos,r,seconds,width,destruction);s.sendFeedback(()->Text.literal("Desastre preparado: "+h.id+". Radio "+h.radius+" · ancho "+width+" · destrucción "+destruction+". Comienza en 10 segundos."),true);Hardcore.LOG.warn("ADMIN {} starts {} {} {} width {} destruction {}",s.getName(),TYPES[type],h.id,pos,width,destruction);return 1;}
     public static String problem(ServerWorld w,int type,BlockPos pos,int r,int seconds){
         if(type<0||type>=TYPES.length)return "Tipo de desastre inválido.";
-        if(!ExpansionRules.hazardBounds(r,seconds))return "Radio 32–128 y duración 30–600 s.";
+        if(!ExpansionRules.hazardBounds(r,seconds))return "Radio 32–512 y duración 30–600 s.";
         if(active.values().stream().filter(h->!h.stopping).count()>=(EventDirector.reservesHazard()&&w.getRegistryKey()!=EventDirector.DIMENSION?1:2))return "Ya hay dos desastres activos.";
         if(!w.isChunkLoaded(pos))return "La zona debe estar cargada.";
         if(SpawnProtection.active(w)&&ExpansionRules.plaza(pos.getX(),pos.getZ(),r))return "La zona invade la columna protegida del spawn.";
@@ -56,7 +59,8 @@ public final class Cataclysms {
         for(var h:active.values())if(!h.stopping&&h.world==w&&ExpansionRules.overlaps(Math.hypot(pos.getX()-h.center.getX(),pos.getZ()-h.center.getZ()),r,h.radius))return "La zona se superpone con otro desastre.";
         return null;
     }
-    public static Hazard start(ServerWorld w,int type,BlockPos pos,int r,int seconds){String invalid=problem(w,type,pos,r,seconds);if(invalid!=null)throw new IllegalArgumentException(invalid);var h=new Hazard(w,type,pos,r,seconds);active.put(h.id,h);send(h,0);return h;}
+    public static Hazard start(ServerWorld w,int type,BlockPos pos,int r,int seconds){return start(w,type,pos,r,seconds,120,0);}
+    public static Hazard start(ServerWorld w,int type,BlockPos pos,int r,int seconds,int width,int destruction){int area=type==0?WeatherRules.envelope(r,width):r;String invalid=WeatherRules.settings(type,r,seconds,width,destruction)?problem(w,type,pos,area,seconds):"Invalid storm settings";if(invalid!=null)throw new IllegalArgumentException(invalid);var h=new Hazard(w,type,pos,r,seconds,width,destruction);active.put(h.id,h);send(h,0);return h;}
     public static void stop(Hazard h){if(!h.stopping){h.stopping=true;h.age=h.duration;h.marks.clear();send(h,1);}}
     public static boolean eligible(ServerPlayerEntity p){return p.isAlive()&&!p.isCreative()&&!p.isSpectator()&&AuthBootstrap.authenticated(p)&&Hardcore.soul(p).lives>0&&!safe(p);}
     private static boolean safe(ServerPlayerEntity p){return SpawnProtection.active(p.getWorld())&&ExpansionRules.plaza(p.getX(),p.getZ(),0);}
@@ -64,7 +68,7 @@ public final class Cataclysms {
     private static List<ServerPlayerEntity> targets(Hazard h){return h.world.getPlayers(p->eligible(p)&&p.getPos().subtract(Vec3d.ofCenter(h.center)).horizontalLength()<=h.radius);}
     private static void tick(Hazard h){
         ++h.age;if(h.age>h.duration){if(!h.stopping){h.stopping=true;send(h,1);}if(h.age>h.duration+60){send(h,2);active.remove(h.id);}return;}
-        if(h.age%10==0)send(h,0);if(h.age<200)return;var players=targets(h);int t=h.age-200;
+        if(h.age%10==0)send(h,0);if(h.age<200)return;StormDestruction.tick(h);var players=targets(h);int t=h.age-200;
         if(h.type==0){Vec3d center=h.position();for(var p:players){Vec3d d=center.subtract(p.getPos());double distance=d.horizontalLength();if(distance<48&&p.getY()<center.y+110){var body=p.getVehicle() instanceof CrystalMount m?m:p;Vec3d pull=new Vec3d(d.x,0,d.z).normalize().multiply(.055);var velocity=body.getVelocity();double lift=.12+.4*(1-distance/48);body.setVelocity(velocity.x+pull.x+Math.sin(t*.05)*.015,Math.max(velocity.y,lift),velocity.z+pull.z);body.velocityModified=true;if(distance<10&&t%20==0)harm(p,2,false);}}}
         if(h.type==1&&t%160==40){for(var p:players)if(p.isOnGround()){harm(p,p.isSneaking()?3:6,false);p.addVelocity(0,.18,0);p.velocityModified=true;}}
         if(h.type==2&&t%40==0){for(var p:players)if(!roof(h.world,p.getPos()))harm(p,2,true);}
@@ -73,6 +77,6 @@ public final class Cataclysms {
     }
     private static void harm(ServerPlayerEntity p,float damage,boolean magic){if(p.getVehicle() instanceof CrystalMount m)m.damage(p.getDamageSources().generic(),damage);p.damage(p.getDamageSources().generic(),damage);}
     private static void send(Hazard h,int state){for(var p:h.world.getPlayers(p->p.getPos().subtract(Vec3d.ofCenter(h.center)).horizontalLength()<h.radius+192))if(ServerPlayNetworking.canSend(p,CHANNEL)){
-        var b=PacketByteBufs.create();b.writeUuid(h.id);b.writeByte(h.type);b.writeBlockPos(h.center);b.writeVarInt(h.radius);b.writeVarInt(h.age);b.writeVarInt(h.duration);b.writeByte(state);b.writeVarInt(h.marks.size());for(var v:h.marks){b.writeDouble(v.x);b.writeDouble(v.y);b.writeDouble(v.z);}ServerPlayNetworking.send(p,CHANNEL,b);
+        var b=PacketByteBufs.create();b.writeUuid(h.id);b.writeByte(h.type);b.writeBlockPos(h.center);b.writeVarInt(h.radius);b.writeVarInt(h.age);b.writeVarInt(h.duration);b.writeVarInt(h.width);b.writeByte(h.destruction);b.writeByte(state);b.writeVarInt(h.marks.size());for(var v:h.marks){b.writeDouble(v.x);b.writeDouble(v.y);b.writeDouble(v.z);}ServerPlayNetworking.send(p,CHANNEL,b);
     }}
 }
