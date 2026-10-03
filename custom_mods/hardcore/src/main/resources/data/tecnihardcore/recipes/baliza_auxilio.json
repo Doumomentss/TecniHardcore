@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "pattern": ["CCC", "CEC", "CCC"], "key": {"C": {"item": "minecraft:copper_ingot"}, "E": {"item": "minecraft:echo_shard"}}, "result": {"item": "tecnihardcore:baliza_auxilio"}}

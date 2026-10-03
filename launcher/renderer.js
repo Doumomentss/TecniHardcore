@@ -2,7 +2,7 @@ const { ipcRenderer } = require('electron');
 
 // Estado local
 let currentRam = localStorage.getItem('launcher_ram') || 6;
-let currentUsername = localStorage.getItem('launcher_username') || 'Jugador';
+let currentUsername = '';
 let customJavaPath = localStorage.getItem('launcher_javapath') || '';
 
 // Elementos DOM
@@ -40,8 +40,12 @@ const loadingPercentage = document.getElementById('loading-percentage');
 const btnCancelLaunch = document.getElementById('btn-cancel-launch');
 
 // Auto-detectar Usuario Oficial de Minecraft (Doumoment)
-ipcRenderer.invoke('detect-user').then((user) => {
-  currentUsername = localStorage.getItem('launcher_username') || user || 'Jugador';
+let settingsReady=false;
+const settingsLoaded=ipcRenderer.invoke('get-settings',{username:localStorage.getItem('launcher_username')||'',ram:localStorage.getItem('launcher_ram'),javaPath:localStorage.getItem('launcher_javapath')||''}).then((settings) => {
+  currentUsername=settings.username;currentRam=settings.ram;customJavaPath=settings.javaPath;
+  ramSlider.value=currentRam;ramSliderDisplay.textContent=currentRam+' GB';javaPathInput.value=customJavaPath;
+  document.getElementById('game-folder').textContent=settings.gamePath;
+  document.getElementById('graphics-mode').value=settings.graphicsMode||'vanilla';settingsReady=true;
   if (usernameInput) usernameInput.value = currentUsername;
   updateAvatar(currentUsername);
   updateLivesDisplay(currentUsername);
@@ -86,6 +90,7 @@ if (ramSlider) {
     currentRam = e.target.value;
     if (ramSliderDisplay) ramSliderDisplay.textContent = currentRam + ' GB';
     localStorage.setItem('launcher_ram', currentRam);
+    ipcRenderer.invoke('save-settings',{ram:currentRam}).catch(error=>document.getElementById('graphics-status').textContent=error.message);
   });
 }
 
@@ -93,6 +98,7 @@ if (btnSaveSettings && javaPathInput) {
   btnSaveSettings.addEventListener('click', () => {
     customJavaPath = javaPathInput.value.trim();
     localStorage.setItem('launcher_javapath', customJavaPath);
+    ipcRenderer.invoke('save-settings',{javaPath:customJavaPath});
   });
 }
 
@@ -185,8 +191,11 @@ setInterval(checkServerStatus, 5000);
 // =================================================================
 // Real install/download/process events; no simulated progress.
 let launchPending = false;
+let withoutShaders=false;
 btnPlayGame.addEventListener('click', async () => {
   if (launchPending) return;
+  try{await settingsLoaded;}catch(error){document.getElementById('graphics-status').textContent=error.message;return;}
+  if(!settingsReady||!/^[A-Za-z0-9_]{3,16}$/.test(usernameInput.value.trim())){usernameInput.focus();document.getElementById('graphics-status').textContent='Escribe y confirma tu nombre de Minecraft antes de jugar.';return;}
   launchPending = true;
   btnPlayGame.disabled = true;
   loadingScreen.classList.remove('hidden');
@@ -197,9 +206,10 @@ btnPlayGame.addEventListener('click', async () => {
   try {
     const result = await ipcRenderer.invoke('launch-game', {
       username: usernameInput.value.trim() || currentUsername,
-      ram: Number(currentRam), javaPath: customJavaPath
+      ram: Number(currentRam), javaPath: customJavaPath,withoutShaders
     });
     if (!result.success) throw new Error(result.error);
+    withoutShaders=false;
     loadingStatusMsg.textContent = 'Minecraft está abierto';
     loadingTaskName.textContent = `${result.mods} mods · La carga continúa en la ventana del juego`;
     loadingProgressFill.style.width = '100%';
@@ -294,7 +304,12 @@ function animateParticles() {
 }
 animateParticles();
 
-usernameInput.addEventListener('change',()=>{currentUsername=usernameInput.value.trim();localStorage.setItem('launcher_username',currentUsername);updateAvatar(currentUsername);updateLivesDisplay(currentUsername);});
+usernameInput.addEventListener('change',async()=>{try{const settings=await ipcRenderer.invoke('save-settings',{username:usernameInput.value.trim()});currentUsername=settings.username;localStorage.setItem('launcher_username',currentUsername);updateAvatar(currentUsername);updateLivesDisplay(currentUsername);}catch(error){document.getElementById('graphics-status').textContent=error.message;}});
+document.getElementById('graphics-mode').addEventListener('change',async event=>{const result=await ipcRenderer.invoke('set-graphics',event.target.value);document.getElementById('graphics-status').textContent=result.success?'Perfil seleccionado. Conserva los mods y tus otros ajustes.':result.error;});
+document.getElementById('restore-graphics').addEventListener('click',async()=>{const result=await ipcRenderer.invoke('restore-graphics');document.getElementById('graphics-status').textContent=result.success?'Ajustes del perfil restaurados.':result.error;});
+document.getElementById('choose-game-folder').addEventListener('click',async()=>{const result=await ipcRenderer.invoke('choose-game-folder');if(result.success)document.getElementById('game-folder').textContent=result.settings.gamePath;else if(!result.canceled)document.getElementById('folder-status').textContent=result.error;});
+ipcRenderer.on('shader-failed',(_,data)=>{document.getElementById('graphics-status').textContent=data.message;document.getElementById('without-shaders').hidden=false;});
+document.getElementById('without-shaders').addEventListener('click',()=>{withoutShaders=true;document.getElementById('without-shaders').hidden=true;btnPlayGame.click();});
 ipcRenderer.invoke('get-connection').then(c=>{document.getElementById('connection-address').textContent=c.error||c.host+':'+c.port;});
 const repairButton=document.getElementById('btn-repair');
 repairButton.addEventListener('click',async()=>{repairButton.disabled=true;try{const result=await ipcRenderer.invoke('repair-client');document.getElementById('repair-status').textContent=result.success?'Paquete verificado y reparado.':result.error;}finally{repairButton.disabled=false;}});

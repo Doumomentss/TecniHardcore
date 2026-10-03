@@ -64,7 +64,7 @@ public final class Rituals {
     }
     public static int beginAt(ServerPlayerEntity c,ServerPlayerEntity t,BlockPos altar) {
         if(!AuthBootstrap.authenticated(c)||!AuthBootstrap.authenticated(t))return 0;
-        if(!RitualNetwork.compatible(c)||!RitualNetwork.compatible(t)){message(c,"Ambos necesitan TecniHardcore 2.3.0. Actualiza el launcher.");return 0;}
+        if(!RitualNetwork.compatible(c)||!RitualNetwork.compatible(t)){message(c,"Ambos necesitan TecniHardcore 2.4.0. Actualiza el launcher.");return 0;}
         if(!c.getWorld().getBlockState(altar).isOf(Sanctuaries.CORE)){message(c,"El núcleo ya no existe.");return 0;}
         String problem=casterProblem(c,altar);if(problem!=null){message(c,problem);return 0;}
         if(c==t||Hardcore.soul(t).lives!=0||!t.isSpectator()||c.getWorld()!=t.getWorld()||!near(t,altar)){message(c,"Elige un eliminado cercano, en espectador y autenticado.");return 0;}
@@ -104,7 +104,7 @@ public final class Rituals {
             if(elapsed<600)continue;
             net.minecraft.util.math.Vec3d front=c.getPos().add(net.minecraft.util.math.Vec3d.fromPolar(0,c.getYaw()).multiply(1.4));
             BlockPos safe=null;double nearest=Double.MAX_VALUE;
-            for(BlockPos p:BlockPos.iterate(r.altar.add(-3,0,-3),r.altar.add(3,1,3)))if(safe(w,p)){
+            for(BlockPos p:BlockPos.iterate(r.altar.add(-4,0,-4),r.altar.add(4,3,4)))if(safe(w,p)){
                 double score=p.toCenterPos().squaredDistanceTo(front);if(score<nearest){nearest=score;safe=p.toImmutable();}
             }
             if(safe==null){it.remove();cancelled(s,r);message(c,"No hay espacio seguro. Libera suelo y dos bloques de altura junto al núcleo.");continue;}

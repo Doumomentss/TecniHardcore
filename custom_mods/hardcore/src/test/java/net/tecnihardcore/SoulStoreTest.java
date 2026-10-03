@@ -7,7 +7,7 @@ class SoulStoreTest {
  @TempDir Path temp;
  @Test void migrationKeepsLivesAndUsedRitualAsHistory() throws Exception {
   Path file=temp.resolve("souls.json");Files.writeString(file,"{\"schema\":1,\"players\":{\"existing\":{\"lives\":0,\"revived\":true,\"totemReadyAt\":123456}},\"ritualPayments\":{}}");
-  var store=new SoulStore(file);var soul=store.data.players.get("existing");assertEquals(2,store.data.schema);assertEquals(0,soul.lives);assertEquals(1,soul.resurrections);assertEquals(123456,soul.totemReadyAt);assertTrue(Rules.canRevive(soul.lives,soul.revived));
+  var store=new SoulStore(file);var soul=store.data.players.get("existing");assertEquals(3,store.data.schema);assertEquals(0,soul.lives);assertEquals(1,soul.resurrections);assertEquals(123456,soul.totemReadyAt);assertTrue(Rules.canRevive(soul.lives,soul.revived));
   store.save();assertEquals(1,new SoulStore(file).data.players.get("existing").resurrections);
  }
  @Test void currentCounterSurvivesReloadWithoutIncrement() throws Exception {
@@ -16,5 +16,8 @@ class SoulStoreTest {
  }
  @Test void invalidSchemaFailsClosed() throws Exception {
   Path file=temp.resolve("souls.json");Files.writeString(file,"{\"schema\":99,\"players\":{}}");assertThrows(IllegalStateException.class,()->new SoulStore(file));
+ }
+ @Test void oldActiveCooldownRetainsActivationAndReloadDoesNotRebase() throws Exception {
+  Path file=temp.resolve("cooldown.json");Files.writeString(file,"{\"schema\":2,\"players\":{\"a\":{\"lives\":2,\"totemReadyAt\":1300000,\"resurrections\":4}}}");var store=new SoulStore(file);assertEquals(1000000,store.data.players.get("a").totemUsedAt);assertEquals(2,store.data.players.get("a").lives);store.save();assertEquals(1000000,new SoulStore(file).data.players.get("a").totemUsedAt);
  }
 }

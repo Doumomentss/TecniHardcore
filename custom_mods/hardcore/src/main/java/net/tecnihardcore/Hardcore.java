@@ -47,12 +47,13 @@ public final class Hardcore implements ModInitializer {
     private static Item item(String path) { return Registry.register(Registries.ITEM, id(path), new Item(new Item.Settings().maxCount(1).fireproof().rarity(Rarity.EPIC))); }
 
     @Override public void onInitialize() {
-        Sanctuaries.init(); RitualNetwork.init(); SanctuaryEffects.init(); SpawnProtection.init(); TotemBoard.init(); TrialBoss.init(); TrialShard.init(); TrialArena.init();
-        for(String sound:new String[]{"boss.wake","boss.strike"})Registry.register(Registries.SOUND_EVENT,id(sound),SoundEvent.of(id(sound)));
+        Sanctuaries.init(); RitualNetwork.init(); SanctuaryEffects.init(); SpawnProtection.init(); TotemBoard.init(); TrialBoss.init(); TrialShard.init(); TrialArena.init(); BossRoots.init(); RescueBeacon.init(); LibraryShutdown.init();
+        for(String sound:new String[]{"boss.wake","boss.strike","boss.melee","boss.warning","boss.prison","boss.volley","boss.phase","boss.transform","boss.death"})Registry.register(Registries.SOUND_EVENT,id(sound),SoundEvent.of(id(sound)));
         ServerLifecycleEvents.SERVER_STARTED.register(s -> {
             server = s;
             AuthBootstrap.start(s);
             souls = new SoulStore(s.getSavePath(WorldSavePath.ROOT).resolve("tecnihardcore-souls.json"));
+            Sanctuaries.repairKnown(s);
             Rituals.recoverPayments(s);
             // Old functions are replaced during migration; fail closed if old tick logic survived.
             var old = s.getSavePath(WorldSavePath.DATAPACKS).resolve("hardcore_3_vidas/data/hardcore/functions/tick.mcfunction");
@@ -62,7 +63,7 @@ public final class Hardcore implements ModInitializer {
             s.getGameRules().get(GameRules.DO_IMMEDIATE_RESPAWN).set(true, s);
             publish();
             BackupService.start(s);
-            LOG.info("TecniHardcore 2.3.0: unlimited resurrections and Sanctuaries of Souls ready");
+            LOG.info("TecniHardcore 2.4.0: unlimited resurrections and Sanctuaries of Souls ready");
         });
         ServerLifecycleEvents.SERVER_STOPPING.register(s -> { if (souls != null) souls.save(); BackupService.stop(); });
         ServerPlayConnectionEvents.JOIN.register((h, sender, s) -> {
@@ -101,7 +102,7 @@ public final class Hardcore implements ModInitializer {
             Rituals.tick(s);
             if (++ticks % 20 == 0) {
                 for (ServerPlayerEntity p : s.getPlayerManager().getPlayerList()) {
-                    if(p.age>120&&!RitualNetwork.compatible(p)){p.networkHandler.disconnect(Text.literal("Necesitas TecniHardcore 2.3.0. Cierra el juego y ejecuta el launcher actualizado para instalar el paquete."));continue;}
+                    if(p.age>120&&!RitualNetwork.compatible(p)){p.networkHandler.disconnect(Text.literal("Necesitas TecniHardcore 2.4.0. Cierra el juego y ejecuta el launcher actualizado para instalar el paquete."));continue;}
                     Rituals.finishRecovery(p);
                     if(soul(p).lives==0 && AuthBootstrap.authenticated(p) && !p.isSpectator())p.changeGameMode(GameMode.SPECTATOR);
                     soul(p).seen=System.currentTimeMillis();send(p);
@@ -147,12 +148,12 @@ public final class Hardcore implements ModInitializer {
         board.setObjectiveSlot(0,obj);
         if (ServerPlayNetworking.canSend(p,RitualNetwork.SOUL)) {
             PacketByteBuf buf = PacketByteBufs.create(); buf.writeInt(soul.lives); buf.writeVarInt(soul.resurrections);
-            buf.writeLong(Math.max(0, soul.totemReadyAt-System.currentTimeMillis())); ServerPlayNetworking.send(p,RitualNetwork.SOUL,buf);
+            boolean arena=TrialBoss.arena(p);buf.writeLong(BossCombat.remaining(System.currentTimeMillis(),soul.totemUsedAt,arena));buf.writeBoolean(arena); ServerPlayNetworking.send(p,RitualNetwork.SOUL,buf);
         }
     }
     public static void publish() {
         if (souls == null) return;
-        JsonObject root = new JsonObject(); root.addProperty("protocol",2); root.addProperty("packVersion","2.3.0"); root.addProperty("updatedAt", System.currentTimeMillis());
+        JsonObject root = new JsonObject(); root.addProperty("protocol",2); root.addProperty("packVersion","2.4.0"); root.addProperty("updatedAt", System.currentTimeMillis());
         JsonArray players = new JsonArray();
         souls.data.players.entrySet().stream().sorted(Comparator.comparingLong((Map.Entry<String,SoulStore.Soul> e) -> e.getValue().seen).reversed()).limit(128).forEach(e -> {
             JsonObject v=new JsonObject(); v.addProperty("name",e.getValue().name); v.addProperty("lives",e.getValue().lives); v.addProperty("resurrections",e.getValue().resurrections); v.addProperty("seenAt",e.getValue().seen); var online=server.getPlayerManager().getPlayer(java.util.UUID.fromString(e.getKey()));v.addProperty("online",online!=null&&AuthBootstrap.authenticated(online));players.add(v);
@@ -160,8 +161,8 @@ public final class Hardcore implements ModInitializer {
         root.add("players",players); root.add("news",PublicNews.get()); statusJson=root.toString();
     }
     public static boolean isRelic(Item item) { return item==BRASA || item==BASTION || item==ECO; }
-    public static boolean blocked(ServerPlayerEntity p) { return !Rules.canUse(System.currentTimeMillis(), soul(p).totemReadyAt); }
-    public static void cooldown(ServerPlayerEntity p) { soul(p).totemReadyAt=System.currentTimeMillis()+Rules.COOLDOWN_MS; souls.save(); send(p); }
+    public static boolean blocked(ServerPlayerEntity p) { return BossCombat.remaining(System.currentTimeMillis(),soul(p).totemUsedAt,TrialBoss.arena(p))>0; }
+    public static void cooldown(ServerPlayerEntity p) { soul(p).totemUsedAt=System.currentTimeMillis(); soul(p).totemReadyAt=soul(p).totemUsedAt+Rules.COOLDOWN_MS; souls.save(); send(p); }
     public static boolean useRelic(ServerPlayerEntity p, DamageSource source) {
         if (source.isIn(DamageTypeTags.BYPASSES_INVULNERABILITY) || blocked(p)) return false;
         for (Hand hand : Hand.values()) {
@@ -183,14 +184,16 @@ public final class Hardcore implements ModInitializer {
     }
     private static void effect(ServerPlayerEntity p, StatusEffect e, int seconds,int amp) { p.addStatusEffect(new StatusEffectInstance(e,seconds*20,amp)); }
     public static ItemStack guide() {
-        ItemStack book=new ItemStack(Items.WRITTEN_BOOK); NbtCompound n=book.getOrCreateNbt(); n.putString("title","Reliquias y almas"); n.putString("author","TecniHardcore"); n.putInt("TecniGuideVersion",21); NbtList pages=new NbtList();
+        ItemStack book=new ItemStack(Items.WRITTEN_BOOK); NbtCompound n=book.getOrCreateNbt(); n.putString("title","Guía TecniHardcore"); n.putString("author","TecniHardcore"); n.putInt("TecniGuideVersion",24); NbtList pages=new NbtList();
         for(String page : new String[]{"TECNIHARDCORE\nTres vidas. Cada muerte real resta una. A cero, espectador. Un tótem no devuelve vidas.\n\n/tecni guia: este libro.\n/tecni-video: probar el video.",
             "RELIQUIAS\nBrasa: fuego 30s, debilidad II 30s.\nBastión: resistencia II 10s, lentitud II 20s.\nEco: invisibilidad 15s, debilidad II 20s.\nTodas dejan 2 corazones, sin regeneración.",
             "FABRICACIÓN\nUn tótem + un lingote de netherita + una estrella del Nether + sello.\nPrimer Wither: Brasa.\nPrimer dragón: Bastión.\nPrimer guardián anciano: Eco.\nEl sello se entrega al autor del golpe final.",
-            "LÍMITES\nTodos los tótems comparten 5 minutos de enfriamiento, incluso el vanilla. Se consume estando en una mano. No funciona en el vacío ni con /kill. Los sellos se obtienen una vez por jugador y jefe.",
-            "SANTUARIOS DE LAS ALMAS\nPuedes resucitar tantas veces como tus aliados paguen el ritual, solo estando eliminado.\nCorazón Sagrado: 4 estrellas + 4 lingotes de netherita + cristal del End.\nBusca una ruina de cristal en el Overworld.",
+            "LÍMITES\nTodos los tótems comparten 5 minutos de enfriamiento; dentro de 48 bloques de un jefe en combate, 1 minuto desde la última activación, incluso el vanilla. Se consume estando en una mano. No funciona en el vacío ni con /kill. Los sellos se obtienen una vez por jugador y jefe.",
+            "SANTUARIOS DE LAS ALMAS\nPuedes resucitar tantas veces como tus aliados paguen el ritual, solo estando eliminado.\nCorazón Sagrado: 4 estrellas + 4 lingotes de netherita + cristal del End.\nVe al santuario central del spawn, en 0, 0.",
             "RITUAL\nSostén el corazón e interactúa con el núcleo. Elige un eliminado cercano y confirma. También: /tecni ritual Nombre.\nAmbos a menos de 4 bloques, durante 30s. Daño, distancia o desconexión cancelan sin coste. Vuelves con 1 vida.",
-            "LA CÚPULA\nEl santuario oscurece 32 bloques a su alrededor. A los 10s comienza la cámara de los participantes.\nEl alma aparece en lo alto y desciende con su skin y aura azul.\nEsc recupera tu cámara sin cancelar.\n/tecni-efectos ajusta las partículas."}) pages.add(NbtString.of(Text.Serializer.toJson(Text.literal(page))));
+            "LA CÚPULA\nEl santuario oscurece 32 bloques a su alrededor. A los 10s comienza la cámara de los participantes.\nEl alma aparece en lo alto y desciende con su skin y aura azul.\nEsc recupera tu cámara sin cancelar.\n/tecni-efectos ajusta las partículas.",
+            "BALIZA DE AUXILIO\n8 lingotes de cobre alrededor de un fragmento de eco.\nÚsala para señalar tu posición a compañeros autenticados a 256 bloques, durante 60s.\n16 usos; 10 min entre señales, incluso al reconectarte. No cura ni transporta.",
+            "EXPEDICIONES\nSimply Swords: nuevas armas y movimientos con Better Combat.\nImmersive Armors: armaduras especializadas.\nAdventureZ: criaturas y peligros nuevos.\nConsulta recetas en JEI. El HUD avisa cuando tu armadura tiene menos del 15% de durabilidad."}) pages.add(NbtString.of(Text.Serializer.toJson(Text.literal(page))));
         n.put("pages",pages); return book;
     }
 }

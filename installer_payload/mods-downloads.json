@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "packVersion": "2.2.0",
+  "packVersion": "2.4.0",
   "files": [
     {
       "name": "appleskin-fabric-mc1.20.1-2.5.2.jar",
@@ -460,6 +460,69 @@
       "sha256": "93e0e537fcf20b18c0ea340e6d4f2c20225a29c45252b9cf78e205107ab4f03a",
       "project": "Z2mXHnxP",
       "version": "FL88RLRu"
+    },
+    {
+      "name": "iris-1.7.6+mc1.20.1.jar",
+      "url": "https://cdn.modrinth.com/data/YL57xq9U/versions/s5eFLITc/iris-1.7.6%2Bmc1.20.1.jar",
+      "bytes": 2726899,
+      "sha256": "9eb15e563e0c9ae6eff15b7863f8432dd290cf9f724c7373e9b15b14aa829ed5",
+      "sha512": "f1337b0441c31269bd3bfcb28647d521326a83e73128c1ac8d065615f8a5a4ca1e8c96a468b356584236ece5b164ec8d8a52b1878064f4e391ecf4f32885e301",
+      "project": "iris",
+      "version": "1.7.6+mc1.20.1"
+    },
+    {
+      "name": "simplyswords-fabric-1.70.2-1.20.1.jar",
+      "url": "https://cdn.modrinth.com/data/bK3Ubu9p/versions/Tq7tcDiO/simplyswords-fabric-1.70.2-1.20.1.jar",
+      "bytes": 15700827,
+      "sha256": "b374382303e5ecdfa2b0e1156dd3b9a03af189279d2bf7ccd3c7017374757ad9",
+      "sha512": "bed470510ca902ce7bd0890f391e6f267ab22d49c868565795f8aca1c48ba4697f915e4be4d44c94caa449750040bf12987665f695799404fecb5c2fea9091e9",
+      "project": "bK3Ubu9p",
+      "version": "Tq7tcDiO"
+    },
+    {
+      "name": "bettercombat-fabric-1.9.0+1.20.1.jar",
+      "url": "https://cdn.modrinth.com/data/5sy6g3kz/versions/OtwNg4r4/bettercombat-fabric-1.9.0%2B1.20.1.jar",
+      "bytes": 907055,
+      "sha256": "c1b680dd03d3af3bf670cf0d024d58bd06360f5b0818eabfec6d7c8e6a11ec07",
+      "sha512": "477b53b13620c003dbf3da4c8facf9e5df81b101c72137aaee01a16e53b7be0bedc354d1d6e2039c40fe82a53cc92a324995d418cd6b8d6301ad02f6ad110717",
+      "project": "5sy6g3kz",
+      "version": "OtwNg4r4"
+    },
+    {
+      "name": "player-animation-lib-fabric-1.0.2-rc1+1.20.jar",
+      "url": "https://cdn.modrinth.com/data/gedNE4y2/versions/yDqYTUaf/player-animation-lib-fabric-1.0.2-rc1%2B1.20.jar",
+      "bytes": 181008,
+      "sha256": "0b10021fa638997398110777747726b1cb7a27bc3f8ff1b12e2b93ac01784018",
+      "sha512": "4ed2659c9e9c1a1fa8936523f7d6de1b8012d8e06e6c58ef65ea5c7acef2b3a113afe584b3a31d70eee00423dbe533c06022cc5f169ab5a2ddf8167acf259ec8",
+      "project": "gedNE4y2",
+      "version": "yDqYTUaf"
+    },
+    {
+      "name": "immersive_armors-1.7.2+1.20.1-fabric.jar",
+      "url": "https://cdn.modrinth.com/data/eE2Db4YU/versions/mGE2GYeN/immersive_armors-1.7.2%2B1.20.1-fabric.jar",
+      "bytes": 1252761,
+      "sha256": "5bfdddc80a91337997e411163c7e67188dda17a18860418efe67625d9fefd6b6",
+      "sha512": "c8286afa580d8f04b74551ceaae8409bc51478475f5846876b1be886223fe552d178c6f0e6df52e5099affd9ff2c904e07d50e12d119032ea88af49bccd046dc",
+      "project": "eE2Db4YU",
+      "version": "mGE2GYeN"
+    },
+    {
+      "name": "adventurez-1.4.20.jar",
+      "url": "https://cdn.modrinth.com/data/defK2XM3/versions/mBYmRou0/adventurez-1.4.20.jar",
+      "bytes": 4952938,
+      "sha256": "59663cb3d9d6dd16605ef5d18179889af730e9175871843c6b48a66168e8c11a",
+      "sha512": "9d39505877fba9f1655ec5655715f5a579acabc525c0a25832942389ad5ecb3807e6ae59e43aca57e9897cf65a82f157d070df20a429df6f9f6e37b6459ba1c1",
+      "project": "defK2XM3",
+      "version": "mBYmRou0"
+    },
+    {
+      "name": "SimplyTooltips-fabric-0.1.5-1.20.1.jar",
+      "url": "https://cdn.modrinth.com/data/6avVoBVB/versions/MAwQRftH/SimplyTooltips-fabric-0.1.5-1.20.1.jar",
+      "bytes": 5518319,
+      "sha256": "c7573a331ef9cfdb5da3ab3f63431ea8e3c870d2efa84ed4012127173d416d96",
+      "sha512": "699bdb3caf5a02997321ec09299a74ec63a4c59d9dc2461aef07a633d5ff6d2fd91abce4a567c870ee9b3f1c678e2c428b8662c1849d2bcbada7d3eb2a9ab248",
+      "project": "6avVoBVB",
+      "version": "MAwQRftH"
     }
   ]
 }

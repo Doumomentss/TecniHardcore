@@ -1,8 +1,8 @@
 {
   "item.tecnihardcore.brasa": "Reliquia de Brasa",
-  "item.tecnihardcore.bastion": "Reliquia de Bastión",
+  "item.tecnihardcore.bastion": "Reliquia de BastiÃ³n",
   "item.tecnihardcore.eco": "Reliquia de Eco",
-  "item.tecnihardcore.corazon_sagrado": "Corazón Sagrado de Resurrección",
+  "item.tecnihardcore.corazon_sagrado": "CorazÃ³n Sagrado de ResurrecciÃ³n",
   "item.tecnihardcore.sello_brasa": "Sello de Brasa",
   "item.tecnihardcore.sello_bastion": "Sello de Bastion",
   "item.tecnihardcore.sello_eco": "Sello de Eco",
@@ -12,8 +12,18 @@
   "subtitles.tecnihardcore.complete": "Un alma regresa",
   "subtitles.tecnihardcore.cancel": "El ritual se desvanece",
   "entity.tecnihardcore.custodio_pizarra": "Custodio de Pizarra",
-  "block.tecnihardcore.tablon_reliquias": "Tablón de reliquias",
+  "block.tecnihardcore.tablon_reliquias": "TablÃ³n de reliquias",
   "subtitles.tecnihardcore.boss_wake": "El custodio prepara un ataque",
   "subtitles.tecnihardcore.boss_strike": "El cristal golpea",
-  "block.tecnihardcore.tablon_panel": "Tablón de reliquias"
+  "block.tecnihardcore.tablon_panel": "TablÃ³n de reliquias",
+  "effect.tecnihardcore.rooted": "Prisión del núcleo",
+  "subtitles.tecnihardcore.boss_melee": "Golpe de coraza",
+  "subtitles.tecnihardcore.boss_warning": "Runas de advertencia",
+  "subtitles.tecnihardcore.boss_prison": "Cadenas del núcleo",
+  "subtitles.tecnihardcore.boss_volley": "Lanzas de cristal",
+  "subtitles.tecnihardcore.boss_phase": "El custodio despierta",
+  "subtitles.tecnihardcore.boss_transform": "El núcleo se reconstruye",
+  "subtitles.tecnihardcore.boss_death": "El espectro se disipa",
+  "item.tecnihardcore.baliza_auxilio": "Baliza de auxilio",
+  "block.tecnihardcore.santuario_soporte": "Pedestal del santuario"
 }

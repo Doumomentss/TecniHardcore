@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "id": "tecnihardcore",
-  "version": "2.3.0",
-  "name": "TecniHardcore: Reliquias y Almas",
+  "version": "2.4.0",
+  "name": "TecniHardcore",
   "environment": "*",
   "entrypoints": {
     "main": [

@@ -1,0 +1,44 @@
+{
+  "name": "ComplementaryReimagined_r5.9.3.zip",
+  "version": "r5.9.3",
+  "url": "https://cdn.modrinth.com/data/HVnmMxH1/versions/Bqen1mJX/ComplementaryReimagined_r5.9.3.zip",
+  "bytes": 553397,
+  "sha256": "fed6c879e732cf7fc7bc6570ebb1def43235aa7e96f62859fbdbdbfa0b484b38",
+  "sha512": "45304b1d7862afdb2177b7e6226fc9c6737911d17a4ad46cc9c519ca4deb935f05072cd337cd8b19a15bb8062b57b54eceec7bdee4cd572d94858e2946d37d85",
+  "project": "https://modrinth.com/shader/complementary-reimagined",
+  "credit": "Complementary Development / EminGT",
+  "profiles": {
+    "MEDIUM": {
+      "SHADOW_QUALITY": "2",
+      "shadowDistance": "128.0",
+      "WATER_REFLECT_QUALITY": "2",
+      "BLOCK_REFLECT_QUALITY": "1",
+      "LIGHTSHAFT_QUALI_DEFINE": "1",
+      "SSAO_QUALI_DEFINE": "2",
+      "FXAA_DEFINE": "1",
+      "DETAIL_QUALITY": "2",
+      "CLOUD_QUALITY": "2",
+      "ANISOTROPIC_FILTER": "0",
+      "COLORED_LIGHTING": "0",
+      "WORLD_SPACE_REFLECTIONS": "-1",
+      "ENTITY_SHADOW": "-1",
+      "RAIN_PUDDLES": "0"
+    },
+    "ULTRA": {
+      "SHADOW_QUALITY": "2",
+      "shadowDistance": "224.0",
+      "WATER_REFLECT_QUALITY": "2",
+      "BLOCK_REFLECT_QUALITY": "3",
+      "LIGHTSHAFT_QUALI_DEFINE": "2",
+      "SSAO_QUALI_DEFINE": "2",
+      "FXAA_DEFINE": "1",
+      "DETAIL_QUALITY": "3",
+      "CLOUD_QUALITY": "3",
+      "ANISOTROPIC_FILTER": "8",
+      "COLORED_LIGHTING": "256",
+      "WORLD_SPACE_REFLECTIONS": "1",
+      "ENTITY_SHADOW": "1",
+      "RAIN_PUDDLES": "2"
+    }
+  }
+}

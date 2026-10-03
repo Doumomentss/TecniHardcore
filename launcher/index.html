@@ -77,6 +77,13 @@
           </p>
         </div>
 
+        <div class="graphics-picker glass-card">
+          <label for="graphics-mode">PERFIL GRÁFICO</label>
+          <select id="graphics-mode"><option value="vanilla">Vanilla</option><option value="optimized">Optimizado</option><option value="ultra-optimized">Ultra optimizado</option><option value="quality">Calidad · shaders</option><option value="ultra-quality">Ultra calidad · shaders</option></select>
+          <button id="restore-graphics">Restaurar perfil</button>
+          <p id="graphics-status" role="status">Todos los perfiles conservan los mods del servidor. Calidad usa Complementary Reimagined de Complementary Development.</p>
+          <button id="without-shaders" hidden>Reiniciar sin shaders</button>
+        </div>
         <!-- Panel de Lanzamiento del Jugador -->
         <div class="launch-dock glass-card">
           <div class="dock-player-col">
@@ -85,7 +92,7 @@
             </div>
             <div class="player-input-box">
               <label for="username-input">NOMBRE DE JUGADOR</label>
-              <input type="text" id="username-input" value="Jugador" maxlength="16">
+              <input type="text" id="username-input" value="" placeholder="Tu nombre de Minecraft" maxlength="16">
             </div>
           </div>
 
@@ -147,6 +154,7 @@
           <p id="connection-address">Consultando dirección…</p>
           <button id="btn-copy-ip">Copiar dirección</button>
           <button id="btn-save-settings">Guardar ajustes</button>
+          <label>CARPETA DEL JUEGO</label><p id="game-folder"></p><button id="choose-game-folder">Cambiar carpeta del juego</button><p id="folder-status" role="status"></p>
           <button id="btn-repair">Verificar y reparar paquete</button>
           <p id="repair-status"></p>
           <button id="btn-check-update">Buscar actualizaciones</button>

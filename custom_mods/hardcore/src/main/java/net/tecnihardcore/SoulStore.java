@@ -15,13 +15,16 @@ public final class SoulStore {
         public boolean revived;
         public int resurrections;
         public long totemReadyAt;
+        public long totemUsedAt;
+        public long rootImmuneUntil;
+        public long rescueUsedAt;
         public long seen;
         public String reviveDimension;
         public int[] revivePosition;
         public Set<String> bosses = new HashSet<>();
     }
     public static class Data {
-        public int schema = 2;
+        public int schema = 3;
         public Map<String, Soul> players = new LinkedHashMap<>();
         public Map<String, String> ritualPayments = new LinkedHashMap<>();
         public Set<String> sanctuaries = new HashSet<>();
@@ -32,15 +35,16 @@ public final class SoulStore {
         this.file = file;
         try {
             data = Files.exists(file) ? JSON.fromJson(Files.readString(file), Data.class) : new Data();
-            if (data == null || (data.schema != 1 && data.schema != 2) || data.players == null) throw new IllegalStateException("Invalid soul state");
+            if (data == null || (data.schema != 1 && data.schema != 2 && data.schema != 3) || data.players == null) throw new IllegalStateException("Invalid soul state");
             if(data.ritualPayments==null)data.ritualPayments=new LinkedHashMap<>();
             if(data.sanctuaries==null)data.sanctuaries=new HashSet<>();
             for (Soul soul : data.players.values()) {
                 soul.lives = Rules.clampLives(soul.lives);
                 if(data.schema==1 && soul.revived)soul.resurrections=Math.max(1,soul.resurrections);
                 soul.resurrections=Math.max(0,soul.resurrections);
+                if(data.schema<3 && soul.totemReadyAt>0)soul.totemUsedAt=Math.max(0,soul.totemReadyAt-Rules.COOLDOWN_MS);
             }
-            data.schema=2;
+            data.schema=3;
         } catch (Exception e) { throw new IllegalStateException("Cannot load " + file + "; refusing to reset lives", e); }
     }
     public void save() {

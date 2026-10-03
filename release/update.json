@@ -1,14 +1,14 @@
 {
   "schema": 1,
-  "version": "2.3.0",
-  "packVersion": "2.3.0",
+  "version": "2.4.0",
+  "packVersion": "2.4.0",
   "minecraft": "1.20.1",
   "ritualProtocol": 3,
-  "packProtocol": 4,
-  "notes": "Plaza protegida, tablón ilustrado de tótems y panel con jugadores, vidas, resurrecciones y novedades. Conserva tus ajustes y el botón de conexión.",
+  "packProtocol": 5,
+  "notes": "Más armas, armaduras y enemigos; Custodio con ataques y derrotas renovadas, altar ampliado y plaza TECNIHARDCORE. Incluye baliza de auxilio, identidad portable y cinco perfiles gráficos.",
   "installer": {
-    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.3.0/TecniHardcore-Setup-2.3.0.exe",
-    "bytes": 305934336,
-    "sha256": "0d8bfc898fe0e5081b2cca0a33823a6e858d066dcda62d870f6037f7e50566f1"
+    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.4.0/TecniHardcore-Setup-2.4.0.exe",
+    "bytes": 306377728,
+    "sha256": "04b253ca34ec438909865068be6d1c3553ebe90d189049e0af8ab88dd24d3d3e"
   }
 }

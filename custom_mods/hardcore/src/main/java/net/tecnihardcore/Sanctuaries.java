@@ -19,15 +19,24 @@ import java.util.*;
 
 public final class Sanctuaries {
     public static final SanctuaryBlock CORE=Registry.register(Registries.BLOCK,Hardcore.id("santuario"),new SanctuaryBlock());
+    public static final SanctuaryCollision COLLISION=Registry.register(Registries.BLOCK,Hardcore.id("santuario_soporte"),new SanctuaryCollision());
     public static final BlockEntityType<SanctuaryEntity> ENTITY=Registry.register(Registries.BLOCK_ENTITY_TYPE,Hardcore.id("santuario"),FabricBlockEntityTypeBuilder.create(SanctuaryEntity::new,CORE).build());
     public static final Feature<DefaultFeatureConfig> FEATURE=Registry.register(Registries.FEATURE,Hardcore.id("sanctuary"),new SanctuaryFeature());
     public static void init() {
         BiomeModifications.addFeature(BiomeSelectors.foundInOverworld().and(c->!c.getBiomeKey().getValue().getPath().contains("ocean")&&!c.getBiomeKey().equals(BiomeKeys.RIVER)&&!c.getBiomeKey().equals(BiomeKeys.FROZEN_RIVER)),GenerationStep.Feature.SURFACE_STRUCTURES,RegistryKey.of(RegistryKeys.PLACED_FEATURE,Hardcore.id("sanctuary")));
-        ServerChunkEvents.CHUNK_LOAD.register((world,chunk)->{if(Hardcore.souls!=null)for(var e:chunk.getBlockEntities().values())if(e instanceof SanctuaryEntity){remember(world,e.getPos());world.getChunkManager().getLightingProvider().checkBlock(e.getPos());}});
+        ServerChunkEvents.CHUNK_LOAD.register((world,chunk)->{if(Hardcore.souls!=null)for(var e:chunk.getBlockEntities().values())if(e instanceof SanctuaryEntity){remember(world,e.getPos());BlockPos p=e.getPos();world.getServer().execute(()->{if(world.getBlockState(p).isOf(CORE))SanctuaryCollision.install(world,p);});world.getChunkManager().getLightingProvider().checkBlock(e.getPos());}});
     }
     public static String key(World world,BlockPos p) {return world.getRegistryKey().getValue()+"|"+p.getX()+"|"+p.getY()+"|"+p.getZ();}
     public static void remember(World w,BlockPos p) {if(Hardcore.souls!=null && Hardcore.souls.data.sanctuaries.add(key(w,p)))Hardcore.souls.save();}
     public static void forget(World w,BlockPos p) {if(Hardcore.souls!=null && Hardcore.souls.data.sanctuaries.remove(key(w,p)))Hardcore.souls.save();}
+    public static void repairKnown(net.minecraft.server.MinecraftServer server){
+        for(String key:new ArrayList<>(Hardcore.souls.data.sanctuaries)){
+            String[] parts=key.split("\\|");if(parts.length!=4)continue;
+            var world=server.getWorld(RegistryKey.of(RegistryKeys.WORLD,new net.minecraft.util.Identifier(parts[0])));if(world==null)continue;
+            var p=new BlockPos(Integer.parseInt(parts[1]),Integer.parseInt(parts[2]),Integer.parseInt(parts[3]));
+            if(world.getChunkManager().isChunkLoaded(p.getX()>>4,p.getZ()>>4)&&world.getBlockState(p).isOf(CORE))SanctuaryCollision.install(world,p);
+        }
+    }
     private static boolean ground(BlockState s) {return s.isIn(BlockTags.DIRT)||s.isOf(Blocks.STONE)||s.isOf(Blocks.SAND)||s.isOf(Blocks.GRAVEL)||s.isOf(Blocks.DEEPSLATE)||s.isOf(Blocks.SNOW_BLOCK);}
     private static boolean empty(BlockState s) {return s.isAir()||s.isOf(Blocks.GRASS)||s.isOf(Blocks.TALL_GRASS)||s.isOf(Blocks.FERN)||s.isOf(Blocks.SNOW)||s.isIn(BlockTags.FLOWERS);}
     /** Core position is one block above the platform. Never replace player blocks or containers. */
@@ -63,9 +72,8 @@ public final class Sanctuaries {
             for(int y=0;y<4;y++)w.setBlockState(core.add(x,y,z),(y==0?Blocks.CHISELED_POLISHED_BLACKSTONE:y==3?Blocks.GILDED_BLACKSTONE:Blocks.POLISHED_BLACKSTONE_BRICKS).getDefaultState(),3);
             w.setBlockState(core.add(x,4,z),Blocks.SOUL_LANTERN.getDefaultState(),3);
         }
-        for(int x:new int[]{-2,2})for(int z:new int[]{-2,2})w.setBlockState(core.add(x,0,z),Blocks.POLISHED_BLACKSTONE_SLAB.getDefaultState(),3);
         w.setBlockState(core,CORE.getDefaultState(),3);
-        if(w instanceof World world)remember(world,core);
+        if(w instanceof World world){remember(world,core);SanctuaryCollision.install(world,core);}
         return true;
     }
     public static BlockPos nearby(ServerPlayerEntity p) {

@@ -13,7 +13,8 @@ async function test(){
  const options=path.join(root,'options.txt');fs.appendFileSync(options,'\nmusic:0.123\n');
  const before=fs.readFileSync(options,'utf8');
  const stale=path.join(root,'mods/tecnihardcore-2.0.0.jar');fs.writeFileSync(stale,'unmanaged old mod');
- const mod=path.join(root,'mods/tecnihardcore-2.3.0.jar');fs.writeFileSync(mod,'corrupted test copy');
+ const packVersion=JSON.parse(fs.readFileSync(path.resolve('installer_payload/config/tecnihardcore/connection.json'))).packVersion;
+ const mod=path.join(root,`mods/tecnihardcore-${packVersion}.jar`);fs.writeFileSync(mod,'corrupted test copy');
  await install.prepareClient(root,path.resolve('installer_payload'),()=>{},endpoint);
  assert(!fs.existsSync(stale),'unmanaged previous version must be archived');
  assert(fs.readFileSync(mod).subarray(0,2).equals(Buffer.from('PK')));

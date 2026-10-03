@@ -1,6 +1,6 @@
-# TecniHardcore 2.2: La cúpula de las almas
+# TecniHardcore 2.4: launcher portable y Custodio transformado
 
-Actualizado el 2 de octubre de 2026. Minecraft 1.20.1, Fabric 0.19.5, TecniHardcore 2.3.0, protocolo de ritual 3, GeckoLib 4.8.4 y EasyAuth 3.3.6.
+Actualizado el 2 de octubre de 2026. Minecraft 1.20.1, Fabric 0.19.5, TecniHardcore 2.4.0, protocolo de ritual 3, GeckoLib 4.8.4 y EasyAuth 3.3.6.
 
 ## Arranque y acceso
 
@@ -8,9 +8,9 @@ Ejecutar `INICIAR_SERVIDOR.bat` y esperar `Done`. Se usa Java 17 y el agente de 
 
 Dirección pública: `rails-acorn.tun.ply.gg:6906`. Perfil local: `127.0.0.1:25565`. Conservar el agente y el túnel existentes para mantener la dirección asignada. No distribuir los secretos de Playit ni las carpetas privadas del servidor.
 
-Entregar a los jugadores `dist/TecniHardcore-Setup-2.3.0.exe` o el enlace de la [última Release de GitHub](https://github.com/Doumomentss/TecniHardcore/releases/latest). Este launcher incluye el actualizador y las mecánicas 2.3.0. El instalador incorpora modelos, texturas, sonido, menú y los dos mods propios. Los 51 mods externos se obtienen de sus fuentes oficiales en el primer preparado, con hashes fijados. La distribución usa el perfil público y conserva el botón personalizado ENTRAR AL SERVIDOR. Cerrar Minecraft antes de actualizar. Las copias de archivos sustituidos quedan en `backups`; las preferencias existentes se conservan y se activa el resource pack oficial sin borrar los demás.
+Entregar a los jugadores `dist/TecniHardcore-Setup-2.4.0.exe` o el enlace de la [última Release de GitHub](https://github.com/Doumomentss/TecniHardcore/releases/latest). Este launcher incluye el actualizador y las mecánicas 2.4.0. El instalador incorpora modelos, texturas, sonido, menú y los dos mods propios. Los 58 mods externos se obtienen de sus fuentes oficiales en el primer preparado, con hashes fijados. La distribución usa el perfil público y conserva el botón personalizado ENTRAR AL SERVIDOR. Cerrar Minecraft antes de actualizar. Las copias de archivos sustituidos quedan en `backups`; las preferencias existentes se conservan y se activa el resource pack oficial sin borrar los demás.
 
-El launcher consulta GitHub al abrirse, cada hora y desde Ajustes. Una Release posterior muestra ACTUALIZAR: descarga verificada, cierre del launcher, instalación con recuperación y reapertura. Los launchers anteriores al actualizador necesitan instalar 2.3.0 una vez. Para publicar otra versión, actualizar `launcher/package.json` y `package-lock.json`, preparar el paquete y ejecutar `tools/publish-release.ps1`; no subir el workspace entero. El script publica exclusivamente la copia permitida de `publish/TecniHardcore`. La actualización no reinicia ni actualiza por sí sola el servidor del propietario.
+El launcher consulta GitHub al abrirse, cada hora y desde Ajustes. Una Release posterior muestra ACTUALIZAR: descarga verificada, cierre del launcher, instalación con recuperación y reapertura. Los launchers anteriores al actualizador necesitan instalar 2.4.0 una vez. Para publicar otra versión, actualizar `launcher/package.json` y `package-lock.json`, preparar el paquete y ejecutar `tools/publish-release.ps1`; no subir el workspace entero. El script publica exclusivamente la copia permitida de `publish/TecniHardcore`. La actualización no reinicia ni actualiza por sí sola el servidor del propietario.
 
 Los clientes anteriores reciben un mensaje para actualizar. No mezclar distintas versiones del mod en `mods`.
 
@@ -61,7 +61,7 @@ Copias periódicas cada seis horas en `server/backups/tecnihardcore`, conservand
 
 Para restaurar: detener el servidor, conservar la carpeta actual aparte y extraer el mundo elegido a una carpeta nueva. No mezclar regiones de copias distintas. Recuperar también mods, configuración y autenticación compatibles cuando se retrocede de versión. Nunca sobreescribir un mundo activo.
 
-La autoridad es `world/tecnihardcore-souls.json`, esquema 2. La migración conserva vidas y enfriamientos y convierte `revived=true` en una resurrección histórica. El registro de pagos permite recuperar un cobro interrumpido descontando solo una unidad de una pila. No editar este archivo mientras el servidor está encendido ni borrar transacciones pendientes.
+La autoridad es `world/tecnihardcore-souls.json`, esquema 3. La migración conserva vidas y enfriamientos y convierte `revived=true` en una resurrección histórica. El registro de pagos permite recuperar un cobro interrumpido descontando solo una unidad de una pila. No editar este archivo mientras el servidor está encendido ni borrar transacciones pendientes.
 
 Los ensayos destructivos se hicieron en mundos aislados y cuentas TecniSoul de prueba. La copia en `tools/test-runtime/server` debe quedar apagada durante el uso normal; su puerto Minecraft es 25566 y el de voz 24455. Los resultados y límites de validación están en `RESULTADOS-2.1.md`.
 
@@ -74,3 +74,29 @@ El tablón de reliquias está en **6, 96, −17**, orientado hacia el norte. Se 
 El launcher muestra jugadores autenticados, vidas, contador de resurrecciones, versión y novedades usando el puerto Minecraft. Las novedades se editan en `server/config/tecnihardcore/public-news.json`, como una lista de objetos con `title` y `body`; máximo cinco anuncios, 100 caracteres de título y 600 de texto. No admite HTML. El servidor relee el archivo cada cinco segundos. No añadir datos privados a este archivo público.
 
 Para el jefe experimental, consultar [PRUEBA-JEFE.md](PRUEBA-JEFE.md). No se puede invocar en producción.
+
+## Launcher portable y gráficos 2.4
+
+El nombre y la carpeta viven en `%APPDATA%\TecniHardcore\settings.json`, con copia `.previous`. Mover el ejecutable no cambia la identidad. Si el nombre falta, hay que escribir el nombre original; nunca adivinar otro, porque cambiar el nombre offline cambia el UUID y el inventario asociado. En Ajustes, «Carpeta del juego» permite trasladar una copia verificada o usar una carpeta ya trasladada. La original se conserva para recuperar archivos si hace falta. El escritorio usa la ubicación real de Windows, también con OneDrive.
+
+La pantalla Jugar ofrece Vanilla, Optimizado, Ultra optimizado, Calidad y Ultra calidad. Solo modifica gráficos al seleccionar o restaurar. Instalaciones nuevas: Optimizado. Calidad descarga Complementary Reimagined r5.9.3 original, MEDIUM; Ultra calidad, ULTRA. Créditos: Complementary Development / EminGT. No se redistribuye su ZIP. Reintentar o elegir Optimizado ante un fallo de descarga. Si la compilación falla, cerrar Minecraft y usar «Reiniciar sin shaders»; se conserva la preferencia del perfil. La preparación de shaders se hace antes de conectar para evitar el timeout del primer ingreso.
+
+## Custodio 2.4
+
+Invocación administrativa: `/tecni jefe invocar x y z`, fuera de la plaza protegida y sin otro jefe cercano. No hay generación natural. Tres barras de 400, 500 y 1000 de vida; seis segundos de transformación a Espectro del Núcleo tras la segunda. Daños base antes de armadura/escudo, marcas visibles para esquivar y sonidos en volumen de criaturas hostiles. Las prisiones duran dos segundos y dejan diez segundos de inmunidad posterior. El jefe limita su persecución y no rompe construcciones. Para retirarlo: `/kill @e[type=tecnihardcore:custodio_pizarra]`; se limpian sus proyectiles y efectos.
+
+Los tótems exigen 60 segundos desde el último uso dentro de 48 bloques de un jefe en combate y 300 fuera. Salir y entrar no reinicia el contador. El HUD muestra «Zona del jefe: 1 minuto». Se conservan exclusiones de vacío y `/kill`.
+
+Consultar `RESULTADOS-2.4.md` para pruebas realizadas y pendientes; la duración de 4–6 minutos contra dos jugadores humanos con diamante todavía requiere una pelea de evaluación.
+
+## Contenido y plaza 2.4
+
+El nombre visible del mod es TecniHardcore. Se suman Simply Swords, Better Combat, playerAnimator, Immersive Armors, AdventureZ y Simply Tooltips. Los JARs externos se descargan con hashes fijados desde sus autores. El libro `/tecni guia` explica la baliza de auxilio y las mecánicas; JEI muestra las recetas nuevas.
+
+Baliza de auxilio: ocho lingotes de cobre y un fragmento de eco. La señal dura 60 segundos, llega a compañeros autenticados de la misma dimensión a 256 bloques, tiene 16 usos y diez minutos de enfriamiento por UUID. No ofrece vidas, curación ni transporte. La señal desaparece al desconectarse su emisor; el enfriamiento sobrevive a reconexiones y reinicios. La armadura con 15% o menos de durabilidad genera aviso en el HUD.
+
+El pedestal del santuario tiene colisión por celdas protegidas y abre su interfaz desde la base y las patas. Retirar administrativamente el núcleo elimina las celdas asociadas y cancela el ritual. No retirar soportes individuales. En núcleos existentes, la reparación coloca solo en aire, conservando construcciones; si alguien añadió bloques dentro de su modelo, el operador debe despejarlos explícitamente.
+
+La plaza ampliada mantiene núcleo en 0,96,0 y protección de 32 bloques, añade talleres, caminos, luces y un cartel construido TECNIHARDCORE. `tools/build-spawn24.py` audita el mundo y produce `tools/spawn24-pack`; no escribe regiones. Se copia como datapack del servidor y se aplica una vez con `function tecni_spawn24:upgrade`, después de backup y prueba sobre copia. La función revalida todas las posiciones; si alguna cambió, cancela sin colocar ningún bloque. No aplicar el constructor antiguo del spawn sobre una plaza existente.
+
+El daño base del Custodio aumenta según fase: melee 16/20/24; ataques finales hasta 26 antes de armadura. La primera transición dura cuatro segundos, la transformación final seis y la derrota definitiva seis. Se conserva entidad/UUID, sin repetir impactos al reiniciar. El equilibrio de duración requiere una pelea real de dos jugadores con diamante sin encantamientos; las pruebas automatizadas no sustituyen esa medición.

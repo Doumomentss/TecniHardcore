@@ -512,6 +512,8 @@ body {
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  flex-shrink: 0;
+  min-width: 175px;
   box-shadow: 0 6px 25px rgba(255, 42, 85, 0.45);
   transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -543,6 +545,7 @@ body {
   font-weight: 900;
   letter-spacing: 1.5px;
   color: #fff;
+  white-space: nowrap;
 }
 
 /* Servidor Cards Grid */
@@ -990,3 +993,7 @@ body {
 .update-banner button { border:1px solid #d7b85d;background:#d7b85d;color:#172422;padding:10px 14px;border-radius:8px;font-weight:bold;cursor:pointer; }
 .update-banner button:disabled { opacity:.6;cursor:wait; }
 #btn-cancel-update.hidden { display:none; }
+
+.graphics-picker{margin:12px 0;padding:14px 18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}.graphics-picker label{font-size:11px;color:#dfbd78;letter-spacing:1px}.graphics-picker select{background:#18222c;border:1px solid #516273;color:#fff;padding:9px;border-radius:6px}.graphics-picker button{background:#273544;color:#eee;border:1px solid #52677a;border-radius:6px;padding:9px;cursor:pointer}.graphics-picker p{width:100%;margin:0;font-size:12px;color:#b9c5cf}#game-folder{overflow-wrap:anywhere;font-size:12px;color:#c8d6df}
+
+@media (max-width: 1000px) { .launch-dock {padding:18px;gap:14px;} .dock-specs-col {gap:12px;} .play-button {padding:18px 20px;min-width:175px;} .player-input-box input {width:155px;} .dock-player-col {gap:10px;} .player-avatar-box {width:44px;height:44px;} }

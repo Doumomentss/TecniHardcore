@@ -9,9 +9,11 @@ async function listening(){return new Promise(r=>{const s=net.connect(25567,'127
  for(const name of ['libraries','fabric-server-launch.jar','server.jar','fabric-server-launcher.properties','.fabric']){const src=path.join(root,'server',name);if(fs.existsSync(src)&&!fs.existsSync(path.join(server,name)))fs.cpSync(src,path.join(server,name),{recursive:true});}
  fs.mkdirSync(path.join(server,'mods'),{recursive:true});
  for(const name of fs.readdirSync(path.join(root,'server/mods'))){if(/^(easyauth|ledger|tecnihardcore|luckperms|graves)/i.test(name))continue;fs.copyFileSync(path.join(root,'server/mods',name),path.join(server,'mods',name));}
- const jar=path.join(root,'custom_mods/hardcore/build/libs/tecnihardcore-2.3.0.jar');if(!fs.existsSync(jar))throw Error('Falta el mod de pruebas 2.3.0.');
- for(const name of fs.readdirSync(path.join(server,'mods')))if(/^(graves|ledger|easyauth)-.*\.jar$/i.test(name))fs.unlinkSync(path.join(server,'mods',name));
- fs.copyFileSync(jar,path.join(server,'mods/tecnihardcore-2.3.0.jar'));fs.writeFileSync(path.join(server,'eula.txt'),'eula=true\n');
+ const extra=path.join(root,'tools/test-runtime/content24/mods');
+ if(fs.existsSync(extra))for(const name of fs.readdirSync(extra))fs.copyFileSync(path.join(extra,name),path.join(server,'mods',name));
+ const jar=path.join(root,'custom_mods/hardcore/build/libs/tecnihardcore-2.4.0.jar');if(!fs.existsSync(jar))throw Error('Falta el mod de pruebas 2.4.0.');
+ for(const name of fs.readdirSync(path.join(server,'mods')))if(/^(graves|ledger|easyauth|tecnihardcore)-.*\.jar$/i.test(name))fs.unlinkSync(path.join(server,'mods',name));
+ fs.copyFileSync(jar,path.join(server,'mods/tecnihardcore-2.4.0.jar'));fs.writeFileSync(path.join(server,'eula.txt'),'eula=true\n');
  fs.writeFileSync(path.join(server,'server.properties'),'server-ip=127.0.0.1\nserver-port=25567\nonline-mode=false\nlevel-name=arena\nlevel-type=minecraft:flat\ngenerator-settings={"layers":[{"block":"minecraft:bedrock","height":1},{"block":"minecraft:dirt","height":2},{"block":"minecraft:grass_block","height":1}],"biome":"minecraft:plains"}\ndifficulty=hard\nspawn-protection=0\nview-distance=8\nsimulation-distance=6\nmax-players=4\n');
  fs.mkdirSync(path.join(server,'config/voicechat'),{recursive:true});fs.writeFileSync(path.join(server,'config/voicechat/voicechat-server.properties'),'port=25568\nbind_address=127.0.0.1\n');
  const java=await install.ensureJava(game,null,console.log);
@@ -24,7 +26,8 @@ async function listening(){return new Promise(r=>{const s=net.connect(25567,'127
  }
  process.stdin.on("data",data=>{if(global.previewServer)global.previewServer.stdin.write(data);});
  const pack=path.join(root,'installer_payload');await install.prepareClient(game,pack,console.log,{host:'127.0.0.1',port:25567});
- for(const name of fs.readdirSync(path.join(game,'mods')))if(/^tecnihardcore-.*\.jar$/.test(name))fs.unlinkSync(path.join(game,'mods',name));fs.copyFileSync(jar,path.join(game,'mods/tecnihardcore-2.3.0.jar'));
+ if(process.env.TECNI_GRAPHICS_QA)await require('../launcher/graphics').apply(game,process.env.TECNI_GRAPHICS_QA,pack,console.log);
+ for(const name of fs.readdirSync(path.join(game,'mods')))if(/^tecnihardcore-.*\.jar$/.test(name))fs.unlinkSync(path.join(game,'mods',name));fs.copyFileSync(jar,path.join(game,'mods/tecnihardcore-2.4.0.jar'));
  const client=new Client();client.on('debug',m=>{if(!String(m).includes('Launching with arguments'))fs.appendFileSync(path.join(base,'client.log'),String(m)+'\n')});client.on('data',m=>fs.appendFileSync(path.join(base,'client.log'),String(m)));client.on('close',()=>{process.stdin.pause();if(global.previewServer)global.previewServer.stdin.end('stop\n');});
  const child=await client.launch({root:game,authorization:Authenticator.getAuth('ProbadorBoss'),javaPath:java,version:{number:install.VERSION,type:'release',custom:install.PROFILE},memory:{max:'2G',min:'512M'},customArgs:process.env.TECNI_BOSS_QA?['-Dtecni.visualTest=true','-Dtecni.bossVisual=true']:[],window:{width:1280,height:720},quickPlay:{type:'multiplayer',identifier:'127.0.0.1:25567'},overrides:{detached:false}});
  fs.writeFileSync(path.join(base,'client.pid'),String(child.pid));console.log('Prueba aislada abierta. Cierra este Minecraft para detener la arena.');

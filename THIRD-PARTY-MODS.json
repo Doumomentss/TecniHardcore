@@ -778,5 +778,109 @@
       "YUNGNICKYOUNG",
       "Acarii"
     ]
+  },
+  {
+    "file": "iris-1.7.6+mc1.20.1.jar",
+    "id": "iris",
+    "name": "Iris",
+    "version": "1.7.6+mc1.20.1",
+    "license": "LGPL-3.0-only",
+    "contact": {
+      "homepage": "https://github.com/IrisShaders/Iris",
+      "sources": "https://github.com/IrisShaders/Iris.git",
+      "issues": "https://github.com/IrisShaders/Iris/issues"
+    },
+    "authors": [
+      "coderbot",
+      "IMS212",
+      "Justsnoopy30",
+      "FoundationGames"
+    ]
+  },
+  {
+    "file": "simplyswords-fabric-1.70.2-1.20.1.jar",
+    "id": "simplyswords",
+    "name": "Simply Swords",
+    "version": "1.70.2-1.20.1",
+    "license": "Timefall Development License",
+    "contact": {
+      "homepage": "https://www.curseforge.com/minecraft/mc-mods/simply-swords",
+      "sources": "https://github.com/Sweenus/SimplySwords-1.19",
+      "issues": "https://github.com/Sweenus/SimplySwords/issues"
+    },
+    "authors": [
+      "Sweenus",
+      "Hootea (Art)",
+      "Konsyliarz42 (Art)"
+    ]
+  },
+  {
+    "file": "bettercombat-fabric-1.9.0+1.20.1.jar",
+    "id": "bettercombat",
+    "name": "Better Combat",
+    "version": "1.9.0+1.20.1",
+    "license": "GPL-3.0",
+    "contact": {
+      "issues": "https://github.com/ZsoltMolnarrr/BetterCombat/issues",
+      "homepage": "https://github.com/ZsoltMolnarrr/BetterCombat"
+    },
+    "authors": [
+      "Daedelus"
+    ]
+  },
+  {
+    "file": "player-animation-lib-fabric-1.0.2-rc1+1.20.jar",
+    "id": "player-animator",
+    "name": "Player Animator",
+    "version": "1.0.2-rc1+1.20",
+    "license": "MIT",
+    "contact": {
+      "homepage": "kosmx.dev",
+      "sources": "https://github.com/KosmX/fabricPlayerAnimation"
+    },
+    "authors": [
+      "KosmX  "
+    ]
+  },
+  {
+    "file": "immersive_armors-1.7.2+1.20.1-fabric.jar",
+    "id": "immersive_armors",
+    "name": "Immersive Armors",
+    "version": "1.7.2+1.20.1",
+    "license": "GPL-3.0-only",
+    "contact": {
+      "homepage": "https://www.curseforge.com/minecraft/mc-mods/immersive-armors",
+      "sources": "https://github.com/Luke100000/ImmersiveArmors",
+      "issues": "https://github.com/Luke100000/ImmersiveArmors/issues"
+    },
+    "authors": [
+      "Luke100000"
+    ]
+  },
+  {
+    "file": "adventurez-1.4.20.jar",
+    "id": "adventurez",
+    "name": "AdventureZ",
+    "version": "1.4.20",
+    "license": "GPLv3",
+    "contact": {
+      "homepage": "https://www.curseforge.com/minecraft/mc-mods/adventurez",
+      "sources": "https://github.com/Globox1997/AdventureZ",
+      "issues": "https://github.com/Globox1997/AdventureZ/issues"
+    },
+    "authors": [
+      "Globox_Z"
+    ]
+  },
+  {
+    "file": "SimplyTooltips-fabric-0.1.5-1.20.1.jar",
+    "id": "simplytooltips",
+    "name": "Simply Tooltips",
+    "version": "0.1.5-1.20.1",
+    "license": "Timefall Development License 1.2",
+    "contact": {},
+    "authors": [
+      "Sweenus"
+    ]
   }
 ]

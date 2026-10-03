@@ -46,5 +46,47 @@
       "tecnihardcore:boss/strike"
     ],
     "subtitle": "subtitles.tecnihardcore.boss_strike"
+  },
+  "boss.melee": {
+    "sounds": [
+      "tecnihardcore:boss/melee"
+    ],
+    "subtitle": "subtitles.tecnihardcore.boss_melee"
+  },
+  "boss.warning": {
+    "sounds": [
+      "tecnihardcore:boss/warning"
+    ],
+    "subtitle": "subtitles.tecnihardcore.boss_warning"
+  },
+  "boss.prison": {
+    "sounds": [
+      "tecnihardcore:boss/prison"
+    ],
+    "subtitle": "subtitles.tecnihardcore.boss_prison"
+  },
+  "boss.volley": {
+    "sounds": [
+      "tecnihardcore:boss/volley"
+    ],
+    "subtitle": "subtitles.tecnihardcore.boss_volley"
+  },
+  "boss.phase": {
+    "sounds": [
+      "tecnihardcore:boss/phase"
+    ],
+    "subtitle": "subtitles.tecnihardcore.boss_phase"
+  },
+  "boss.transform": {
+    "sounds": [
+      "tecnihardcore:boss/transform"
+    ],
+    "subtitle": "subtitles.tecnihardcore.boss_transform"
+  },
+  "boss.death": {
+    "sounds": [
+      "tecnihardcore:boss/death"
+    ],
+    "subtitle": "subtitles.tecnihardcore.boss_death"
   }
 }

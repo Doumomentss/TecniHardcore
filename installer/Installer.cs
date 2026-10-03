@@ -11,6 +11,20 @@ using System.Collections.Generic;
 using System.Threading;
 namespace TecniHardcoreInstaller {
 static class Payload {
+ static void Shortcut(string root) {
+  try {
+   string desktop=Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);Directory.CreateDirectory(desktop);
+   Type type=Type.GetTypeFromProgID("WScript.Shell");object shell=Activator.CreateInstance(type);
+   object link=type.InvokeMember("CreateShortcut",BindingFlags.InvokeMethod,null,shell,new object[]{Path.Combine(desktop,"TecniHardcore.lnk")});
+   Type linkType=link.GetType();string exe=Path.Combine(root,"TecniHardcore Launcher.exe");
+   linkType.InvokeMember("TargetPath",BindingFlags.SetProperty,null,link,new object[]{exe});
+   linkType.InvokeMember("WorkingDirectory",BindingFlags.SetProperty,null,link,new object[]{root});
+   linkType.InvokeMember("IconLocation",BindingFlags.SetProperty,null,link,new object[]{exe+",0"});
+   linkType.InvokeMember("Description",BindingFlags.SetProperty,null,link,new object[]{"TecniHardcore 1.20.1 Fabric"});
+   linkType.InvokeMember("Save",BindingFlags.InvokeMethod,null,link,null);
+   System.Runtime.InteropServices.Marshal.FinalReleaseComObject(link);System.Runtime.InteropServices.Marshal.FinalReleaseComObject(shell);
+  }catch(Exception error){try{File.WriteAllText(Path.Combine(Path.GetTempPath(),"tecnihardcore-shortcut-error.txt"),error.Message);}catch{}}
+ }
  const string Journal=".tecni-update-journal.txt";
  static string Digest(string file) {using(var sha=SHA256.Create())using(var input=File.OpenRead(file))return BitConverter.ToString(sha.ComputeHash(input)).Replace("-","").ToLowerInvariant();}
  static string Target(string root,string relative) {
@@ -98,6 +112,7 @@ static class Payload {
       File.WriteAllText(Path.Combine(stage,versionFile),"TecniHardcore "+BuildInfo.Version+" / Minecraft 1.20.1 Fabric / mecánicas "+BuildInfo.Version+"\r\n");
       Replace(root,stage,versionFile,stamp);
       File.Delete(journal);
+      Shortcut(root);
      }catch{Recover(root);throw;}
     } finally {Directory.Delete(stage,true);}
    } finally {if(acquired)mutex.ReleaseMutex();}

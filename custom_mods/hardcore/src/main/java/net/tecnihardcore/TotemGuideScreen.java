@@ -24,7 +24,7 @@ public final class TotemGuideScreen extends Screen {
         Item[] ingredients={Items.TOTEM_OF_UNDYING,Items.NETHERITE_INGOT,Items.NETHER_STAR,seal};for(int i=0;i<4;i++){d.drawItem(new ItemStack(ingredients[i]),left+8+i*32,y);if(i<3)d.drawTextWithShadow(textRenderer,"+",left+29+i*32,y+5,0xffffff);}y+=23;
         y=lines(d,"1 tótem vanilla + 1 lingote de netherita + 1 estrella del Nether + 1 sello.",left+8,y,w-16,0xe0d9cd)+6;
         y=lines(d,seals[selected]+" El sello lo recibe quien da el golpe final, una vez por jefe y jugador.",left+8,y,w-16,0xb9e5e4)+8;
-        lines(d,"Todos los tótems, incluido el vanilla, comparten 5 minutos de enfriamiento. No recuperan vidas. No salvan del vacío ni de /kill.",left+8,y,w-16,0xf3b79b);
+        lines(d,"Todos los tótems, incluido el vanilla, comparten 5 minutos; en la zona del jefe, 1 minuto desde la última activación. No recuperan vidas. No salvan del vacío ni de /kill.",left+8,y,w-16,0xf3b79b);
         d.getMatrices().pop();d.disableScissor();
         super.render(d,mx,my,delta);
     }

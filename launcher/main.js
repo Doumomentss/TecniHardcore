@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const {getConnection} = require('./connection');
@@ -7,6 +7,11 @@ const { execSync, spawn } = require('child_process');
 const { Client, Authenticator } = require('minecraft-launcher-core');
 
 let mainWindow;
+let preferences;
+try{preferences=new (require('./settings').Settings)(path.join(app.getPath('appData'),'TecniHardcore'));}catch(error){dialog.showErrorBox('Ajustes de TecniHardcore',error.message+'\n'+path.join(app.getPath('appData'),'TecniHardcore','settings.json'));app.exit(1);throw error;}
+const graphics=require('./graphics');
+function desktopShortcut(){if(!app.isPackaged||process.platform!=='win32')return;try{const link=path.join(app.getPath('desktop'),'TecniHardcore.lnk');if(!shell.writeShortcutLink(link,fs.existsSync(link)?'update':'create',{target:process.execPath,cwd:path.dirname(process.execPath),icon:process.execPath,iconIndex:0,description:'TecniHardcore 1.20.1 Fabric',appUserModelId:'com.tecnihardcore.launcher'}))console.warn('No se pudo crear el acceso directo.');}catch(error){console.warn('Acceso directo: '+error.message);}}
+
 
 if (process.platform === 'win32') {
   app.setAppUserModelId('com.tecnihardcore.launcher');
@@ -39,7 +44,7 @@ function createWindow() {
   });
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(()=>{createWindow();desktopShortcut();});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -84,13 +89,12 @@ ipcMain.handle('detect-user', async () => {
   try {
     if (fs.existsSync(profilesPath)) {
       const profiles = JSON.parse(fs.readFileSync(profilesPath, 'utf-8'));
-      if (profiles.selectedUser && profiles.selectedUser.account) {
-        return profiles.selectedUser.account;
-      }
+      const name=profiles.authenticationDatabase?.[profiles.selectedUser?.account]?.profiles?.[profiles.selectedUser?.profile]?.displayName;
+      if(require('./settings').validName(name))return name;
     }
   } catch (e) {}
 
-  return 'Jugador';
+  return '';
 });
 
 // Auto-detectar Java Runtime
@@ -115,6 +119,7 @@ let preparing = false;
 let updating = false;
 let updateDownload = null;
 function clientRoot(payload) {
+  if(preferences.data.gamePath)return preferences.data.gamePath;
   const ownerRoot=path.resolve(process.resourcesPath,'../..');
   if(fs.existsSync(path.join(ownerRoot,'connection.local.json')))return path.join(ownerRoot,'client');
   return path.basename(payload)==='installer_payload'?path.join(path.dirname(payload),'client'):path.join(path.dirname(process.execPath),'game');
@@ -122,6 +127,21 @@ function clientRoot(payload) {
 const send = (channel, value) => {
   if (mainWindow && !mainWindow.isDestroyed()) mainWindow.webContents.send(channel, value);
 };
+ipcMain.handle('get-settings',(_,legacy={})=>{const payload=installation.findPayload(process.resourcesPath);return preferences.migrate(legacy,clientRoot(payload));});
+ipcMain.handle('save-settings',(_,patch)=>preferences.save(patch));
+ipcMain.handle('choose-game-folder',async()=>{
+ if(preparing||gameProcess||updating)return {success:false,error:'Cierra Minecraft y espera a que termine la actualización.'};
+ const result=await dialog.showOpenDialog(mainWindow,{title:'Carpeta de Minecraft TecniHardcore',properties:['openDirectory','createDirectory']});if(result.canceled)return {success:false,canceled:true};
+ const source=clientRoot(installation.findPayload(process.resourcesPath)),target=result.filePaths[0];
+ try{require('./game-folder').safe(source,target);const existing=fs.existsSync(path.join(target,'options.txt'));
+ const choice=await dialog.showMessageBox(mainWindow,{type:'question',message:existing?'Encontramos Minecraft en esta carpeta.':'¿Cómo quieres usar esta carpeta?',detail:existing?'Se verificará el paquete y se conservarán sus archivos.':'Trasladar crea y verifica una copia; conserva también la carpeta original.',buttons:existing?['Usar y verificar','Cancelar']:['Trasladar y verificar','Cancelar'],cancelId:1});if(choice.response===1)return {success:false,canceled:true};
+ preparing=true;send('launch-status',{message:'Verificando la carpeta del juego…'});if(!existing&&fs.existsSync(source))await require('./game-folder').transfer(source,target);
+ await installation.prepareClient(target,installation.findPayload(process.resourcesPath),m=>send('launch-status',{message:m}),getConnection(process.resourcesPath));preferences.save({gamePath:target});return {success:true,settings:preferences.data};
+ }catch(error){return {success:false,error:error.message};}finally{preparing=false;}
+});
+async function selectGraphics(mode){if(preparing||gameProcess||updating)return {success:false,error:'Cierra Minecraft antes de cambiar el perfil gráfico.'};preparing=true;try{preferences.save({graphicsMode:mode,graphicsPending:true});const payload=installation.findPayload(process.resourcesPath),root=clientRoot(payload);if(fs.existsSync(path.join(root,'options.txt'))){await graphics.apply(root,mode,payload,m=>send('launch-status',{message:m}));preferences.save({graphicsPending:false});}return {success:true,settings:preferences.data};}catch(error){return {success:false,error:error.message};}finally{preparing=false;}}
+ipcMain.handle('set-graphics',(_,mode)=>selectGraphics(mode));
+ipcMain.handle('restore-graphics',()=>selectGraphics(preferences.data.graphicsMode||'optimized'));
 ipcMain.handle('repair-client',async()=>{
   if(preparing||gameProcess||updating)return {success:false,error:'Cierra Minecraft y espera a que termine la actualización antes de reparar.'};
   preparing=true;
@@ -138,18 +158,22 @@ ipcMain.handle('launch-game', async (event, options = {}) => {
   try {
     const payload = installation.findPayload(process.resourcesPath);
     const root = clientRoot(payload);
-    const username = String(options.username || 'Jugador').trim();
+    const username = String(options.username || preferences.data.username || '').trim();
     if (!/^[A-Za-z0-9_]{3,16}$/.test(username)) throw new Error('Usa un nombre de 3 a 16 letras, números o guiones bajos.');
+    preferences.save({username,ram:options.ram??preferences.data.ram,javaPath:options.javaPath??preferences.data.javaPath});
     const status = message => send('launch-status', { message });
     const endpoint = getConnection(process.resourcesPath);
     const java = await installation.ensureJava(root,options.javaPath,status);
     const installed = await installation.prepareClient(root, payload, status,endpoint);
+    if(options.withoutShaders)await graphics.disableOnce(root);
+    else if(preferences.data.graphicsPending){await graphics.apply(root,preferences.data.graphicsMode,payload,status);preferences.save({graphicsPending:false});}
+    else if(graphics.PRESETS[preferences.data.graphicsMode]?.shader)await graphics.ensureShader(root,path.join(payload,'shaders-download.json'),status);
     const ram = Math.min(16, Math.max(2, Number(options.ram) || 6));
     const launcher = new Client();
     fs.mkdirSync(path.join(root, 'logs'), { recursive: true });
     const logFile = path.join(root, 'logs', 'launcher.log');
     fs.writeFileSync(logFile, `${new Date().toISOString()} Minecraft ${installation.VERSION}; Fabric ${installation.PROFILE}; ${installed.mods} mods; Java ${java}\n`);
-    let lastError = '';
+    let lastError = '',shaderFailure=false;
     launcher.on('debug', message => {
       // Do not persist launch arguments, which can contain authentication tokens.
       if (!message.includes('Launching with arguments')) fs.appendFileSync(logFile, message + '\n');
@@ -157,10 +181,11 @@ ipcMain.handle('launch-game', async (event, options = {}) => {
     });
     launcher.on('progress', e => send('launch-progress', { ...e, percentage: Math.round(e.task / Math.max(1,e.total) * 100) }));
     launcher.on('data', data => {
+      if(graphics.shaderError(data.toString()))shaderFailure=true;
       fs.appendFileSync(logFile, data.toString());
       send('game-log', data.toString());
     });
-    launcher.on('close', code => { gameProcess = null; send('game-closed', code); });
+    launcher.on('close', code => { gameProcess = null; send('game-closed', code);if(shaderFailure)send('shader-failed',{message:'No se pudieron compilar los shaders. Puedes reiniciar sin shaders; conservaremos tu perfil.'}); });
     status(`Iniciando Minecraft 1.20.1 con Fabric y ${installed.mods} mods…`);
     const versionJson = path.join(root,'versions','1.20.1','1.20.1.json');
     const child = await launcher.launch({

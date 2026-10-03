@@ -13,17 +13,18 @@ public final class HardcoreClient implements ClientModInitializer {
     private static int lives=-1;
     private static int resurrections;
     private static long ready;
+    private static boolean arena;
     public void onInitializeClient() {
-        ClientLoginNetworking.registerGlobalReceiver(RitualNetwork.HELLO,(c,h,b,listener)->{int protocol=b.readVarInt();var response=net.fabricmc.fabric.api.networking.v1.PacketByteBufs.create();response.writeVarInt(protocol==4?4:0);return java.util.concurrent.CompletableFuture.completedFuture(response);});
+        ClientLoginNetworking.registerGlobalReceiver(RitualNetwork.HELLO,(c,h,b,listener)->{int protocol=b.readVarInt();var response=net.fabricmc.fabric.api.networking.v1.PacketByteBufs.create();response.writeVarInt(protocol==5?5:0);return java.util.concurrent.CompletableFuture.completedFuture(response);});
         net.minecraft.client.render.block.entity.BlockEntityRendererFactories.register(Sanctuaries.ENTITY,SanctuaryRenderer::new);
-        RitualVisuals.init();
+        RitualVisuals.init(); BossVisuals.init(); RescueHud.init();
         net.minecraft.client.render.block.entity.BlockEntityRendererFactories.register(TotemBoard.ENTITY,TotemBoardRenderer::new);
         net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry.register(TrialBoss.TYPE,TrialBossRenderer::new);
         net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry.register(TrialShard.TYPE,TrialBossRenderer.ShardRenderer::new);
         ClientPlayNetworking.registerGlobalReceiver(TotemBoard.OPEN,(client,h,b,response)->client.execute(()->client.setScreen(new TotemGuideScreen())));
         ClientPlayNetworking.registerGlobalReceiver(RitualNetwork.SOUL,(client,handler,buf,response)-> {
-            int n=buf.readInt(); int r=buf.readVarInt(); long remaining=buf.readLong();
-            client.execute(()->{lives=n;resurrections=r;ready=System.nanoTime()+remaining*1_000_000;});
+            int n=buf.readInt(); int r=buf.readVarInt(); long remaining=buf.readLong(); boolean zone=buf.readBoolean();
+            client.execute(()->{lives=n;resurrections=r;arena=zone;ready=System.nanoTime()+remaining*1_000_000;});
         });
         ClientPlayNetworking.registerGlobalReceiver(Hardcore.ACTIVATE,(client,handler,buf,response)->{
             ItemStack item=buf.readItemStack(); client.execute(()->client.gameRenderer.showFloatingItem(item));
@@ -41,6 +42,7 @@ public final class HardcoreClient implements ClientModInitializer {
             long seconds=Math.max(0,(ready-System.nanoTime()+999_999_999)/1_000_000_000);
             draw.drawTextWithShadow(c.textRenderer,seconds>0?String.format("Tótems: %d:%02d",seconds/60,seconds%60):"Tótems preparados",x,y+35,seconds>0?0xf29d74:0x8cdbb5);
             draw.drawTextWithShadow(c.textRenderer,lives==0?"Ritual disponible · Resurrecciones: "+resurrections:"Resurrecciones: "+resurrections,x,y+47,0xb1b7c7);
+            if(arena)draw.drawTextWithShadow(c.textRenderer,"Zona del jefe: 1 minuto",x,y+59,0xbda5ff);
             var ritual=RitualVisuals.nearest();if(ritual!=null){
                 double elapsed=ritual.elapsed(delta);int w=Math.min(220,draw.getScaledWindowWidth()-24),left=(draw.getScaledWindowWidth()-w)/2,top=draw.getScaledWindowHeight()-65;
                 draw.fill(left-4,top-15,left+w+4,top+12,0xaa07191a);
@@ -55,7 +57,7 @@ public final class HardcoreClient implements ClientModInitializer {
             if(stack.hasNbt()&&stack.getNbt().getBoolean("SacredHeart")) lines.add(Text.literal("Reliquia antigua: no recupera vidas. Consulta /tecni guia."));
             if(Hardcore.isRelic(stack.getItem())) {
                 lines.add(Text.literal("Salva desde cualquier mano. Deja 2 corazones."));
-                lines.add(Text.literal("Enfriamiento compartido: 5 min. No salva del vacío."));
+                lines.add(Text.literal("Enfriamiento: 5 min; zona del jefe: 1 min. No salva del vacío."));
             }
         });
     }

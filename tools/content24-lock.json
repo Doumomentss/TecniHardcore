@@ -1,0 +1,329 @@
+[
+  {
+    "game_versions": [
+      "1.20.1"
+    ],
+    "loaders": [
+      "fabric"
+    ],
+    "environment": "client_and_server",
+    "id": "Tq7tcDiO",
+    "project_id": "bK3Ubu9p",
+    "author_id": "898EzW8v",
+    "featured": false,
+    "name": "Simply Swords 1.70.2-1.20.1",
+    "version_number": "1.70.2-1.20.1",
+    "changelog": "- Fixed a crash with Epic Fight\n- Fixed a bug that prevented simply swords loot inject or pity system from working with Lootr chests\n- Update Simplified Chinese localization (thanks tozyx!)",
+    "changelog_url": null,
+    "date_published": "2026-08-27T11:56:38.458651Z",
+    "downloads": 73569,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "id": "Mi4iuXNS",
+        "hashes": {
+          "sha1": "902fd3ac7558bebb249f61572227d499f51b3bde",
+          "sha512": "bed470510ca902ce7bd0890f391e6f267ab22d49c868565795f8aca1c48ba4697f915e4be4d44c94caa449750040bf12987665f695799404fecb5c2fea9091e9"
+        },
+        "url": "https://cdn.modrinth.com/data/bK3Ubu9p/versions/Tq7tcDiO/simplyswords-fabric-1.70.2-1.20.1.jar",
+        "filename": "simplyswords-fabric-1.70.2-1.20.1.jar",
+        "primary": true,
+        "size": 15700827,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "5sy6g3kz",
+        "file_name": null,
+        "dependency_type": "optional"
+      },
+      {
+        "version_id": null,
+        "project_id": "lhGA9TYQ",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "hYykXjDp",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "6avVoBVB",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.20",
+      "1.20.1"
+    ],
+    "loaders": [
+      "fabric"
+    ],
+    "environment": "client_and_server",
+    "id": "OtwNg4r4",
+    "project_id": "5sy6g3kz",
+    "author_id": "CUHgJfv9",
+    "featured": false,
+    "name": "1.9.0+1.20.1",
+    "version_number": "1.9.0+1.20.1-fabric",
+    "changelog": "# 1.9.0\n\n- Adjust API requirement to support Forge and NeoForge simultaneously #414\n- Fix weapon attributes with zero attacks (resulting due to conditions) crashing #472\n- Backport weapon registry compression #516\n- Backport updated first person view mod support #531 #540\n",
+    "changelog_url": null,
+    "date_published": "2025-12-02T21:48:07.291197Z",
+    "downloads": 1223279,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "id": "SKMhvLNf",
+        "hashes": {
+          "sha512": "477b53b13620c003dbf3da4c8facf9e5df81b101c72137aaee01a16e53b7be0bedc354d1d6e2039c40fe82a53cc92a324995d418cd6b8d6301ad02f6ad110717",
+          "sha1": "5a86bc3e543c764411bd20c56d1a33d7d73de26d"
+        },
+        "url": "https://cdn.modrinth.com/data/5sy6g3kz/versions/OtwNg4r4/bettercombat-fabric-1.9.0%2B1.20.1.jar",
+        "filename": "bettercombat-fabric-1.9.0+1.20.1.jar",
+        "primary": true,
+        "size": 907055,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "gedNE4y2",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "9s6osm5g",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.20",
+      "1.20.1"
+    ],
+    "loaders": [
+      "fabric",
+      "quilt"
+    ],
+    "environment": "client_and_server",
+    "id": "yDqYTUaf",
+    "project_id": "gedNE4y2",
+    "author_id": "TpFRtZg9",
+    "featured": false,
+    "name": "1.0.2-rc1+1.20-fabric",
+    "version_number": "1.0.2-rc1+1.20-fabric",
+    "changelog": "1.20 update release candidate",
+    "changelog_url": null,
+    "date_published": "2023-06-14T20:02:11.838917Z",
+    "downloads": 8655644,
+    "version_type": "beta",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "id": "uZJ6S76k",
+        "hashes": {
+          "sha512": "4ed2659c9e9c1a1fa8936523f7d6de1b8012d8e06e6c58ef65ea5c7acef2b3a113afe584b3a31d70eee00423dbe533c06022cc5f169ab5a2ddf8167acf259ec8",
+          "sha1": "9182c38bcf614d0ed7091b15f7e099a7f2fb3617"
+        },
+        "url": "https://cdn.modrinth.com/data/gedNE4y2/versions/yDqYTUaf/player-animation-lib-fabric-1.0.2-rc1%2B1.20.jar",
+        "filename": "player-animation-lib-fabric-1.0.2-rc1+1.20.jar",
+        "primary": true,
+        "size": 181008,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "aRnIEV0F",
+        "file_name": null,
+        "dependency_type": "optional"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.20.1"
+    ],
+    "loaders": [
+      "fabric"
+    ],
+    "environment": "client_and_server",
+    "id": "mGE2GYeN",
+    "project_id": "eE2Db4YU",
+    "author_id": "TJkJC5Fn",
+    "featured": true,
+    "name": "[Fabric 1.20.1] Immersive Armors - 1.7.2",
+    "version_number": "1.7.2+1.20.1",
+    "changelog": "# 1.7.2\n\n* Synced translations\n\n# 1.7.1\n\n* Added forge armor tags\n\n# 1.7.0\n\n* Removed `enabledArmors` (Too buggy, use dedicated mods for that)\n* Robe boots now also requires blaze powder to avoid conflicts with other mods\n* Made helmets a bit larger to improve hat layer rendering\n* Fixed crash when two prismarine armors hurt each other\n* Steampunk boots no longer break elytra\n* Now using tags instead of Axe items\n\n# 1.6.1\n\n* Downgraded Forge to recommended version\n\n# 1.6.0\n\n* Ported to 1.20.1\n\n# 1.5.6\n\n* Migrated to fabric armor rendering\n    * This may solve some mod conflicts\n* Synced translations\n\n# 1.5.5\n\n* No crashes on Bukkit implementations, but reduced features\n\n# 1.5.4\n\n* Temporarily removed extramixins\n\n# 1.5.3\n\n* Updated Translations\n* Fixed incompatibility with some mods (including Dungeons Gear)\n* Added support for Mod Menu and Cloth Config\n\n# 1.5.2\n\n* Updated and fixed translations\n\n# 1.5.1\n\n* Fixed item order in creative menu in 1.19.3\n* Improved order and size of armor layers\n* Steampunk boots no longer prevents critical damage\n* Fixed a crash related to Cosmetic Armor (thanks TelepathicGrunt!)\n* Fixed protection value custom configuration\n\n# 1.5.0\n\n* Synced codebase, 1.16.5, 1.18.2 and 1.19.3 are now nearly identical again\n* Armor can now be found in loot chests!\n* Entities will now wear immersive armor\n* Fixed offhand slot occluding steampunk armor\n* Steampunk armor has now 10% explosion resistance instead of 20%, reduced leggings armor by 1\n* Steampunk HUD Overlay also works on Forge now\n* Most armor properties are now configurable\n\n# 1.4.2\n\n* Ported to 1.19.3\n\n# 1.4.1\n\n* Ported to 1.19.1\n\n# 1.4.0\n\n* Ported to 1.19\n\n# 1.3.8\n\n* Fixed compatibility with Modern UI\n* Fixed Wither Helmet recipe (Thanks Ardis!)\n\n# 1.3.7\n\n* The steampunk armor no longer deals extra damage\n* The steampunk chestplate shows a compass and clock in the HUD\n* The steampunk leggings can now double jump\n* Robe armor no longer makes random sounds\n* Robe armor no loner spawns particles in first person\n* Wither armor no longer requires wither skulls\n\n# 1.3.6\n\n* Skeleton armor now prevents you from being attacked from skeletons\n\n# 1.3.5\n\n* Fixed recipes advancements\n* Added config to disable enchantment glint\n* Fixed incompatibility with sihywtcamd\n\n# 1.3.4\n\n* Added config to disable effects\n* Removed broken advancement\n* Fixed enchantment glow\n\n# 1.3.3\n\n* Fixed armor not rendering on forge\n* Fixed first person sleeve not showing\n\n# 1.3.2\n\n* Fixed incompatibility with some cosmetic layer mods\n* Fixed hat and other second layer skins overlapping parts of the armor\n* Fixed incompatibility with First Aid\n\n# 1.3.1\n\n* Ported to 1.18.1\n* Updated translations\n* Fixed tooltip issue on Fabric on Warrior Armor\n\n# 1.3.0\n\n* Ported to 1.18.2\n\n# 1.2.0\n\n* Ported to 1.17.1\n\n# 1.1.2\n\n* Fixed slime armor making you invincible\n* Increase Steampunk and Slime Armor explosion resistance\n* Increased Robe magic resistance\n* Decreased Slime armor knockback resistance for incomplete sets\n\n# 1.1.1\n\n* Fixed Steampunk Leggings effect applied to Boots instead\n* Fixed Steampunk boots slowing you down, but not preventing fall damage\n* Fixed compass on Steampunk armor to point in the opposite direction\n* Updated translations (thanks Fleyzi!)\n* Added magic protection effect to robe\n\n# 1.1.0\n\n* Added Steampunk Armor\n* Further, extended armor framework to allow even cooler armor\n* Improved armor performance\n* Added fallback textures for conflicting mods\n* You can now disable individual armor sets in the config\n\n# 1.0.1\n\n* Fixed incompatibility with modded armor on Forge\n* Reworked model and renderer injector to work better with other mods\n\n# 1.0.0\n\n* Bone Armor\n* Wither Armor\n* Warrior Armor\n* Heavy Armor\n* Robe Armor\n* Slime Armor\n* Divine Armor\n* Prismarine Armor\n* Wooden Armor",
+    "changelog_url": null,
+    "date_published": "2026-05-12T07:36:36.027241Z",
+    "downloads": 58333,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "id": "8jLqzhgW",
+        "hashes": {
+          "sha512": "c8286afa580d8f04b74551ceaae8409bc51478475f5846876b1be886223fe552d178c6f0e6df52e5099affd9ff2c904e07d50e12d119032ea88af49bccd046dc",
+          "sha1": "116a8de6558c0e3002dbbcd6b9ce62016083a01c"
+        },
+        "url": "https://cdn.modrinth.com/data/eE2Db4YU/versions/mGE2GYeN/immersive_armors-1.7.2%2B1.20.1-fabric.jar",
+        "filename": "immersive_armors-1.7.2+1.20.1-fabric.jar",
+        "primary": true,
+        "size": 1252761,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "9s6osm5g",
+        "file_name": null,
+        "dependency_type": "optional"
+      },
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.20.1"
+    ],
+    "loaders": [
+      "fabric"
+    ],
+    "environment": "client_and_server",
+    "id": "mBYmRou0",
+    "project_id": "defK2XM3",
+    "author_id": "tGFAjHNa",
+    "featured": true,
+    "name": "adventurez-1.4.20+1.20.1",
+    "version_number": "1.4.20+1.20.1",
+    "changelog": "### Added:\n- \n### Fixed:\n- \n### Changed:\n- Updated VoidZ dependency",
+    "changelog_url": null,
+    "date_published": "2024-01-18T14:02:11.561064Z",
+    "downloads": 5793129,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "id": "yQMCufNc",
+        "hashes": {
+          "sha1": "a727891db0b750fda3c4e6f15e2781b89c490647",
+          "sha512": "9d39505877fba9f1655ec5655715f5a579acabc525c0a25832942389ad5ecb3807e6ae59e43aca57e9897cf65a82f157d070df20a429df6f9f6e37b6459ba1c1"
+        },
+        "url": "https://cdn.modrinth.com/data/defK2XM3/versions/mBYmRou0/adventurez-1.4.20.jar",
+        "filename": "adventurez-1.4.20.jar",
+        "primary": true,
+        "size": 4952938,
+        "file_type": null
+      },
+      {
+        "id": "YLp0cZXV",
+        "hashes": {
+          "sha1": "9fd705d1004790ea9e48b84c93edeb47cf6a74da",
+          "sha512": "288e61c7404bb4819fd3c33b70c1ce48e3b353e7fe89ffa6f873d612dadb9b60454af5db8a9ad84c1c2558f51a00b552bf0ae34020fe178bf17662c8ad323388"
+        },
+        "url": "https://cdn.modrinth.com/data/defK2XM3/versions/mBYmRou0/adventurez-1.4.20-sources.jar",
+        "filename": "adventurez-1.4.20-sources.jar",
+        "primary": false,
+        "size": 4623062,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "P7dR8mSH",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "9s6osm5g",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  },
+  {
+    "game_versions": [
+      "1.20.1"
+    ],
+    "loaders": [
+      "fabric"
+    ],
+    "environment": "client_only",
+    "id": "MAwQRftH",
+    "project_id": "6avVoBVB",
+    "author_id": "898EzW8v",
+    "featured": false,
+    "name": "Simply Tooltips 0.1.5-1.20.1",
+    "version_number": "0.1.5-1.20.1",
+    "changelog": "## New Features\n- Added Theme Studio in-game tool to edit themes and assign items\n- Add support for optional item frame progress bar\n- Add a data driven way to create custom borders\n- Add support for developers to register their own borders\n- Add support for item/namespace blacklisting (issue #13)\n- Add support for blacklisting tooltip components\n## Compatibility\n- Add ability to handle legacy formatting codes\n- Add support for Simply Swords tooltip cooldowns\n- Added support for Simply Swords weapon implicits\n- Added support for component based tooltip themes, as requested in issue #11\n- Add support for create, and any (hopefully) most other mods that add custom tooltip data (issue #13)\n## Customisation\n- Allow users to use any border with any theme\n## New Themes\n- Added Blood theme\n- Added Corrupted Eye theme\n- Added Spectral theme\n- Added Radiant theme\n- Added Candle theme\n- Added Amethyst theme\n- Added Tome theme\n## Bug Fixes\n- Fixed an issue that resulted in the tooltip gif capture being activated when the player is typing in a text field. Issue #6\n- Potential fix for an issue that resulted in a crash when hovering the mouse over any UI element introduced by JEI",
+    "changelog_url": null,
+    "date_published": "2026-08-23T14:06:47.189495Z",
+    "downloads": 66024,
+    "version_type": "release",
+    "status": "listed",
+    "requested_status": null,
+    "files": [
+      {
+        "id": "jeuIEDMa",
+        "hashes": {
+          "sha512": "699bdb3caf5a02997321ec09299a74ec63a4c59d9dc2461aef07a633d5ff6d2fd91abce4a567c870ee9b3f1c678e2c428b8662c1849d2bcbada7d3eb2a9ab248",
+          "sha1": "754b2989e11389f99a032b9031e28b90d8f63205"
+        },
+        "url": "https://cdn.modrinth.com/data/6avVoBVB/versions/MAwQRftH/SimplyTooltips-fabric-0.1.5-1.20.1.jar",
+        "filename": "SimplyTooltips-fabric-0.1.5-1.20.1.jar",
+        "primary": true,
+        "size": 5518319,
+        "file_type": null
+      }
+    ],
+    "dependencies": [
+      {
+        "version_id": null,
+        "project_id": "hYykXjDp",
+        "file_name": null,
+        "dependency_type": "required"
+      },
+      {
+        "version_id": null,
+        "project_id": "lhGA9TYQ",
+        "file_name": null,
+        "dependency_type": "required"
+      }
+    ]
+  }
+]

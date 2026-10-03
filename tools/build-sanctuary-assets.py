@@ -31,9 +31,6 @@ for j in range(10):
 crystal.extend([cube([-1.4,23,-1.4],[2.8,12,2.8],'glow',pivot=[0,29,0],rotation=[0,45,0]),cube([-4,28,-4],[8,1,8],'gold',pivot=[0,29,0],rotation=[0,45,0])])
 bones.append(dict(name='crystal',parent='root',pivot=[0,29,0],cubes=crystal))
 bones.extend(fragments)
-for part in bones[0]['cubes']:
-    part['origin']=[v/3.5 for v in part['origin']]
-    part['size']=[v/3.5 for v in part['size']]
 js(A/'geo/santuario.geo.json',{'format_version':'1.12.0','minecraft:geometry':[{'description':{'identifier':'geometry.santuario','texture_width':256,'texture_height':256,'visible_bounds_width':5,'visible_bounds_height':5,'visible_bounds_offset':[0,1.5,0]},'bones':bones}]})
 js(A/'animations/santuario.animation.json',{'format_version':'1.8.0','animations':{'animation.sanctuary.idle':{'loop':True,'animation_length':4,'bones':{'crystal':{'position':{'0':[0,0,0],'2':[0,1.2,0],'4':[0,0,0]}}}}}})
 rng=random.Random(20261002);atlas=Image.new('RGBA',(256,256));glow=Image.new('RGBA',atlas.size)

@@ -4,7 +4,11 @@ Plaza sobria centrada en X=0, Z=0, con suelo a Y=95. El único núcleo de resurr
 
 La plaza tiene 64 bloques de diámetro: piedra, andesita y pizarra, cuatro caminos, bancos de abeto, jardines bajos, iluminación y una mesa de crafteo con cortapiedras. El centro se mantiene abierto; no hay pilares ni techos delante de la cámara de ritual. El terreno exterior se suavizó hasta radio 56. Se trasladó el núcleo anterior de -22, 88, 38; no quedó otro núcleo utilizable.
 
-El datapack `server/world/datapacks/tecni_spawn` desactiva la generación natural de nuevos santuarios. Es configuración del servidor: **no requiere otra actualización del launcher**. El modelo y la animación siguen siendo los del paquete 2.2.0. Un operador todavía puede crear núcleos de manera intencional con comandos; no hacerlo si se desea mantener este como único santuario.
+El datapack `server/world/datapacks/tecni_spawn` desactiva la generación natural de nuevos santuarios. Un operador todavía puede crear núcleos de manera intencional con comandos; no hacerlo si se desea mantener este como único santuario. El paquete 2.4.0 amplía el pedestal y añade apoyos sólidos; requiere actualizar cliente y servidor.
+
+## Ampliación 2.4
+
+Aplicada el 2 de octubre de 2026 tras respaldo completo verificado `backups/before-content24-20261002.zip`. Añade cartel monumental TECNIHARDCORE de oro y cobre, talleres laterales de madera y piedra, caminos ceremoniales y más iluminación. El centro permanece abierto para el ritual. La función manual `tecni_spawn24:upgrade` valida todas las posiciones antes de colocar bloques y tiene protección contra repeticiones. No reiniciar su marcador ni ejecutar de nuevo la construcción antigua sobre esta plaza. Se ensayó primero en una copia restaurada; los archivos de jugadores y las vidas conservaron sus valores.
 
 ## Validación
 
