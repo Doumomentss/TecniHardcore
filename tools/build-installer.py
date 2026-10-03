@@ -3,8 +3,11 @@ import zipfile,hashlib,subprocess,json,re
 root=Path(__file__).resolve().parents[1]
 launcher=root/'TecniHardcore Launcher'
 version=json.loads((root/'launcher/package.json').read_text())['version']
+packVersion=json.loads((root/'installer_payload/config/tecnihardcore/connection.json').read_text('utf8'))['packVersion']
 assert re.fullmatch(r'\d+\.\d+\.\d+',version)
-(root/'installer/BuildInfo.cs').write_text('using System.Reflection;\n[assembly: AssemblyTitle("TecniHardcore Setup")]\n[assembly: AssemblyDescription("Instalador y actualizador de TecniHardcore, Minecraft 1.20.1 Fabric")]\n[assembly: AssemblyCompany("TecniHardcore")]\n[assembly: AssemblyProduct("TecniHardcore")]\n[assembly: AssemblyVersion("'+version+'.0")]\n[assembly: AssemblyFileVersion("'+version+'.0")]\nnamespace TecniHardcoreInstaller { static class BuildInfo { public const string Version="'+version+'"; } }\n',encoding='utf8')
+(root/'installer/BuildInfo.cs').write_text('using System.Reflection;\n[assembly: AssemblyTitle("TecniHardcore Setup")]\n[assembly: AssemblyDescription("Instalador y actualizador de TecniHardcore, Minecraft 1.20.1 Fabric")]\n[assembly: AssemblyCompany("TecniHardcore")]\n[assembly: AssemblyProduct("TecniHardcore")]\n[assembly: AssemblyVersion("'+version+'.0")]\n[assembly: AssemblyFileVersion("'+version+'.0")]\nnamespace TecniHardcoreInstaller { static class BuildInfo { public const string Version="'+version+'"; public const string PackVersion="'+packVersion+'"; } }\n',encoding='utf8')
+manifestPath=root/'installer/installer.manifest'
+manifestPath.write_text(re.sub(r'version="\d+\.\d+\.\d+\.\d+"','version="'+version+'.0"',manifestPath.read_text('utf8')),encoding='utf8')
 files=[p for p in launcher.rglob('*') if p.is_file() and p.relative_to(launcher).parts[0] in {'locales','resources','chrome_100_percent.pak','chrome_200_percent.pak','d3dcompiler_47.dll','dxcompiler.dll','dxil.dll','ffmpeg.dll','icudtl.dat','LICENSE','LICENSES.chromium.html','resources.pak','snapshot_blob.bin','TecniHardcore Launcher.exe','v8_context_snapshot.bin','version','vk_swiftshader_icd.json','vk_swiftshader.dll','vulkan-1.dll'} and p.name!='debug.log']
 manifest='\n'.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+p.relative_to(launcher).as_posix() for p in sorted(files))+'\n'
 archive=root/'installer/launcher.zip'

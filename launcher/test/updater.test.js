@@ -33,3 +33,17 @@ test('streamed download verifies hash/length and removes partial files after err
     assert(!fs.existsSync(downloaded+'.part'));
   } finally {fs.rmSync(dir,{recursive:true,force:true});}
 });
+
+test('retries and simultaneous downloads do not replace or share an existing executable',async()=>{
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'tecni-update-retry-'));
+  try {
+    const old=path.join(dir,`TecniHardcore-Setup-${manifest().version}.exe`);
+    fs.writeFileSync(old,'a previous installer may still be running');
+    const fetcher=async()=>new Response(bytes);
+    const results=await Promise.all([updater.download(manifest(),dir,()=>{},undefined,fetcher),updater.download(manifest(),dir,()=>{},undefined,fetcher)]);
+    assert.notEqual(results[0],results[1]);
+    assert.equal(fs.readFileSync(old,'utf8'),'a previous installer may still be running');
+    for(const file of results)assert.deepEqual(fs.readFileSync(file),bytes);
+    assert(!fs.readdirSync(dir).some(name=>name.endsWith('.part')));
+  }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});

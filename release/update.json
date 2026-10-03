@@ -1,14 +1,14 @@
 {
   "schema": 1,
-  "version": "2.4.0",
+  "version": "2.4.1",
   "packVersion": "2.4.0",
   "minecraft": "1.20.1",
   "ritualProtocol": 3,
   "packProtocol": 5,
-  "notes": "Más armas, armaduras y enemigos; Custodio con ataques y derrotas renovadas, altar ampliado y plaza TECNIHARDCORE. Incluye baliza de auxilio, identidad portable y cinco perfiles gráficos.",
+  "notes": "Corrección de actualización: descargas independientes, instalación visible, espera de archivos bloqueados y verificación antes de reabrir. Conserva Minecraft, nombre, carpeta y preferencias; paquete de juego 2.4.0.",
   "installer": {
-    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.4.0/TecniHardcore-Setup-2.4.0.exe",
-    "bytes": 306377728,
-    "sha256": "04b253ca34ec438909865068be6d1c3553ebe90d189049e0af8ab88dd24d3d3e"
+    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.4.1/TecniHardcore-Setup-2.4.1.exe",
+    "bytes": 306382336,
+    "sha256": "b56f8c26837aa99a507e22614cdd8e2194beaba671531c3b9da3cd20ac598859"
   }
 }

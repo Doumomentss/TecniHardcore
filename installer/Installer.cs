@@ -67,7 +67,16 @@ static class Payload {
   string next=target+".tecni-next";File.Copy(source,next,true);
   if(existed)File.Replace(next,target,null);else File.Move(next,target);
  }
- public static void Install(string destination,Action<string> status) {
+ internal static void WaitForFiles(string root,List<string> files,Action<string> status,bool wait,int timeoutMs=180000) {
+  var timer=Stopwatch.StartNew();
+  while(true) {
+   try{foreach(string relative in files){string target=Target(root,relative);if(File.Exists(target))using(var file=new FileStream(target,FileMode.Open,FileAccess.ReadWrite,FileShare.None)) {}}return;}
+   catch(IOException error){if(!wait||timer.ElapsedMilliseconds>=timeoutMs)throw new IOException("Otro proceso sigue utilizando archivos de esta instalación. Cierra todas las ventanas de TecniHardcore de esta carpeta y pulsa REINTENTAR. No se instalaron archivos nuevos.",error);
+    status("Esperando: cierra las otras ventanas de TecniHardcore. No abras el acceso directo todavía.");Thread.Sleep(500);}
+  }
+ }
+ public static void Install(string destination,Action<string> status) {Install(destination,status,false);}
+ private static void Install(string destination,Action<string> status,bool waitForLocks) {
   string root=Path.GetFullPath(destination).TrimEnd(Path.DirectorySeparatorChar);
   if(Path.GetPathRoot(root).TrimEnd(Path.DirectorySeparatorChar)==root)throw new Exception("Elige una carpeta, no la raíz del disco.");
   Directory.CreateDirectory(root);
@@ -104,13 +113,15 @@ static class Payload {
       if(files.Count!=expected.Count+1)throw new Exception("Faltan archivos en el paquete.");
      }
      // Check locks before the first replacement, including running Electron subprocesses.
-     foreach(string relative in files){string target=Target(root,relative);if(File.Exists(target))using(var file=new FileStream(target,FileMode.Open,FileAccess.ReadWrite,FileShare.None)) {}}
+     WaitForFiles(root,files,status,waitForLocks);
      string journal=Path.Combine(root,Journal);Record(journal,stamp);
      try {
       foreach(string relative in files){status("Instalando "+relative);Replace(root,stage,relative,stamp);}
       const string versionFile="installation-version.txt";
-      File.WriteAllText(Path.Combine(stage,versionFile),"TecniHardcore "+BuildInfo.Version+" / Minecraft 1.20.1 Fabric / mecánicas "+BuildInfo.Version+"\r\n");
+      File.WriteAllText(Path.Combine(stage,versionFile),"TecniHardcore "+BuildInfo.Version+" / Minecraft 1.20.1 Fabric / mecánicas "+BuildInfo.PackVersion+"\r\n");
       Replace(root,stage,versionFile,stamp);
+      // Read back the installed payload before committing or reopening the launcher.
+      foreach(var item in expected)if(Digest(Target(root,item.Key))!=item.Value)throw new IOException("La instalación no superó la verificación final de "+item.Key);
       File.Delete(journal);
       Shortcut(root);
      }catch{Recover(root);throw;}
@@ -118,13 +129,32 @@ static class Payload {
    } finally {if(acquired)mutex.ReleaseMutex();}
   }
  }
- public static void Update(string destination,int launcherPid) {
+ public static void Update(string destination,int launcherPid) {Update(destination,launcherPid,s=>{});}
+ public static void Update(string destination,int launcherPid,Action<string> status) {
+  status("Cerrando el launcher anterior…");
   if(launcherPid>0)try{using(var previous=Process.GetProcessById(launcherPid)){if(!previous.WaitForExit(60000))throw new Exception("El launcher no se cerró. Cierra Minecraft y vuelve a intentar.");}}catch(ArgumentException){}
-  // Chromium children may outlive the main process briefly.
-  Exception last=null;
-  for(int attempt=0;attempt<10;attempt++){try{Install(destination,s=>{});last=null;break;}catch(IOException error){last=error;Thread.Sleep(1000);}}
-  if(last!=null)throw last;
+  // Extract once, then wait for every installed file before starting the transaction.
+  Install(destination,status,true);
+  status("Actualización verificada. Abriendo el launcher actualizado…");
   Process.Start(new ProcessStartInfo(Path.Combine(destination,"TecniHardcore Launcher.exe")){WorkingDirectory=destination});
+ }
+}
+class UpdateForm:Form {
+ readonly string destination;readonly int previousPid;Label status=new Label();Button retry=new Button();ProgressBar progress=new ProgressBar();bool working;
+ public UpdateForm(string folder,int pid){
+  destination=folder;previousPid=pid;Text="Actualizando TecniHardcore "+BuildInfo.Version;Size=new Size(680,320);StartPosition=FormStartPosition.CenterScreen;BackColor=Color.FromArgb(14,16,24);ForeColor=Color.White;Font=new Font("Segoe UI",10);FormBorderStyle=FormBorderStyle.FixedDialog;MaximizeBox=false;
+  Controls.Add(new Label{Text="INSTALANDO TECNIHARDCORE "+BuildInfo.Version,AutoSize=true,Font=new Font("Segoe UI",16,FontStyle.Bold),ForeColor=Color.Goldenrod,Location=new Point(22,18)});
+  Controls.Add(new Label{Text="La descarga terminó. Espera a que esta ventana instale y vuelva a abrir el launcher.\nNo abras el acceso directo durante la instalación.",Location=new Point(24,62),Size=new Size(620,46)});
+  Controls.Add(new Label{Text="Carpeta: "+folder,Location=new Point(24,114),Size=new Size(620,34)});
+  status.SetBounds(24,153,620,52);Controls.Add(status);progress.SetBounds(24,210,620,15);Controls.Add(progress);
+  retry.Text="REINTENTAR";retry.SetBounds(484,239,160,30);retry.Click+=(s,e)=>StartUpdate();Controls.Add(retry);
+  Shown+=(s,e)=>StartUpdate();FormClosing+=(s,e)=>{if(working)e.Cancel=true;};
+ }
+ async void StartUpdate(){if(working)return;working=true;retry.Enabled=false;progress.Style=ProgressBarStyle.Marquee;
+  try{await Task.Run(()=>Payload.Update(destination,previousPid,msg=>BeginInvoke(new Action(()=>status.Text=msg))));working=false;Close();}
+  catch(Exception error){string detail=Path.Combine(Path.GetTempPath(),"tecnihardcore-install-error.txt");try{File.WriteAllText(detail,error.ToString());}catch{}
+   status.Text="Actualización incompleta: "+error.Message+" Detalle: "+detail;progress.Style=ProgressBarStyle.Blocks;progress.Value=0;}
+  finally{working=false;if(!IsDisposed)retry.Enabled=true;}
  }
 }
 class InstallerForm:Form {
@@ -147,7 +177,8 @@ class InstallerForm:Form {
  }
  [STAThread] static int Main(string[] args){
   bool update=args.Length==3&&args[0]=="--update";
-  if((args.Length==2&&args[0]=="--dir")||update){try{if(update)Payload.Update(args[1],Int32.Parse(args[2]));else Payload.Install(args[1],s=>{});return 0;}catch(Exception e){File.WriteAllText(Path.Combine(Path.GetTempPath(),"tecnihardcore-install-error.txt"),e.ToString());if(update)MessageBox.Show("No se pudo actualizar. Consulta el detalle antes de reintentar.\n"+e.Message+"\nDetalle: %TEMP%\\tecnihardcore-install-error.txt","TecniHardcore",MessageBoxButtons.OK,MessageBoxIcon.Error);return 1;}}
+  if(update){Application.EnableVisualStyles();Application.SetCompatibleTextRenderingDefault(false);Application.Run(new UpdateForm(args[1],Int32.Parse(args[2])));return 0;}
+  if(args.Length==2&&args[0]=="--dir"){try{Payload.Install(args[1],s=>{});return 0;}catch(Exception e){File.WriteAllText(Path.Combine(Path.GetTempPath(),"tecnihardcore-install-error.txt"),e.ToString());return 1;}}
   Application.EnableVisualStyles();Application.SetCompatibleTextRenderingDefault(false);Application.Run(new InstallerForm());return 0;
  }
 }

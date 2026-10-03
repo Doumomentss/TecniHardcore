@@ -341,7 +341,7 @@ updateButton.addEventListener('click',async()=>{
   document.getElementById('update-title').textContent='Descargando actualización…';
   try{
     const result=await ipcRenderer.invoke('install-update');
-    if(!result.success){updateStatus.textContent=result.error;document.getElementById('update-notes').textContent=result.error;}
+    if(!result.success){document.getElementById('update-title').textContent='La actualización no se completó';updateStatus.textContent=result.error;document.getElementById('update-notes').textContent=result.error;}
     else if(result.current){updateBanner.classList.add('hidden');await checkUpdates();}
   }finally{updateBusy=false;updateButton.disabled=false;cancelUpdate.classList.add('hidden');}
 });

@@ -1,10 +1,10 @@
 # TecniHardcore
 
-Minecraft **1.20.1 Fabric** · mecánicas y launcher **2.4.0**.
+Minecraft **1.20.1 Fabric** · mecánicas **2.4.0** · launcher **2.4.1**.
 
 ## Descargar y jugar
 
-Descarga [el instalador de la última versión](https://github.com/Doumomentss/TecniHardcore/releases/latest). Ejecuta `TecniHardcore-Setup-2.4.0.exe`, elige una carpeta y abre el launcher. Escribe tu nombre y pulsa **JUGAR AHORA**. En el menú, **ENTRAR AL SERVIDOR** conecta directamente.
+Descarga [el instalador de la última versión](https://github.com/Doumomentss/TecniHardcore/releases/latest). Ejecuta `TecniHardcore-Setup-2.4.1.exe`, elige una carpeta y abre el launcher. Escribe tu nombre y pulsa **JUGAR AHORA**. En el menú, **ENTRAR AL SERVIDOR** conecta directamente.
 
 El instalador contiene launcher, menú, modelos, texturas, sonido y mods propios. El primer inicio descarga 58 mods externos de sus URLs oficiales de Modrinth, con SHA-512 y SHA-256; obtiene Java 17, Fabric y Minecraft desde sus proveedores oficiales cuando hacen falta. Necesitas Internet y una cuenta/licencia de Minecraft conforme a las condiciones de Mojang. El launcher no entrega cuentas ni incluye credenciales.
 
@@ -13,6 +13,8 @@ Servidor público: `rails-acorn.tun.ply.gg:6906`. Primera conexión: `/register 
 ## Actualizaciones
 
 El launcher consulta GitHub al abrirse, cada hora y con **Ajustes → Buscar actualizaciones**. Cuando se publica una versión posterior aparece **ACTUALIZAR**. Cierra Minecraft, pulsa el botón y espera: descarga el instalador, comprueba tamaño y SHA-256, cierra el launcher, instala y vuelve a abrirlo. No necesita una cuenta de GitHub ni permisos de administrador si instalas en tu carpeta de usuario.
+
+El 100 % de descarga no significa que la instalación haya terminado. La versión 2.4.1 muestra una ventana de instalación, espera a que se liberen los archivos y verifica la copia antes de volver a abrir el launcher. No abras el acceso directo durante ese paso. Si una actualización anterior falló con `EPERM` o un `.pak` en uso, cierra todas las instancias del launcher, descarga el setup 2.4.1 y elige exactamente la carpeta de instalación existente; conserva `game` y preferencias. Si falla, consulta `%TEMP%\tecnihardcore-install-error.txt`.
 
 Los archivos de launcher reemplazados se guardan en `backups`. El instalador valida todo el paquete antes de aplicarlo, revierte fallos de reemplazo y recupera una operación interrumpida al ejecutarse nuevamente. `game`, mundos locales, Java descargado y preferencias se conservan. Los mods y configuraciones oficiales se sincronizan al siguiente inicio o al pulsar **Verificar y reparar paquete**; los archivos reemplazados también tienen copia. Sin Internet puedes abrir el launcher y usar una instalación preparada; la comprobación de actualización avisa si no responde.
 

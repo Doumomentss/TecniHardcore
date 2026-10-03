@@ -1,5 +1,8 @@
 using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using TecniHardcoreInstaller;
 class TransactionTests {
  static void Check(bool good,string message){if(!good)throw new Exception(message);}
@@ -28,6 +31,17 @@ class TransactionTests {
   Check(File.ReadAllText(Path.Combine(root,"recovery.txt"))=="before-interruption","crash recovery failed");
   Check(!File.Exists(Path.Combine(root,"created.txt")),"crash recovery left new file");
   Check(!File.Exists(Path.Combine(root,".tecni-update-journal.txt")),"journal not cleared");
+  // Reproduce the reported Windows .pak lock, then release it like Chromium exiting.
+  string pak=Path.Combine(root,"chrome_100_percent.pak");File.WriteAllText(pak,"old-pak");
+  var held=new FileStream(pak,FileMode.Open,FileAccess.ReadWrite,FileShare.None);int waiting=0;
+  var release=Task.Run(()=>{Thread.Sleep(1300);held.Dispose();});
+  Payload.WaitForFiles(root,new List<string>{"chrome_100_percent.pak"},msg=>{waiting++;Check(!File.Exists(Path.Combine(root,".tecni-update-journal.txt")),"writes started while a launcher file was locked");},true,5000);
+  release.Wait();Check(waiting>0,"update did not wait for the held pak");
+  using(var locked=new FileStream(pak,FileMode.Open,FileAccess.ReadWrite,FileShare.None)){
+   bool failed=false;try{Payload.WaitForFiles(root,new List<string>{"chrome_100_percent.pak"},msg=>{},true,10);}catch(IOException e){failed=e.Message.Contains("REINTENTAR");}
+   Check(failed,"timeout did not explain how to retry");
+  }
+  Check(File.ReadAllText(pak)=="old-pak","locked file was modified");
   Console.WriteLine("PASS: rollback after replacement, crash recovery, exact backup and preserved game preferences");return 0;
  }
 }

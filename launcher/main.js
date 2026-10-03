@@ -221,8 +221,8 @@ ipcMain.handle('install-update', async () => {
     if(!result.available)return {success:true,current:true};
     const directory=path.join(app.getPath('userData'),'updates',result.manifest.version);
     const file=await updater.download(result.manifest,directory,progress=>send('update-progress',progress),updateDownload.signal);
-    send('update-progress',{percentage:100,message:'Verificado. Cerrando el launcher para instalar…'});
-    const helper=spawn(file,['--update',path.dirname(process.execPath),String(process.pid)],{detached:true,stdio:'ignore',windowsHide:true});
+    send('update-progress',{percentage:100,message:'Descarga verificada. Se abrirá el instalador; espera a que vuelva el launcher.'});
+    const helper=spawn(file,['--update',path.dirname(process.execPath),String(process.pid)],{detached:true,stdio:'ignore',windowsHide:false});
     await new Promise((resolve,reject)=>{helper.once('spawn',resolve);helper.once('error',reject);});
     helper.unref();
     app.quit();
