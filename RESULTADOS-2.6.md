@@ -35,8 +35,12 @@ Servidor actualizado y arrancado a las 19:03, puerto 25565, EasyAuth y Playit ex
 
 Setup: **TecniHardcore-Setup-2.6.0.exe**, 307686912 bytes, SHA-256 `3fa3dc8f8a4b705f96795f4cb0a7e7ed2e4ca256f7b3b48fda9001f646986b90`. El mod instalado y empaquetado coincide con el compilado: `fbea9b5491e7dd310790c7d8809f60dcbdf1eda464113f40317252949b996ec7`. Los hashes completos están en SHA256SUMS-2.6.0.txt y manifest-2.6.0.json.
 
+Publicación completada: [release 2.6.0](https://github.com/Doumomentss/TecniHardcore/releases/tag/v2.6.0), marcada como última versión. Los siete archivos de GitHub coinciden en tamaño y SHA-256 con los locales, tanto antes como después de publicar. El feed público del actualizador ofrece 2.6.0 a un launcher 2.5.0, con el hash correcto del setup; una primera consulta devolvió HTTP 502 temporal y la siguiente respondió correctamente. El acceso directo del dueño apunta a la instalación 2.6.0 existente.
+
+Estado consultado desde el anfitrión: localhost 25565 y `rails-acorn.tun.ply.gg:6906` responden con paquete 2.6.0 y datos vigentes. Esto confirma el túnel para la consulta de estado, sin sustituir la entrada de un jugador desde otro equipo. Microsoft Defender terminó el análisis del setup sin detectar amenazas.
+
 ## Alcance y pendientes
 
-La recepción desde otro equipo de Internet no se sustituye por una consulta desde el mismo anfitrión. Los presets shader y señales se han comprobado localmente; el estado público se comprueba por Playit al publicar. No se efectuaron pruebas destructivas en producción. No se garantiza que todas las skins de launchers externos se puedan descubrir por nombre: un nombre sin imagen publicada deberá seleccionar una skin con `/skin set player NombrePremium` o la pantalla de Fabric Tailor.
+La recepción desde otro equipo de Internet no se sustituye por una consulta desde el mismo anfitrión. Los presets shader y señales se han comprobado localmente; el estado público se comprobó por Playit tras publicar. No se efectuaron pruebas destructivas en producción. No se garantiza que todas las skins de launchers externos se puedan descubrir por nombre: un nombre sin imagen publicada deberá seleccionar una skin con `/skin set player NombrePremium` o la pantalla de Fabric Tailor.
 
 El instalador permanece sin firma comercial. La verificación por hashes y un análisis antivirus no garantizan que SmartScreen omita advertencias de reputación.
