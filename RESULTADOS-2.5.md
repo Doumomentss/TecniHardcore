@@ -24,7 +24,9 @@ Fecha: 3 de octubre de 2026. Minecraft 1.20.1 Fabric, Java 17.0.20.1, GeckoLib 4
 
 Falta una sesión de aceptación con dos jugadores humanos y observador: combate aéreo normal contra el Custodio, equilibrio y dificultad de los eventos sin protección de QA, controles de distintas personas, calidad del sonido percibida y rendimiento en PCs menos potentes. La revisión nativa de las monturas cubre sus cámaras de prueba, no todas las combinaciones posibles de escala de GUI, animación, arma y shader. Las pruebas automatizadas no sustituyen esas revisiones.
 
-La conexión pública por Playit y el despliegue se documentarán después de verificar la entrega final. Un ping desde este mismo equipo no representa una prueba desde una red externa. No quitar los mods de biomas o decoración después de que el mundo contenga sus bloques.
+Producción, cliente y launcher están actualizados a 2.5.0. Se verificaron sin cambios los ocho registros de almas y los ocho archivos de jugadores respecto al respaldo anterior; el despliegue no usó sus vidas ni inventarios. El servidor funciona con visión 11, simulación 8 y Java 17, con un máximo de 6 GB. Completó también la copia automática de las seis horas. Los siete archivos de la Release publicada se comprobaron contra sus tamaños y SHA-256, y un launcher 2.4.1 detectó la actualización pública a 2.5.0.
+
+Las consultas Minecraft local y pública por `rails-acorn.tun.ply.gg:6906` devuelven paquete 2.5.0 y datos vigentes. Se corrigió el arranque del agente Playit del servidor asignándole su propio canal local, separado del servicio instalado en Windows. Un ping desde este mismo equipo no representa una prueba de juego desde una red externa: esa prueba sigue pendiente. No quitar los mods de biomas o decoración después de que el mundo contenga sus bloques.
 
 ## Reproducción y evidencias
 
