@@ -12,7 +12,9 @@
     "SpawnFluidMixin",
     "SpawnFireMixin",
     "BossRootMixin",
-    "BossRootMoveMixin"
+    "BossRootMoveMixin",
+    "EventIsolationMixin",
+    "MountVehicleMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -11,7 +11,8 @@ public class LivingMixin {
     @Inject(method="tryUseTotem",at=@At("HEAD"),cancellable=true)
     private void relic(DamageSource source, CallbackInfoReturnable<Boolean> ci) {
         if ((Object)this instanceof ServerPlayerEntity p) {
-            if (Hardcore.blocked(p)) ci.setReturnValue(false);
+            if (EventDirector.practice(p)) ci.setReturnValue(false);
+            else if (Hardcore.blocked(p)) ci.setReturnValue(false);
             else if (Hardcore.useRelic(p,source)) ci.setReturnValue(true);
         }
     }

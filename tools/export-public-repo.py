@@ -17,6 +17,8 @@ for name in ['video_sin_fondo_transparente.webm','video_sin_fondo_transparente.o
 for name in ['package-launcher.ps1','build-installer.py','create-release-manifest.py','build-sanctuary-assets.py','build-death-video.py','build-death-mod.py','fetch-development.cjs','development-dependencies.json','prepare-payload.cjs','export-public-repo.py','publish-release.ps1','test-installer-transactions.py','test-installer-transactions.cs','test-installation.cjs','verify-update-install.cjs','test-launcher-update-ui.cjs']:copy('tools/'+name)
 for name in ['ADMINISTRACION.md','RESULTADOS-2.1.md','RESULTADOS-2.2.md','RESULTADOS-ACTUALIZADOR.md','SPAWN.md','PRUEBA-JEFE.md','RESULTADOS-2.3.md','RESULTADOS-2.4.md','RESULTADOS-2.4.1.md','SEGURIDAD-INSTALADOR.md']:copy(name)
 for name in ['build-spawn.py','find-sanctuary-site.py','build-trial-assets.py','preview-boss.cjs','test-dashboard.cjs','test-dashboard-ui.cjs','verify-release.cjs','build-espectro-assets.py','add-graphics24.py','test-launcher24.cjs','add-content24.py','content24-lock.json','improve-boss24-assets.py','build-spawn24.py','preview-spawn24.cjs','qa-content24.cjs']:copy('tools/'+name)
+for name in ['build-expansion25-assets.py','add-content25.py','content25-lock.json','stage-expansion25.py','start-expansion25.ps1','backup-before25.py','preview-expansion25.cjs','qa-expansion25.cjs','qa-native-mounts25.py','qa-disconnect25.cjs','qa-weather25.cjs','qa-shaders25.py','qa-shader-actors25.cjs','qa-event-mail25.cjs','qa-boss-loot25.cjs','qa-restart25.cjs','qa-storm-events25.cjs','qa-mount-safety25.cjs','qa-worldgen25.cjs','qa-preservation25.py','verify-world25.py','test-pack-handshake.cjs']:copy('tools/'+name)
+for name in ['EVENTOS-Y-MONTURAS.md','RESULTADOS-2.5.md']:copy(name)
 copy('PROBAR_JEFE.bat');copy('README-PUBLIC.md','README.md');copy('dist/THIRD-PARTY-MODS.json','THIRD-PARTY-MODS.json')
 for src,dst in [('sanctuary-target-cinema-start.png','ritual-cupula.png'),('sanctuary-target-descent.png','ritual-descenso.png')]:
     picture=root/'tools/test-runtime/visuals22'/src
@@ -24,6 +26,9 @@ for src,dst in [('sanctuary-target-cinema-start.png','ritual-cupula.png'),('sanc
 for src,dst in [('tools/test-runtime/boss-preview/game/screenshots/sanctuary-board-complete.png','docs/tablon-reliquias.png'),('tools/test-runtime/boss-preview/game/screenshots/sanctuary-phase-3-transform-complete.png','docs/custodio-prueba.png'),('tools/test-runtime/dashboard23/dashboard.png','docs/launcher-servidor.png')]:
     if (root/src).exists():copy(src,dst)
 copy('dist/update.json','release/update.json')
+for name in ['tornado-ultra-quality-fixed','meteoritos-ultra-quality-fixed','mount-3-ground','mount-5-flight','event-circuito-hardcore','event-panel-final']:
+    src=f'tools/test-runtime/expansion25/game/screenshots/sanctuary-{name}.png'
+    if (root/src).exists():copy(src,f'docs/{name}.png')
 if (root/'tools/test-runtime/update241/waiting-for-pak.png').exists():copy('tools/test-runtime/update241/waiting-for-pak.png','docs/actualizacion-espera.png')
 copy('tools/test-update241.cs')
 for name in ['spawn24-final','boss-death-fracture','boss-death-dissipation','content24-inventory']:

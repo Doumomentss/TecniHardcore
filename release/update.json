@@ -1,14 +1,15 @@
 {
   "schema": 1,
-  "version": "2.4.1",
-  "packVersion": "2.4.0",
+  "version": "2.5.0",
+  "packVersion": "2.5.0",
   "minecraft": "1.20.1",
   "ritualProtocol": 3,
-  "packProtocol": 5,
-  "notes": "Corrección de actualización: descargas independientes, instalación visible, espera de archivos bloqueados y verificación antes de reabrir. Conserva Minecraft, nombre, carpeta y preferencias; paquete de juego 2.4.0.",
+  "soulProtocol": 3,
+  "packProtocol": 6,
+  "notes": "Cataclismos administrativos sin destrucción, cinco monturas de cristal y botín personal del Custodio; eventos en ensayo o hardcore, biomas y decoración. Conserva identidad portable, gráficos, conexión directa y el parche del actualizador 2.4.1.",
   "installer": {
-    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.4.1/TecniHardcore-Setup-2.4.1.exe",
-    "bytes": 306382336,
-    "sha256": "b56f8c26837aa99a507e22614cdd8e2194beaba671531c3b9da3cd20ac598859"
+    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.5.0/TecniHardcore-Setup-2.5.0.exe",
+    "bytes": 307038208,
+    "sha256": "29c8e126592b768f807c62fe5dc6d33822cce2deb0f2d9458b75a6bbfdb21f0f"
   }
 }

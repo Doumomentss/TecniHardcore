@@ -21,7 +21,7 @@ class UpdateIntegrationTest {
    if(text.Contains("Actualización incompleta")||DateTime.UtcNow>deadline){held.Dispose();File.WriteAllText(Path.Combine(output,"failure.txt"),text);Environment.Exit(1);}
   };
   timer.Start();Application.Run(form);timer.Stop();timer.Dispose();held.Dispose();
-  if(!waited||!File.ReadAllText(Path.Combine(root,"installation-version.txt")).Contains("2.4.1"))return 1;
-  Console.WriteLine("PASS: installer committed launcher 2.4.1 after release of the lock");return 0;
+  if(!waited||!File.ReadAllText(Path.Combine(root,"installation-version.txt")).Contains(BuildInfo.Version))return 1;
+  Console.WriteLine("PASS: installer committed launcher "+BuildInfo.Version+" after release of the lock");return 0;
  }
 }

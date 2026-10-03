@@ -1,5 +1,9 @@
+param([string]$OutputPath = '')
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
+if (-not $OutputPath) { $OutputPath = Join-Path $root 'TecniHardcore Launcher/resources/app.asar' }
+$outputFull = [IO.Path]::GetFullPath($OutputPath)
+New-Item -ItemType Directory -Force -Path ([IO.Path]::GetDirectoryName($outputFull)) | Out-Null
 $stage = Join-Path $root 'tools/build-launcher-stage'
 $rootFull = [IO.Path]::GetFullPath($root).TrimEnd('\') + '\'
 $stageFull = [IO.Path]::GetFullPath($stage)
@@ -21,6 +25,6 @@ try {
 } finally { Pop-Location }
 Push-Location $root
 try {
-  node -e "require('./launcher/node_modules/asar').createPackage('tools/build-launcher-stage','TecniHardcore Launcher/resources/app.asar').then(()=>console.log('packaged production dependencies and official mod catalog'))"
+  node -e "require('./launcher/node_modules/asar').createPackage('tools/build-launcher-stage',process.argv[1]).then(()=>console.log('packaged production dependencies and official mod catalog'))" $outputFull
   if ($LASTEXITCODE -ne 0) { throw 'Failed to create app.asar' }
 } finally { Pop-Location }

@@ -1,6 +1,8 @@
-# TecniHardcore 2.4: launcher portable y Custodio transformado
+# TecniHardcore 2.5: Cataclismos y Bestias de Cristal
 
-Actualizado el 2 de octubre de 2026. Minecraft 1.20.1, Fabric 0.19.5, TecniHardcore 2.4.0, protocolo de ritual 3, GeckoLib 4.8.4 y EasyAuth 3.3.6.
+Actualizado el 3 de octubre de 2026. Minecraft 1.20.1, Fabric 0.19.5, TecniHardcore 2.5.0, protocolo de paquete 6, protocolo de ritual 3, GeckoLib 4.8.4 y EasyAuth 3.3.6. Las instrucciones describen la versión candidata; consulta [las pruebas y el estado de despliegue](RESULTADOS-2.5.md) antes de distribuirla.
+
+La guía [Eventos y monturas](EVENTOS-Y-MONTURAS.md) contiene comandos copiables para los cinco desastres, las cinco monturas, los tres eventos y la recuperación de incidentes. Esas funciones no empiezan aleatoriamente. Los desastres dañan jugadores sin romper bloques; los biomas se añaden únicamente a terreno nuevo. Respaldar el mundo antes de cambiar el mod o instalar los biomas y reiniciar limpiamente.
 
 ## Arranque y acceso
 
@@ -8,7 +10,7 @@ Ejecutar `INICIAR_SERVIDOR.bat` y esperar `Done`. Se usa Java 17 y el agente de 
 
 Dirección pública: `rails-acorn.tun.ply.gg:6906`. Perfil local: `127.0.0.1:25565`. Conservar el agente y el túnel existentes para mantener la dirección asignada. No distribuir los secretos de Playit ni las carpetas privadas del servidor.
 
-Entregar a los jugadores `dist/TecniHardcore-Setup-2.4.0.exe` o el enlace de la [última Release de GitHub](https://github.com/Doumomentss/TecniHardcore/releases/latest). Este launcher incluye el actualizador y las mecánicas 2.4.0. El instalador incorpora modelos, texturas, sonido, menú y los dos mods propios. Los 58 mods externos se obtienen de sus fuentes oficiales en el primer preparado, con hashes fijados. La distribución usa el perfil público y conserva el botón personalizado ENTRAR AL SERVIDOR. Cerrar Minecraft antes de actualizar. Las copias de archivos sustituidos quedan en `backups`; las preferencias existentes se conservan y se activa el resource pack oficial sin borrar los demás.
+Entregar a los jugadores el instalador de la versión publicada en la [última Release de GitHub](https://github.com/Doumomentss/TecniHardcore/releases/latest). El candidato 2.5 incorpora modelos, texturas, sonido, menú y los dos mods propios. Sus 65 mods externos se obtienen de fuentes oficiales en el primer preparado, con hashes fijados. La distribución usa el perfil público y conserva el botón personalizado ENTRAR AL SERVIDOR. Cerrar Minecraft antes de actualizar. Las copias de archivos sustituidos quedan en `backups`; las preferencias existentes se conservan y se activa el resource pack oficial sin borrar los demás.
 
 El launcher consulta GitHub al abrirse, cada hora y desde Ajustes. Una Release posterior muestra ACTUALIZAR: descarga verificada, cierre del launcher, instalación con recuperación y reapertura. Los launchers anteriores al actualizador necesitan instalar 2.4.0 una vez. Para publicar otra versión, actualizar `launcher/package.json` y `package-lock.json`, preparar el paquete y ejecutar `tools/publish-release.ps1`; no subir el workspace entero. El script publica exclusivamente la copia permitida de `publish/TecniHardcore`. La actualización no reinicia ni actualiza por sí sola el servidor del propietario.
 

@@ -882,5 +882,108 @@
     "authors": [
       "Sweenus"
     ]
+  },
+  {
+    "file": "naturespirit-2.2.5-1.20.1.jar",
+    "id": "natures_spirit",
+    "name": "Nature's Spirit",
+    "version": "2.2.5-1.20.1",
+    "license": "All Rights Reserved",
+    "contact": {},
+    "authors": [
+      "Team Hibiscus"
+    ]
+  },
+  {
+    "file": "RegionsUnexploredFabric-0.5.6+1.20.1.jar",
+    "id": "regions_unexplored",
+    "name": "Regions Unexplored",
+    "version": "0.5.6+1.20.1",
+    "license": "ARR",
+    "contact": {},
+    "authors": [
+      "UHQ_Games (Owner)",
+      "KirboSoftware (Contributer)",
+      "Loxi (Contributer)"
+    ]
+  },
+  {
+    "file": "handcrafted-fabric-1.20.1-3.0.6.jar",
+    "id": "handcrafted",
+    "name": "Handcrafted",
+    "version": "3.0.6",
+    "license": "Terrarium Licence",
+    "contact": {
+      "website": "https://modrinth.com/mod/handcrafted",
+      "repo": "https://github.com/terrarium-earth/handcrafted",
+      "issues": "https://github.com/terrarium-earth/handcrafted/issues"
+    },
+    "authors": [
+      "Alex Nijjar",
+      "Kekie6"
+    ]
+  },
+  {
+    "file": "chipped-fabric-1.20.1-3.0.7.jar",
+    "id": "chipped",
+    "name": "Chipped",
+    "version": "3.0.7",
+    "license": "Terrarium Licence",
+    "contact": {
+      "website": "https://modrinth.com/mod/chipped",
+      "repo": "https://github.com/terrarium-earth/chipped",
+      "issues": "https://github.com/terrarium-earth/chipped/issues"
+    },
+    "authors": [
+      "Alex Nijjar",
+      "Grimbop",
+      "Kekie6",
+      "ThatGravyBoat"
+    ]
+  },
+  {
+    "file": "TerraBlender-fabric-1.20.1-3.0.1.10.jar",
+    "id": "terrablender",
+    "name": "TerraBlender",
+    "version": "3.0.1.10",
+    "license": "LGPLv3",
+    "contact": {
+      "homepage": "https://www.curseforge.com/minecraft/mc-mods/terrablender",
+      "sources": "https://github.com/Glitchfiend/TerraBlender/"
+    },
+    "authors": [
+      "Adubbz"
+    ]
+  },
+  {
+    "file": "resourcefullib-fabric-1.20.1-2.1.29.jar",
+    "id": "resourcefullib",
+    "name": "Resourceful Lib",
+    "version": "2.1.29",
+    "license": "MIT",
+    "contact": {
+      "issues": "https://github.com/Team-Resourceful/ResourcefulLib/issues/new/choose",
+      "sources": "https://github.com/Team-Resourceful/ResourcefulLib",
+      "homepage": "https://resourcefulbees.com"
+    },
+    "authors": [
+      "ThatGravyBoat",
+      "Epic_Oreo"
+    ]
+  },
+  {
+    "file": "athena-fabric-1.20.1-3.1.2.jar",
+    "id": "athena",
+    "name": "Athena",
+    "version": "3.1.2",
+    "license": "MIT",
+    "contact": {
+      "website": "https://www.curseforge.com/minecraft/mc-mods/athena",
+      "repo": "https://github.com/terrarium-earth/athena",
+      "issues": "https://github.com/terrarium-earth/athena/issues"
+    },
+    "authors": [
+      "ThatGravyBoat"
+    ]
   }
 ]

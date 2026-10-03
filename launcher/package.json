@@ -1,6 +1,6 @@
 {
   "name": "tecnihardcore-launcher",
-  "version": "2.4.1",
+  "version": "2.5.0",
   "description": "Launcher Nativo TecniHardcore 1.20.1 Fabric",
   "main": "main.js",
   "scripts": {

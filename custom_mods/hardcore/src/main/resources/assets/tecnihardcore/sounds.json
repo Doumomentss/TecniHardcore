@@ -88,5 +88,35 @@
       "tecnihardcore:boss/death"
     ],
     "subtitle": "subtitles.tecnihardcore.boss_death"
+  },
+  "disaster.wind": {
+    "sounds": [
+      "tecnihardcore:disaster/wind"
+    ],
+    "subtitle": "subtitles.tecnihardcore.disaster_wind"
+  },
+  "disaster.quake": {
+    "sounds": [
+      "tecnihardcore:disaster/quake"
+    ],
+    "subtitle": "subtitles.tecnihardcore.disaster_quake"
+  },
+  "disaster.rain": {
+    "sounds": [
+      "tecnihardcore:disaster/rain"
+    ],
+    "subtitle": "subtitles.tecnihardcore.disaster_rain"
+  },
+  "disaster.thunder": {
+    "sounds": [
+      "tecnihardcore:disaster/thunder"
+    ],
+    "subtitle": "subtitles.tecnihardcore.disaster_thunder"
+  },
+  "disaster.impact": {
+    "sounds": [
+      "tecnihardcore:disaster/impact"
+    ],
+    "subtitle": "subtitles.tecnihardcore.disaster_impact"
   }
 }

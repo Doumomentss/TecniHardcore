@@ -25,5 +25,17 @@
   "subtitles.tecnihardcore.boss_transform": "El núcleo se reconstruye",
   "subtitles.tecnihardcore.boss_death": "El espectro se disipa",
   "item.tecnihardcore.baliza_auxilio": "Baliza de auxilio",
-  "block.tecnihardcore.santuario_soporte": "Pedestal del santuario"
+  "block.tecnihardcore.santuario_soporte": "Pedestal del santuario",
+  "entity.tecnihardcore.bestia_cristal": "Bestia de cristal",
+  "item.tecnihardcore.invocacion_cristal": "Invocación de cristal",
+  "item.tecnihardcore.trofeo_evento": "Trofeo de evento",
+  "category.tecnihardcore": "TecniHardcore",
+  "key.tecnihardcore.mount_up": "Montura: ascender",
+  "key.tecnihardcore.mount_down": "Montura: descender",
+  "key.tecnihardcore.mount_boost": "Montura: impulso",
+  "subtitles.tecnihardcore.disaster_wind": "El tornado ruge",
+  "subtitles.tecnihardcore.disaster_quake": "La tierra tiembla",
+  "subtitles.tecnihardcore.disaster_rain": "Lluvia corrosiva",
+  "subtitles.tecnihardcore.disaster_thunder": "Descarga eléctrica",
+  "subtitles.tecnihardcore.disaster_impact": "Impacto de meteorito"
 }

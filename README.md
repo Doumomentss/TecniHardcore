@@ -1,12 +1,12 @@
 # TecniHardcore
 
-Minecraft **1.20.1 Fabric** · mecánicas **2.4.0** · launcher **2.4.1**.
+Minecraft **1.20.1 Fabric** · paquete y launcher **2.5.0**.
 
 ## Descargar y jugar
 
-Descarga [el instalador de la última versión](https://github.com/Doumomentss/TecniHardcore/releases/latest). Ejecuta `TecniHardcore-Setup-2.4.1.exe`, elige una carpeta y abre el launcher. Escribe tu nombre y pulsa **JUGAR AHORA**. En el menú, **ENTRAR AL SERVIDOR** conecta directamente.
+Descarga [el instalador de la última versión publicada](https://github.com/Doumomentss/TecniHardcore/releases/latest), elige una carpeta y abre el launcher. Escribe tu nombre y pulsa **JUGAR AHORA**. En el menú, **ENTRAR AL SERVIDOR** conecta directamente. La versión 2.5 solo se anuncia como disponible cuando aparece su Release.
 
-El instalador contiene launcher, menú, modelos, texturas, sonido y mods propios. El primer inicio descarga 58 mods externos de sus URLs oficiales de Modrinth, con SHA-512 y SHA-256; obtiene Java 17, Fabric y Minecraft desde sus proveedores oficiales cuando hacen falta. Necesitas Internet y una cuenta/licencia de Minecraft conforme a las condiciones de Mojang. El launcher no entrega cuentas ni incluye credenciales.
+El instalador contiene launcher, menú, modelos, texturas, sonido y mods propios. El primer inicio descarga 65 mods externos de sus URLs oficiales de Modrinth, con SHA-512 y SHA-256; obtiene Java 17, Fabric y Minecraft desde sus proveedores oficiales cuando hacen falta. Necesitas Internet y una cuenta/licencia de Minecraft conforme a las condiciones de Mojang. El launcher no entrega cuentas ni incluye credenciales.
 
 Servidor público: `rails-acorn.tun.ply.gg:6906`. Primera conexión: `/register CONTRASEÑA CONTRASEÑA` (12–128 caracteres); siguientes: `/login CONTRASEÑA`.
 
@@ -14,7 +14,7 @@ Servidor público: `rails-acorn.tun.ply.gg:6906`. Primera conexión: `/register 
 
 El launcher consulta GitHub al abrirse, cada hora y con **Ajustes → Buscar actualizaciones**. Cuando se publica una versión posterior aparece **ACTUALIZAR**. Cierra Minecraft, pulsa el botón y espera: descarga el instalador, comprueba tamaño y SHA-256, cierra el launcher, instala y vuelve a abrirlo. No necesita una cuenta de GitHub ni permisos de administrador si instalas en tu carpeta de usuario.
 
-El 100 % de descarga no significa que la instalación haya terminado. La versión 2.4.1 muestra una ventana de instalación, espera a que se liberen los archivos y verifica la copia antes de volver a abrir el launcher. No abras el acceso directo durante ese paso. Si una actualización anterior falló con `EPERM` o un `.pak` en uso, cierra todas las instancias del launcher, descarga el setup 2.4.1 y elige exactamente la carpeta de instalación existente; conserva `game` y preferencias. Si falla, consulta `%TEMP%\tecnihardcore-install-error.txt`.
+El 100 % de descarga no significa que la instalación haya terminado. Desde 2.4.1 se muestra una ventana de instalación, se espera a que se liberen los archivos y se verifica la copia antes de volver a abrir el launcher. No abras el acceso directo durante ese paso. Si una actualización anterior falló con `EPERM` o un `.pak` en uso, cierra todas las instancias del launcher, descarga el setup actual y elige exactamente la carpeta de instalación existente; conserva `game` y preferencias. Si falla, consulta `%TEMP%\tecnihardcore-install-error.txt`.
 
 Los archivos de launcher reemplazados se guardan en `backups`. El instalador valida todo el paquete antes de aplicarlo, revierte fallos de reemplazo y recupera una operación interrumpida al ejecutarse nuevamente. `game`, mundos locales, Java descargado y preferencias se conservan. Los mods y configuraciones oficiales se sincronizan al siguiente inicio o al pulsar **Verificar y reparar paquete**; los archivos reemplazados también tienen copia. Sin Internet puedes abrir el launcher y usar una instalación preparada; la comprobación de actualización avisa si no responde.
 
@@ -35,7 +35,7 @@ Consulta [la guía de administración](ADMINISTRACION.md), [las pruebas de las m
 - `launcher/`: Electron, instalación, reparación, consulta de vidas y actualizador.
 - `custom_mods/hardcore/`: lógica del servidor y cliente, modelos GeckoLib, animaciones, partículas y sonidos.
 - `custom_mods/death-overlay/`: reproducción de la animación de muerte.
-- `installer_payload/`: configuración y recursos oficiales; `mods-downloads.json` fija los 58 mods externos por URL y hashes.
+- `installer_payload/`: configuración y recursos oficiales; `mods-downloads.json` fija los 65 mods externos por URL y hashes.
 - `installer/`: instalador Windows con verificación, copias y recuperación.
 - `tools/`: construcción, publicación y pruebas.
 
@@ -50,3 +50,11 @@ Los mods externos conservan sus licencias y créditos en `THIRD-PARTY-MODS.json`
 ## Plaza y reliquias
 
 El spawn tiene un único santuario de resurrección y una plaza protegida. Su tablón muestra las texturas de Brasa, Bastión y Eco; al pulsarlo puedes consultar efectos, penalizaciones y recetas. La pestaña Servidor del launcher muestra estadísticas y novedades reales, actualizadas cada cinco segundos. El Custodio de Pizarra solo aparece mediante invocación administrativa fuera de la plaza. Tiene tres barras (400/500/1000) y se transforma en el Espectro del Núcleo. No aparece de forma natural.
+
+## Cataclismos y Bestias de Cristal
+
+Cinco desastres activados por operadores: tornado monumental, terremoto, lluvia ácida, tormenta eléctrica y meteoritos. Causan daño real sin destruir terreno. Cada uno anuncia su inicio y conserva avisos visibles con partículas mínimas. La plaza está excluida.
+
+El Custodio ofrece botín personal según participación y una tirada de cinco monturas cristalinas: mantarraya, ave, grifo, wyvern y dragón. Su registro por UUID evita duplicar criaturas mediante objetos copiados. Pueden intercambiarse guardadas, volar con controles configurables y llevar un jugador que utilice sus propias armas. Una montura muerta se pierde definitivamente.
+
+La dimensión de eventos incluye Ojo de la tormenta, Circuito de cristal y Defensa del núcleo. El operador anuncia **ENSAYO** o **HARDCORE** antes de la inscripción. Ensayo guarda y restaura el estado original; hardcore utiliza vidas y objetos reales. Los biomas de Nature’s Spirit y Regions Unexplored aparecen en terreno nuevo; Handcrafted y Chipped aportan decoración. Consulta [comandos, reglas y recuperación](EVENTOS-Y-MONTURAS.md) y [el estado verificable de las pruebas 2.5](RESULTADOS-2.5.md).

@@ -1,4 +1,4 @@
-# Instalador de TecniHardcore 2.4.1
+# Instalador de TecniHardcore 2.5.0
 
 El setup y el launcher se distribuyen desde las releases de `Doumomentss/TecniHardcore` en GitHub. La entrega incluye SHA-256 y tamaño de cada archivo. El actualizador verifica ambos antes de ejecutar el instalador; las dependencias externas se descargan desde las fuentes oficiales, con hashes fijados.
 
@@ -7,6 +7,8 @@ El instalador tiene icono, producto, descripción y versión de TecniHardcore, y
 El 2 de octubre de 2026 Microsoft Defender local, con protección activa, analizó el setup final y no encontró amenazas. Es un resultado del análisis antivirus de este archivo en este equipo; **no certifica reputación de SmartScreen ni garantiza ausencia de avisos en otros equipos**.
 
 El análisis del parche 2.4.1 del 3 de octubre también terminó sin amenazas. La ventana visible del actualizador y sus reintentos no modifican la protección de Windows.
+
+El 3 de octubre de 2026 Defender volvió a analizar el instalador final 2.5.0 (292 MiB): análisis completado, sin amenazas y con antivirus y protección en tiempo real activos. Las firmas locales estaban actualizadas el 2 de octubre. Sigue siendo un resultado antivirus local, no una validación de reputación de SmartScreen.
 
 Esta entrega **no está firmada con un certificado de editor**. No hay un certificado de firma de código instalado. Un nombre de producto o hash no sustituye una firma. No se usa un certificado autofirmado para aparentar confianza.
 

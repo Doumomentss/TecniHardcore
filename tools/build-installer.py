@@ -1,7 +1,7 @@
 from pathlib import Path
-import zipfile,hashlib,subprocess,json,re
+import zipfile,hashlib,subprocess,json,re,os
 root=Path(__file__).resolve().parents[1]
-launcher=root/'TecniHardcore Launcher'
+launcher=Path(os.environ.get('TECNI_LAUNCHER_BUILD',root/'TecniHardcore Launcher')).resolve()
 version=json.loads((root/'launcher/package.json').read_text())['version']
 packVersion=json.loads((root/'installer_payload/config/tecnihardcore/connection.json').read_text('utf8'))['packVersion']
 assert re.fullmatch(r'\d+\.\d+\.\d+',version)

@@ -5,11 +5,13 @@ import java.util.*;
 /** Opt-in framebuffer capture for reproducible visual tests, inactive in normal launches. */
 public final class QaCapture {
     private static int ticks,screenTicks;private static UUID ritualId;private static final Set<String> captured=new HashSet<>();
+    private static long benchmarkStart,benchmarkEnd,lastFrame;private static String benchmarkName;private static final java.util.List<Double> frames=new java.util.ArrayList<>();
     public static void frame(MinecraftClient c){
         if(!Boolean.getBoolean("tecni.visualTest")||c.world==null||c.player==null)return;
         c.options.pauseOnLostFocus=false;
         if(c.currentScreen instanceof net.minecraft.client.gui.screen.GameMenuScreen)c.setScreen(null);
         ticks++;
+        long now=System.nanoTime();if(benchmarkEnd>0){if(now>benchmarkStart&&lastFrame>=benchmarkStart)frames.add((now-lastFrame)/1e6);lastFrame=now;if(now>=benchmarkEnd){benchmarkEnd=0;try{var sorted=new java.util.ArrayList<>(frames);java.util.Collections.sort(sorted);var result=new com.google.gson.JsonObject();result.addProperty("frames",sorted.size());double mean=sorted.stream().mapToDouble(Double::doubleValue).average().orElse(0);result.addProperty("meanFrameMs",mean);result.addProperty("meanFps",1000/mean);result.addProperty("p95FrameMs",sorted.get(Math.min(sorted.size()-1,(int)Math.ceil(sorted.size()*.95)-1)));java.nio.file.Files.writeString(c.runDirectory.toPath().resolve("qa-"+benchmarkName+"-frames.json"),result.toString());}catch(Exception error){Hardcore.LOG.warn("QA frame benchmark failed",error);}}}
         if(ticks%30==0)try{
             var file=c.runDirectory.toPath().resolve("qa-action.json");if(java.nio.file.Files.exists(file)){
                 var action=com.google.gson.JsonParser.parseString(java.nio.file.Files.readString(file)).getAsJsonObject();java.nio.file.Files.delete(file);
@@ -18,10 +20,16 @@ public final class QaCapture {
                     case "use"->c.interactionManager.interactItem(c.player,net.minecraft.util.Hand.MAIN_HAND);
                     case "inventory"->c.setScreen(new net.minecraft.client.gui.screen.ingame.InventoryScreen(c.player));
                     case "close"->c.setScreen(null);
+                    case "view"->{c.options.setPerspective(net.minecraft.client.option.Perspective.values()[Math.max(0,Math.min(2,action.get("perspective").getAsInt()))]);if(action.has("scale")){c.options.getGuiScale().setValue(action.get("scale").getAsInt());c.onResolutionChanged();}if(action.has("particles"))c.options.getParticles().setValue(net.minecraft.client.option.ParticlesMode.values()[Math.max(0,Math.min(2,action.get("particles").getAsInt()))]);}
+                    case "drive"->ExpansionClient.qaDrive(action.get("forward").getAsFloat(),action.get("side").getAsFloat(),action.get("vertical").getAsFloat(),action.get("boost").getAsBoolean(),action.get("ticks").getAsInt());
+                    case "dismount"->c.options.sneakKey.setPressed(true);
+                    case "release"->{c.options.sneakKey.setPressed(false);ExpansionClient.qaDrive(0,0,0,false,0);}
+                    case "benchmark"->{benchmarkName=action.get("name").getAsString();if(!benchmarkName.matches("[a-z0-9-]{1,40}"))throw new IllegalArgumentException("Benchmark name");benchmarkStart=System.nanoTime()+2_000_000_000L;benchmarkEnd=benchmarkStart+Math.max(5,Math.min(60,action.get("seconds").getAsInt()))*1_000_000_000L;lastFrame=0;frames.clear();c.options.getEnableVsync().setValue(false);c.options.getMaxFps().setValue(260);}
                 }
             }
         }catch(Exception e){Hardcore.LOG.warn("QA action failed: {}",e.getClass().getSimpleName());}
         if(ticks%30==0)try{var request=c.runDirectory.toPath().resolve("qa-capture-request.txt");if(java.nio.file.Files.exists(request)){String phase=java.nio.file.Files.readString(request).trim();java.nio.file.Files.delete(request);if(phase.equals("graphics-reload")){c.options.load();var iris=Class.forName("net.irisshaders.iris.Iris");var config=iris.getMethod("getIrisConfig").invoke(null);config.getClass().getMethod("load").invoke(config);iris.getMethod("reload").invoke(null);c.worldRenderer.reload();Hardcore.LOG.info("QA graphics reloaded");}else if(phase.equals("fullscreen-toggle")){c.getWindow().toggleFullscreen();}else if(phase.equals("board-open")){var pos=new net.minecraft.util.math.BlockPos(6,96,-17);c.interactionManager.interactBlock(c.player,net.minecraft.util.Hand.MAIN_HAND,new net.minecraft.util.hit.BlockHitResult(net.minecraft.util.math.Vec3d.ofCenter(pos),net.minecraft.util.math.Direction.NORTH,pos,false));}else if(phase.equals("board-scale4")){c.options.getGuiScale().setValue(4);c.onResolutionChanged();}else if(phase.equals("board-close")){c.setScreen(null);c.options.getGuiScale().setValue(2);c.onResolutionChanged();}else if(phase.matches("[a-z0-9-]{1,50}")){captured.remove(phase);capture(c,phase);}}}catch(Exception e){Hardcore.LOG.warn("QA request failed: {}",e.getClass().getSimpleName());}
+        if(Boolean.getBoolean("tecni.expansionVisual"))return;
         if(Boolean.getBoolean("tecni.bossVisual")){
             if(ticks%60==0&&java.nio.file.Files.exists(c.runDirectory.toPath().resolve("qa-altar-open"))){try{java.nio.file.Files.delete(c.runDirectory.toPath().resolve("qa-altar-open"));var pos=new net.minecraft.util.math.BlockPos(3,97,0);c.interactionManager.interactBlock(c.player,net.minecraft.util.Hand.MAIN_HAND,new net.minecraft.util.hit.BlockHitResult(net.minecraft.util.math.Vec3d.ofCenter(pos),net.minecraft.util.math.Direction.EAST,pos,false));}catch(Exception e){Hardcore.LOG.warn("QA altar interaction failed");}}
             if(ticks==180){c.options.getGuiScale().setValue(2);c.onResolutionChanged();}
