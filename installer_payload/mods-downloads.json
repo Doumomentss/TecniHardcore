@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "packVersion": "2.4.0",
+  "packVersion": "2.7.0",
   "files": [
     {
       "name": "appleskin-fabric-mc1.20.1-2.5.2.jar",
@@ -597,6 +597,15 @@
       "version": "MNgY2xFj",
       "modId": "fabrictailor",
       "modVersion": "2.1.2"
+    },
+    {
+      "name": "fiw-anticheat-fabric-1.20.1-2.1.0.jar",
+      "url": "https://cdn.modrinth.com/data/BUXFUwPg/versions/gXwiMQAF/fiw-anticheat-fabric-1.20.1-2.1.0.jar",
+      "bytes": 3149281,
+      "sha512": "1ed0807fe47dbcea434202096e8e55f28ddce48fd84c149171daf0bd70201d0ee3f09d83684a9970f6752e46800c6ed843a1abcd0fdd99007e410e12a04edc04",
+      "sha256": "a0996717433a4533ace77e7f8aa2b479eeb92220300ed356025aec692786daaf",
+      "project": "BUXFUwPg",
+      "version": "gXwiMQAF"
     }
   ]
 }

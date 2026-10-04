@@ -22,6 +22,9 @@ public final class QaCapture {
                     case "use"->c.interactionManager.interactItem(c.player,net.minecraft.util.Hand.MAIN_HAND);
                     case "inventory"->c.setScreen(new net.minecraft.client.gui.screen.ingame.InventoryScreen(c.player));
                     case "close"->c.setScreen(null);
+                    case "command"->c.player.networkHandler.sendChatCommand(action.get("command").getAsString());
+                    case "click"->{if(c.currentScreen!=null)c.currentScreen.mouseClicked(action.get("x").getAsDouble(),action.get("y").getAsDouble(),0);}
+                    case "npc"->{String key=action.get("id").getAsString();for(var entity:c.world.getEntities())if(entity instanceof CivicNpcEntity npc&&npc.key().equals(key)&&c.player.squaredDistanceTo(npc)<=36){c.interactionManager.interactEntity(c.player,npc,net.minecraft.util.Hand.MAIN_HAND);break;}}
                     case "view"->{c.options.setPerspective(net.minecraft.client.option.Perspective.values()[Math.max(0,Math.min(2,action.get("perspective").getAsInt()))]);if(action.has("scale")){c.options.getGuiScale().setValue(action.get("scale").getAsInt());c.onResolutionChanged();}if(action.has("particles"))c.options.getParticles().setValue(net.minecraft.client.option.ParticlesMode.values()[Math.max(0,Math.min(2,action.get("particles").getAsInt()))]);}
                     case "drive"->ExpansionClient.qaDrive(action.get("forward").getAsFloat(),action.get("side").getAsFloat(),action.get("vertical").getAsFloat(),action.get("boost").getAsBoolean(),action.get("ticks").getAsInt());
                     case "dismount"->c.options.sneakKey.setPressed(true);

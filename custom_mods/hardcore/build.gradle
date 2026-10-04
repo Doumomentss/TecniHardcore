@@ -1,5 +1,5 @@
 plugins { id 'fabric-loom' version '1.10.5' }
-version = '2.6.3'
+version = '2.7.0'
 group = 'net.tecnihardcore'
 base { archivesName = 'tecnihardcore' }
 repositories { mavenCentral() }
@@ -12,6 +12,8 @@ dependencies {
     // Only pure Java account/config APIs are used; production ships the verified
     // original server JAR, rather than bundling or re-remapping EasyAuth.
     compileOnly files('../../tools/vendor/easyauth-mc1.20-3.3.6.jar')
+    compileOnly files('../../tools/vendor/grim-api-1.2.4.0.jar')
+    compileOnly files('../../tools/vendor/spigot-api-compile-only.jar')
     compileOnly fileTree('../../client/mods') { include 'sodium-*.jar' }
     testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
 }

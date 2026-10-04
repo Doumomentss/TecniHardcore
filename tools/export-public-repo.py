@@ -27,6 +27,13 @@ for name in ['NOVEDADES-2.6.2.md','RESULTADOS-2.6.2.md']:copy(name)
 for name in ['qa-tornado262.cjs','qa-tornado-pull262.cjs','verify-kayra262.py','backup-before262.py','verify-production262.py']:copy('tools/'+name)
 copy('tools/test-runtime/expansion25/game/screenshots/sanctuary-t262-kayra-storm.png','docs/t262-kayra-storm.png')
 for name in ['NOVEDADES-2.6.3.md','RESULTADOS-2.6.3.md']:copy(name)
+for name in ['NOVEDADES-2.7.md','RESULTADOS-2.7.md','NPCS-EQUIPOS-MERCADO.md']:copy(name)
+for name in ['prepare-security27.py','security27-lock.json','preview-social27.cjs','test-social27.cjs','test-security27.cjs','test-social27-recovery.py','test-guard27.cjs','qa-civic27-native.cjs','qa-plaza-anchor27.cjs','backup-before27.py','verify-production27.py']:copy('tools/'+name)
+for src in (root/'tools/security27-configs').glob('*'):
+    if src.is_file():copy(src.relative_to(root))
+for name in ['civic27-dialogue','civic27-market-scale2','civic27-market-scale4-next','civic27-market-fullscreen','civic27-spawn-npc','civic27-custom-skin-final']:
+    src=f'tools/test-runtime/expansion25/game/screenshots/sanctuary-{name}.png'
+    if (root/src).exists():copy(src,f'docs/{name}.png')
 for name in ['qa-rubble263.cjs','backup-before263.py','verify-production263.py']:copy('tools/'+name)
 for name in ['mass-uproot','dense-vortex','stopped']:copy(f'tools/test-runtime/expansion25/game/screenshots/sanctuary-r263-{name}.png',f'docs/r263-{name}.png')
 copy('playit/start-playit.ps1');copy('server/start-server.ps1');copy('server/iniciar.bat');copy('INICIAR_SERVIDOR.bat');copy('INICIAR_PLAYIT.bat')

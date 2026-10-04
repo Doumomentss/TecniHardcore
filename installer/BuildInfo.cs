@@ -3,6 +3,6 @@ using System.Reflection;
 [assembly: AssemblyDescription("Instalador y actualizador de TecniHardcore, Minecraft 1.20.1 Fabric")]
 [assembly: AssemblyCompany("TecniHardcore")]
 [assembly: AssemblyProduct("TecniHardcore")]
-[assembly: AssemblyVersion("2.6.3.0")]
-[assembly: AssemblyFileVersion("2.6.3.0")]
-namespace TecniHardcoreInstaller { static class BuildInfo { public const string Version="2.6.3"; public const string PackVersion="2.6.3"; } }
+[assembly: AssemblyVersion("2.7.0.0")]
+[assembly: AssemblyFileVersion("2.7.0.0")]
+namespace TecniHardcoreInstaller { static class BuildInfo { public const string Version="2.7.0"; public const string PackVersion="2.7.0"; } }

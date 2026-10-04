@@ -20,6 +20,7 @@ public final class Rituals {
         Ritual(ServerPlayerEntity c,ServerPlayerEntity t,BlockPos p,Hand h){caster=c.getUuid();target=t.getUuid();dimension=c.getWorld().getRegistryKey();altar=p;hand=h;startTick=c.getServer().getTicks();name=t.getName().getString();anchor=c.getPos();landing=t.getPos();}
     }
     private static final Map<UUID,Ritual> active=new HashMap<>();
+    public static boolean participant(UUID player){return active.values().stream().anyMatch(r->r.caster.equals(player)||r.target.equals(player));}
     public static void recoverPayments(MinecraftServer server) {
         try {
             for(var payment:new ArrayList<>(Hardcore.souls.data.ritualPayments.entrySet())) {

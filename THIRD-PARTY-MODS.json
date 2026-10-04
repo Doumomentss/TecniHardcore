@@ -1004,5 +1004,47 @@
       "sources": "https://github.com/samolego/FabricTailor",
       "issues": "https://github.com/samolego/FabricTailor/issues"
     }
+  },
+  {
+    "file": "antixray-fabric-1.4.6+1.20.1.jar",
+    "id": "antixray",
+    "version": "1.4.6",
+    "name": "AntiXray",
+    "authors": [
+      "Drex"
+    ],
+    "contact": {
+      "sources": "https://github.com/DrexHD/AntiXray"
+    },
+    "license": "MIT",
+    "download": "https://cdn.modrinth.com/data/sml2FMaA/versions/6vxHsVZq/antixray-fabric-1.4.6%2B1.20.1.jar",
+    "sha256": "78db3501e25d0ca79e6b48d2802bedc7e16374f350dd5e34d831a31de53e0c53",
+    "distribution": "official download; server only"
+  },
+  {
+    "file": "grimac-fabric-2.3.73.jar",
+    "id": "grimac",
+    "version": "2.3.73",
+    "name": "GrimAC",
+    "authors": [
+      "GrimAC"
+    ],
+    "license": "GPLv3",
+    "download": "https://cdn.modrinth.com/data/LJNGWSvH/versions/SNnHVoFr/grimac-fabric-2.3.73.jar",
+    "sha256": "159587b5ecb303b687b325c1892847ec537f7ee70d3e597d2664a08b19f36cd5",
+    "distribution": "Evaluated and excluded: incompatible with modded inventories; not shipped"
+  },
+  {
+    "file": "fiw-anticheat-fabric-1.20.1-2.1.0.jar",
+    "id": "fiw-mods-api",
+    "version": "2.1.0",
+    "name": "Fiw AntiCheat",
+    "authors": [
+      "Fiw"
+    ],
+    "license": "All Rights Reserved",
+    "download": "https://cdn.modrinth.com/data/BUXFUwPg/versions/gXwiMQAF/fiw-anticheat-fabric-1.20.1-2.1.0.jar",
+    "sha256": "a0996717433a4533ace77e7f8aa2b479eeb92220300ed356025aec692786daaf",
+    "distribution": "official download; client and server"
   }
 ]

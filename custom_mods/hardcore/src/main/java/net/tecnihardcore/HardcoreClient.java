@@ -15,9 +15,9 @@ public final class HardcoreClient implements ClientModInitializer {
     private static long ready;
     private static boolean arena;
     public void onInitializeClient() {
-        ClientLoginNetworking.registerGlobalReceiver(RitualNetwork.HELLO,(c,h,b,listener)->{int protocol=b.readVarInt();var response=net.fabricmc.fabric.api.networking.v1.PacketByteBufs.create();response.writeVarInt(protocol==10?10:0);return java.util.concurrent.CompletableFuture.completedFuture(response);});
+        ClientLoginNetworking.registerGlobalReceiver(RitualNetwork.HELLO,(c,h,b,listener)->{int protocol=b.readVarInt();var response=net.fabricmc.fabric.api.networking.v1.PacketByteBufs.create();response.writeVarInt(protocol==11?11:0);return java.util.concurrent.CompletableFuture.completedFuture(response);});
         net.minecraft.client.render.block.entity.BlockEntityRendererFactories.register(Sanctuaries.ENTITY,SanctuaryRenderer::new);
-        RitualVisuals.init(); BossVisuals.init(); RescueHud.init(); ExpansionClient.init();
+        RitualVisuals.init(); BossVisuals.init(); RescueHud.init(); ExpansionClient.init(); CivicScreen.initNetwork();
         net.minecraft.client.render.block.entity.BlockEntityRendererFactories.register(TotemBoard.ENTITY,TotemBoardRenderer::new);
         net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry.register(TrialBoss.TYPE,TrialBossRenderer::new);
         net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry.register(TrialShard.TYPE,TrialBossRenderer.ShardRenderer::new);

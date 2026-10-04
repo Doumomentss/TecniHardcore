@@ -1,6 +1,12 @@
 from pathlib import Path
-import hashlib,subprocess,zipfile,uuid
+import hashlib,subprocess,zipfile,uuid,atexit
 root=Path(__file__).resolve().parents[1]
+desktop=Path(subprocess.check_output(['powershell','-NoProfile','-Command','[Environment]::GetFolderPath("Desktop")'],text=True).strip())
+shortcut=desktop/'TecniHardcore.lnk'
+saved_shortcut=shortcut.read_bytes() if shortcut.exists() else None
+def restore_shortcut():
+    if saved_shortcut is not None:shortcut.write_bytes(saved_shortcut)
+atexit.register(restore_shortcut)
 work=root/'tools/test-runtime/updater-fixtures';work.mkdir(parents=True,exist_ok=True)
 csc=Path('C:/Windows/Microsoft.NET/Framework64/v4.0.30319/csc.exe')
 common=[str(csc),'/nologo','/reference:System.Windows.Forms.dll','/reference:System.Drawing.dll','/reference:System.IO.Compression.dll','/reference:System.IO.Compression.FileSystem.dll']

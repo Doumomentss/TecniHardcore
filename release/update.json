@@ -1,15 +1,15 @@
 {
   "schema": 1,
-  "version": "2.6.3",
-  "packVersion": "2.6.3",
+  "version": "2.7.0",
+  "packVersion": "2.7.0",
   "minecraft": "1.20.1",
   "ritualProtocol": 3,
   "soulProtocol": 3,
-  "packProtocol": 10,
-  "notes": "Tornado con arranque masivo de bloques y escombros reales sincronizados. Niveles 16–20 destruyen bloques duros y contenedores; mayor densidad exterior y demolición más rápida. Conserva datos y protección del spawn.",
+  "packProtocol": 11,
+  "notes": "NPCs con diálogos y skins, misiones iniciales, equipos y chat privado, treguas de conexión y mercado con Cristales Tecni. AntiXray y filtros de cliente; conserva mundo, vidas y actualización segura.",
   "installer": {
-    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.6.3/TecniHardcore-Setup-2.6.3.exe",
-    "bytes": 307820544,
-    "sha256": "48ae49d65a775c73df8debb974e2bf2f58df8727e2cc40d31cc914968c76ecba"
+    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.7.0/TecniHardcore-Setup-2.7.0.exe",
+    "bytes": 307906560,
+    "sha256": "66eb98affe2e00ba238075b74d8e30d58b7f42d8aada8da5fe4aa8118f618078"
   }
 }

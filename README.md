@@ -1,12 +1,12 @@
 # TecniHardcore
 
-Minecraft **1.20.1 Fabric** · paquete y launcher **2.6.3**.
+Minecraft **1.20.1 Fabric** · paquete y launcher **2.7.0**.
 
 ## Descargar y jugar
 
-Descarga [el instalador de la última versión publicada](https://github.com/Doumomentss/TecniHardcore/releases/latest), elige una carpeta y abre el launcher. Escribe tu nombre y pulsa **JUGAR AHORA**. En el menú, **ENTRAR AL SERVIDOR** conecta directamente. La versión 2.6 solo se anuncia como disponible cuando aparece su Release.
+Descarga [el instalador de la última versión publicada](https://github.com/Doumomentss/TecniHardcore/releases/latest), elige una carpeta y abre el launcher. Escribe tu nombre y pulsa **JUGAR AHORA**. En el menú, **ENTRAR AL SERVIDOR** conecta directamente. Una actualización solo se anuncia como disponible cuando aparece su Release.
 
-El instalador contiene launcher, menú, modelos, texturas, sonido y mods propios. El primer inicio descarga 66 mods externos de sus URLs oficiales de Modrinth, con SHA-512 y SHA-256; obtiene Java 17, Fabric y Minecraft desde sus proveedores oficiales cuando hacen falta. Necesitas Internet y una cuenta/licencia de Minecraft conforme a las condiciones de Mojang. El launcher no entrega cuentas ni incluye credenciales.
+El instalador contiene launcher, menú, modelos, texturas, sonido y mods propios. El primer inicio descarga 67 mods externos de sus URLs oficiales de Modrinth, con SHA-512 y SHA-256; obtiene Java 17, Fabric y Minecraft desde sus proveedores oficiales cuando hacen falta. Necesitas Internet y una cuenta/licencia de Minecraft conforme a las condiciones de Mojang. El launcher no entrega cuentas ni incluye credenciales.
 
 Servidor público: `rails-acorn.tun.ply.gg:6906`. Primera conexión: `/register CONTRASEÑA CONTRASEÑA` (12–128 caracteres); siguientes: `/login CONTRASEÑA`.
 
@@ -35,11 +35,19 @@ Consulta [la guía de administración](ADMINISTRACION.md), [las pruebas de las m
 - `launcher/`: Electron, instalación, reparación, consulta de vidas y actualizador.
 - `custom_mods/hardcore/`: lógica del servidor y cliente, modelos GeckoLib, animaciones, partículas y sonidos.
 - `custom_mods/death-overlay/`: reproducción de la animación de muerte.
-- `installer_payload/`: configuración y recursos oficiales; `mods-downloads.json` fija los 65 mods externos por URL y hashes.
+- `installer_payload/`: configuración y recursos oficiales; `mods-downloads.json` fija los 67 mods externos por URL y hashes.
 - `installer/`: instalador Windows con verificación, copias y recuperación.
 - `tools/`: construcción, publicación y pruebas.
 
-Requisitos de desarrollo: Windows, Node.js 22 o posterior, Java **JDK 17**, Gradle 8.14 y Python 3.11 o posterior. En `launcher`, ejecuta `npm ci` y `npm test`. `node tools/fetch-development.cjs` descarga las dependencias de compilación GeckoLib/EasyAuth fijadas por hash. Compila el mod desde `custom_mods/hardcore` con `gradle build`; las pruebas Java se ejecutan durante el build.
+Requisitos de desarrollo: Windows, Node.js 22 o posterior, Java **JDK 17**, Gradle 8.14 y Python 3.11 o posterior. En `launcher`, ejecuta `npm ci` y `npm test`. `node tools/fetch-development.cjs` descarga las dependencias de compilación fijadas por hash (GeckoLib, EasyAuth y tipos de API usados por la integración experimental). Los JAR de API no se instalan en Fabric ni se incluyen en el cliente. Compila el mod desde `custom_mods/hardcore` con `gradle build`; las pruebas Java se ejecutan durante el build.
+
+## NPCs, equipos y mercado
+
+Inés y Bruno ofrecen misiones iniciales que pagan **Cristales Tecni**. Selma permite publicar lotes, consultar vendedor/precio y comprar con entrega en un buzón persistente. `/team crear Nombre` crea un equipo; `/team` o `/chat` alterna entre mensajes generales y privados. No hay daño entre compañeros; una expulsión activa dos horas de protección mutua contadas mientras el expulsado está conectado y autenticado.
+
+Incluye editor de diálogos y skins por URL para operadores, AntiXray, Fiw y límites de acciones TecniGuard. Grim se excluyó por incompatibilidad comprobada con objetos e inventarios del paquete; no hay sanciones automáticas por movimiento.
+
+Consulta [comandos y administración](NPCS-EQUIPOS-MERCADO.md), [novedades](NOVEDADES-2.7.md) y [pruebas y límites](RESULTADOS-2.7.md).
 
 Para generar un instalador desde el repositorio, después de `npm ci` ejecuta `node tools/prepare-payload.cjs`: obtiene los dos JAR propios de la Release fijada por hashes, recupera el video convertido y prepara el runtime de Electron instalado por npm. Si cambias el mod, copia el JAR compilado en `installer_payload/mods` antes de empaquetar. Los archivos generados de video `.fma` también pueden reconstruirse desde el WebM con `python tools/build-death-video.py` (requiere `pillow` e `imageio-ffmpeg`). Los assets 3D y audio editables ya están en `custom_mods/hardcore/src/main/resources`; `tools/build-sanctuary-assets.py` permite regenerarlos con `pillow`, `numpy` e `imageio-ffmpeg`.
 

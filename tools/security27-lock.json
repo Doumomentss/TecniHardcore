@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "minecraft": "1.20.1",
+  "server": [
+    {
+      "name": "antixray-fabric-1.4.6+1.20.1.jar",
+      "url": "https://cdn.modrinth.com/data/sml2FMaA/versions/6vxHsVZq/antixray-fabric-1.4.6%2B1.20.1.jar",
+      "bytes": 121516,
+      "sha512": "ec46ca0c5c4c10caac1a12983cb675e133f092f8a1bf61567b23c955adc78c98a15921c214f0533718a93217fea796641741d3b476f6115249f9031d59e3aba4",
+      "sha256": "78db3501e25d0ca79e6b48d2802bedc7e16374f350dd5e34d831a31de53e0c53",
+      "project": "sml2FMaA",
+      "version": "6vxHsVZq",
+      "versionNumber": "1.4.6+1.20.1"
+    },
+    {
+      "name": "grimac-fabric-2.3.73.jar",
+      "url": "https://cdn.modrinth.com/data/LJNGWSvH/versions/SNnHVoFr/grimac-fabric-2.3.73.jar",
+      "bytes": 7337589,
+      "sha512": "6852780b3c8712e1524d23ed6cc24bdbcfc7ac23637be1760a08b6d836a21b82a49969bbd8d8497b64024aab45ed8e08d3b468e6b8b0478a8a5101c7689c8a37",
+      "sha256": "159587b5ecb303b687b325c1892847ec537f7ee70d3e597d2664a08b19f36cd5",
+      "project": "LJNGWSvH",
+      "version": "SNnHVoFr",
+      "versionNumber": "2.3.73"
+    },
+    {
+      "name": "fiw-anticheat-fabric-1.20.1-2.1.0.jar",
+      "url": "https://cdn.modrinth.com/data/BUXFUwPg/versions/gXwiMQAF/fiw-anticheat-fabric-1.20.1-2.1.0.jar",
+      "bytes": 3149281,
+      "sha512": "1ed0807fe47dbcea434202096e8e55f28ddce48fd84c149171daf0bd70201d0ee3f09d83684a9970f6752e46800c6ed843a1abcd0fdd99007e410e12a04edc04",
+      "sha256": "a0996717433a4533ace77e7f8aa2b479eeb92220300ed356025aec692786daaf",
+      "project": "BUXFUwPg",
+      "version": "gXwiMQAF",
+      "versionNumber": "2.1.0"
+    }
+  ]
+}
