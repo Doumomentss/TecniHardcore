@@ -21,7 +21,9 @@ public final class WeatherRules {
     public static int blockBudget(int type,int level){if(level<0||level>maxDestruction(type))throw new IllegalArgumentException("destruction");if(type==0&&level>4){int n=level-4;return 160+64*n+20*n*n;}return (type==0?new int[]{0,12,40,90,160}:type==4?new int[]{0,48,128,256,480}:new int[]{0,6,24,160,480})[level];}
     public static int depth(int type,int level){return level==0?0:type==0?(level<=4?Math.min(3,level):8+18*(level-4)):type==4?new int[]{0,1,2,4,7}[level]:new int[]{0,1,2,8,16}[level];}
     public static double tornadoScale(int radius,int width){return Math.max(.5,Math.min(4,Math.sqrt(width/120.0)*Math.sqrt(radius/192.0)));}
-    public static int tornadoBudget(int level,int radius,int width){return Math.min(12000,(int)Math.ceil(blockBudget(0,level)*tornadoScale(radius,width)));}
+    public static int tornadoBudget(int level,int radius,int width){double violence=level<=4?1:1+(level-4)/8.0;return Math.min(36000,(int)Math.ceil(blockBudget(0,level)*tornadoScale(radius,width)*violence));}
+    public static int debrisCount(int level,boolean distant,int quality){int count=168+level*level*3;return Math.min(distant?512:quality==2?320:quality==1?720:1600,count);}
+    public static boolean uprootsHeavyBlocks(int type,int level){return type==0&&level>=16;}
     public static double tornadoDamageRadius(int radius,int width){return Math.min(radius-orbit(radius),width*.46*Math.pow(radius/192.0,.15));}
     public static double tornadoReach(int radius,int width){return Math.min(radius-orbit(radius),48*tornadoScale(radius,width));}
     public static double tornadoForce(int radius,int width){return Math.min(3,tornadoScale(radius,width));}

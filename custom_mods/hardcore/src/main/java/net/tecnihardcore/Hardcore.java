@@ -63,7 +63,7 @@ public final class Hardcore implements ModInitializer {
             s.getGameRules().get(GameRules.DO_IMMEDIATE_RESPAWN).set(true, s);
             publish();
             BackupService.start(s);
-            LOG.info("TecniHardcore 2.6.2: unlimited resurrections and Sanctuaries of Souls ready");
+            LOG.info("TecniHardcore 2.6.3: unlimited resurrections and Sanctuaries of Souls ready");
         });
         ServerLifecycleEvents.SERVER_STOPPING.register(s -> { if (souls != null) souls.save(); BackupService.stop(); });
         ServerPlayConnectionEvents.JOIN.register((h, sender, s) -> {
@@ -103,7 +103,7 @@ public final class Hardcore implements ModInitializer {
             if (++ticks % 20 == 0) {
                 // Disconnecting an outdated client removes it from the live player list.
                 for (ServerPlayerEntity p : new ArrayList<>(s.getPlayerManager().getPlayerList())) {
-                    if(p.age>120&&!RitualNetwork.compatible(p)){p.networkHandler.disconnect(Text.literal("Necesitas TecniHardcore 2.6.2. Cierra el juego y ejecuta el launcher actualizado para instalar el paquete."));continue;}
+                    if(p.age>120&&!RitualNetwork.compatible(p)){p.networkHandler.disconnect(Text.literal("Necesitas TecniHardcore 2.6.3. Cierra el juego y ejecuta el launcher actualizado para instalar el paquete."));continue;}
                     Rituals.finishRecovery(p);
                     if(soul(p).lives==0 && AuthBootstrap.authenticated(p) && !p.isSpectator())p.changeGameMode(GameMode.SPECTATOR);
                     soul(p).seen=System.currentTimeMillis();send(p);
@@ -155,7 +155,7 @@ public final class Hardcore implements ModInitializer {
     }
     public static void publish() {
         if (souls == null) return;
-        JsonObject root = new JsonObject(); root.addProperty("protocol",2); root.addProperty("packVersion","2.6.2"); root.addProperty("updatedAt", System.currentTimeMillis());
+        JsonObject root = new JsonObject(); root.addProperty("protocol",2); root.addProperty("packVersion","2.6.3"); root.addProperty("updatedAt", System.currentTimeMillis());
         JsonArray players = new JsonArray();
         souls.data.players.entrySet().stream().sorted(Comparator.comparingLong((Map.Entry<String,SoulStore.Soul> e) -> e.getValue().seen).reversed()).limit(128).forEach(e -> {
             JsonObject v=new JsonObject(); v.addProperty("name",e.getValue().name); v.addProperty("lives",e.getValue().lives); v.addProperty("resurrections",e.getValue().resurrections); v.addProperty("seenAt",e.getValue().seen); var online=server.getPlayerManager().getPlayer(java.util.UUID.fromString(e.getKey()));v.addProperty("online",online!=null&&AuthBootstrap.authenticated(online));players.add(v);

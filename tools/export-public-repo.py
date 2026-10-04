@@ -26,6 +26,9 @@ for name in ['qa-weather261.cjs','qa-native-weather261.cjs','qa-supplement-weath
 for name in ['NOVEDADES-2.6.2.md','RESULTADOS-2.6.2.md']:copy(name)
 for name in ['qa-tornado262.cjs','qa-tornado-pull262.cjs','verify-kayra262.py','backup-before262.py','verify-production262.py']:copy('tools/'+name)
 copy('tools/test-runtime/expansion25/game/screenshots/sanctuary-t262-kayra-storm.png','docs/t262-kayra-storm.png')
+for name in ['NOVEDADES-2.6.3.md','RESULTADOS-2.6.3.md']:copy(name)
+for name in ['qa-rubble263.cjs','backup-before263.py','verify-production263.py']:copy('tools/'+name)
+for name in ['mass-uproot','dense-vortex','stopped']:copy(f'tools/test-runtime/expansion25/game/screenshots/sanctuary-r263-{name}.png',f'docs/r263-{name}.png')
 copy('playit/start-playit.ps1');copy('server/start-server.ps1');copy('server/iniciar.bat');copy('INICIAR_SERVIDOR.bat');copy('INICIAR_PLAYIT.bat')
 copy('tools/server-control/GracefulStop.java');copy('tools/server-control/MANIFEST.MF')
 for name in ['w26-icons-final','w26-tornado','w26-electric-ultra-quality','w26-beacon-99000-six-chunks','w26-skin-full-final']:

@@ -15,8 +15,8 @@ final class StormDestruction {
         if(h.type==1&&pulse==40){h.fractureCursor=0;h.pendingBlocks.clear();}
         if(h.type==1&&(pulse<40||pulse>100))return;
         int budget=h.type==0?WeatherRules.tornadoBudget(h.destruction,h.radius,h.width):WeatherRules.blockBudget(h.type,h.destruction);
-        int attempts=h.type==0?Math.min(640,Math.max(24,(budget+19)/20+8)):24;
-        long deadline=System.nanoTime()+(h.type==0?2_000_000:1_200_000);
+        int attempts=h.type==0?Math.min(2000,Math.max(24,(budget+19)/20+8)):24;
+        long deadline=System.nanoTime()+(h.type==0?3_000_000:1_200_000);
         for(int i=0;i<attempts&&h.destroyed<budget&&System.nanoTime()<deadline;i++){
             if(h.pendingBlocks.isEmpty()){
                 if(h.type==4)break;
@@ -25,12 +25,20 @@ final class StormDestruction {
             BlockPos pos=h.pendingBlocks.pollFirst();if(pos==null)continue;
             if(!h.world.isChunkLoaded(pos)||SpawnProtection.inside(h.world,pos))continue;
             var state=h.world.getBlockState(pos);if(!allowed(h,pos,state))continue;
-            if(h.world.breakBlock(pos,false))h.destroyed++;
+            // No breakBlock world event per block: the sampled rubble channel
+            // replaces thousands of particles/sound packets with one bounded batch.
+            if(h.type==0){
+                var entity=h.world.getBlockEntity(pos);
+                if(entity instanceof net.minecraft.inventory.Inventory inventory)inventory.clear();
+                if(h.world.removeBlock(pos,false)){h.destroyed++;StormRubble.removed(h,pos,state);}
+            }else if(h.world.breakBlock(pos,false))h.destroyed++;
         }
+        if(h.type==0&&h.age%5==0)StormRubble.flush(h);
     }
     private static boolean allowed(Cataclysms.Hazard h,BlockPos pos,BlockState state){
         var block=state.getBlock();
-        if(state.isAir()||!state.getFluidState().isEmpty()||state.hasBlockEntity()||state.getHardness(h.world,pos)<0||state.getHardness(h.world,pos)>5||block==Blocks.OBSIDIAN||block==Blocks.CRYING_OBSIDIAN||block==Blocks.NETHERITE_BLOCK||block==Sanctuaries.CORE||state.isIn(BlockTags.PORTALS))return false;
+        if(state.isAir()||block instanceof FluidBlock||state.getHardness(h.world,pos)<0||block==Sanctuaries.CORE||state.isIn(BlockTags.PORTALS))return false;
+        if(!WeatherRules.uprootsHeavyBlocks(h.type,h.destruction)&&(state.hasBlockEntity()||state.getHardness(h.world,pos)>5||block==Blocks.OBSIDIAN||block==Blocks.CRYING_OBSIDIAN||block==Blocks.NETHERITE_BLOCK))return false;
         return h.destruction>=3||h.type==4||state.isIn(BlockTags.LEAVES)||state.isIn(BlockTags.LOGS)||state.isIn(BlockTags.DIRT)||state.isIn(BlockTags.SAND)||block==Blocks.GRAVEL||block==Blocks.SNOW||block==Blocks.SNOW_BLOCK;
     }
     private static void column(Cataclysms.Hazard h,int x,int z,int depth){

@@ -52,7 +52,7 @@ public final class Cataclysms {
             d.register(literal("tecni").then(root));
         });
         ServerTickEvents.END_SERVER_TICK.register(s->{for(var h:new ArrayList<>(active.values()))tick(h);});
-        ServerLifecycleEvents.SERVER_STOPPING.register(s->{for(var h:active.values())send(h,2);active.clear();});
+        ServerLifecycleEvents.SERVER_STOPPING.register(s->{for(var h:active.values())send(h,2);active.clear();StormRubble.clear();});
         ServerPlayConnectionEvents.JOIN.register((h,sender,s)->{for(var v:active.values())send(v,0);});
     }
     private static int command(ServerCommandSource s,int type,BlockPos pos,int r,int seconds,int width,int destruction){if(!WeatherRules.settings(type,r,seconds,width,destruction)){s.sendError(Text.literal("Configuración inválida: radio 32–512, ancho 40–600 y destrucción 0–20 en tornado, 0–4 en terremoto/meteoritos."));return 0;}int area=type==0?WeatherRules.envelope(r,width):r;String problem=problem(s.getWorld(),type,pos,area,seconds);if(problem!=null){s.sendError(Text.literal(problem));return 0;}var h=start(s.getWorld(),type,pos,r,seconds,width,destruction);s.sendFeedback(()->Text.literal("Desastre preparado: "+h.id+". Radio "+h.radius+" · ancho "+width+" · destrucción "+destruction+". Comienza en 10 segundos."),true);Hardcore.LOG.warn("ADMIN {} starts {} {} {} width {} destruction {}",s.getName(),TYPES[type],h.id,pos,width,destruction);return 1;}
@@ -68,13 +68,13 @@ public final class Cataclysms {
     }
     public static Hazard start(ServerWorld w,int type,BlockPos pos,int r,int seconds){return start(w,type,pos,r,seconds,120,0);}
     public static Hazard start(ServerWorld w,int type,BlockPos pos,int r,int seconds,int width,int destruction){int area=type==0?WeatherRules.envelope(r,width):r;String invalid=WeatherRules.settings(type,r,seconds,width,destruction)?problem(w,type,pos,area,seconds):"Invalid storm settings";if(invalid!=null)throw new IllegalArgumentException(invalid);var h=new Hazard(w,type,pos,r,seconds,width,destruction);active.put(h.id,h);send(h,0);return h;}
-    public static void stop(Hazard h){if(!h.stopping){h.stopping=true;h.age=h.duration;h.marks.clear();h.pendingBlocks.clear();send(h,1);}}
+    public static void stop(Hazard h){if(!h.stopping){h.stopping=true;h.age=h.duration;h.marks.clear();h.pendingBlocks.clear();StormRubble.forget(h.id);send(h,1);}}
     public static boolean eligible(ServerPlayerEntity p){return p.isAlive()&&!p.isCreative()&&!p.isSpectator()&&AuthBootstrap.authenticated(p)&&Hardcore.soul(p).lives>0&&!safe(p);}
     private static boolean safe(ServerPlayerEntity p){return SpawnProtection.active(p.getWorld())&&ExpansionRules.plaza(p.getX(),p.getZ(),0);}
     public static boolean roof(ServerWorld w,Vec3d p){int x=MathHelper.floor(p.x),z=MathHelper.floor(p.z);return !w.isChunkLoaded(new BlockPos(x,MathHelper.floor(p.y),z))||w.getTopY(Heightmap.Type.MOTION_BLOCKING,x,z)>p.y+1.9;}
     private static List<ServerPlayerEntity> targets(Hazard h){return h.world.getPlayers(p->eligible(p)&&p.getPos().subtract(Vec3d.ofCenter(h.center)).horizontalLength()<=h.radius);}
     private static void tick(Hazard h){
-        ++h.age;if(h.age>h.duration){if(!h.stopping){h.stopping=true;send(h,1);}if(h.age>h.duration+60){send(h,2);active.remove(h.id);}return;}
+        ++h.age;if(h.age>h.duration){if(!h.stopping){h.stopping=true;send(h,1);}if(h.age>h.duration+60){send(h,2);StormRubble.forget(h.id);active.remove(h.id);}return;}
         h.move();
         if(h.age%10==0)send(h,0);if(h.age<200)return;StormDestruction.tick(h);var players=targets(h);int t=h.age-200;
         if(h.type==0){Vec3d center=h.position();double reach=WeatherRules.tornadoReach(h.radius,h.width),force=WeatherRules.tornadoForce(h.radius,h.width);for(var p:players){Vec3d d=center.subtract(p.getPos());double distance=d.horizontalLength();if(distance<reach&&p.getY()>=center.y-4&&p.getY()<h.crownY){var body=p.getVehicle() instanceof CrystalMount m?m:p;Vec3d pull=new Vec3d(d.x,0,d.z).normalize().multiply(.055*force*(.2+.8*(1-distance/reach)));var velocity=body.getVelocity();double lift=Math.min(1.2,.12+.4*force*(1-distance/reach));Vec3d horizontal=new Vec3d(velocity.x+pull.x+Math.sin(t*.05)*.015*force,0,velocity.z+pull.z);double cap=Math.min(2,1.1+.3*force);if(horizontal.length()>cap)horizontal=horizontal.normalize().multiply(cap);body.setVelocity(horizontal.x,Math.max(velocity.y,lift),horizontal.z);body.velocityModified=true;if(distance<10*force&&t%20==0)harm(p,2,false);}}}

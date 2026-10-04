@@ -25,11 +25,12 @@ final class StormGeometry {
         if((int)time%80<7){Vec3d origin=p.add(0,30+((int)time/80%3)*24,0);lightning(m,lines,origin,35,((int)time/80)*17,opacity*.8F);}
     }
 
-    static void debris(MatrixStack m,VertexConsumerProvider vertices,Vec3d p,double time,int width,double funnelHeight,boolean distant,net.minecraft.client.option.ParticlesMode particles){
-        int count=distant?24:particles==net.minecraft.client.option.ParticlesMode.MINIMAL?48:particles==net.minecraft.client.option.ParticlesMode.DECREASED?96:168;
+    static void debris(MatrixStack m,VertexConsumerProvider vertices,Vec3d p,double time,int width,double funnelHeight,boolean distant,net.minecraft.client.option.ParticlesMode particles,int destruction,java.util.UUID id){
+        int count=WeatherRules.debrisCount(destruction,distant,particles==net.minecraft.client.option.ParticlesMode.MINIMAL?2:particles==net.minecraft.client.option.ParticlesMode.DECREASED?1:0);
         var states=new net.minecraft.block.BlockState[]{net.minecraft.block.Blocks.DIRT.getDefaultState(),net.minecraft.block.Blocks.STONE.getDefaultState(),net.minecraft.block.Blocks.OAK_PLANKS.getDefaultState(),net.minecraft.block.Blocks.OAK_LEAVES.getDefaultState(),net.minecraft.block.Blocks.COBBLESTONE.getDefaultState()};
+        states=StormRubbleVisuals.palette(id,states);
         var renderer=net.minecraft.client.MinecraftClient.getInstance().getBlockRenderManager();
-        for(int i=0;i<count;i++){double height=4+(i*17+time*.27)%(funnelHeight*.85),angle=time*(.022+(i%5)*.003)+i*2.3999,radius=ExpansionRules.tornadoRadius(height/funnelHeight)*width/120.0*.82;
+        for(int i=0;i<count;i++){double height=4+(i*17+time*(.27+destruction*.09))%(funnelHeight*.85),angle=time*(.022+destruction*.003+(i%5)*.003)+i*2.3999,radius=ExpansionRules.tornadoRadius(height/funnelHeight)*width/120.0*(1.12+(i%7)*.07);
             m.push();m.translate(p.x+Math.cos(angle)*radius,p.y+height,p.z+Math.sin(angle)*radius);m.multiply(net.minecraft.util.math.RotationAxis.POSITIVE_Y.rotation((float)(time*.035+i)));m.multiply(net.minecraft.util.math.RotationAxis.POSITIVE_Z.rotation((float)(time*.023+i*.7)));float size=.5F+(i%5)*.24F;m.scale(size,size,size);m.translate(-.5,-.5,-.5);renderer.renderBlockAsEntity(states[i%states.length],m,vertices,15728880,net.minecraft.client.render.OverlayTexture.DEFAULT_UV);m.pop();
         }
     }
