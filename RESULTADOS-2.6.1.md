@@ -25,6 +25,8 @@ El launcher del propietario y su cliente se actualizaron con el mismo instalador
 
 Tras arrancar, se compararon los ocho registros completos de almas y los ocho archivos de jugadores con el respaldo: coincidieron. Cliente y servidor contienen el mismo JAR final. Se verificaron versión 2.6.1 del launcher instalado, destino del acceso directo, botón personalizado y respuestas vigentes del servidor local y de Playit.
 
+La release `v2.6.1` está publicada. Sus siete archivos coinciden en tamaño y SHA-256 con los artefactos locales. El feed oficial ofrece 2.6.1 a un launcher 2.6.0 y no ofrece otra actualización al launcher 2.6.1. Código y capturas están publicados en el repositorio.
+
 ## Artefactos
 
 - Instalador: `TecniHardcore-Setup-2.6.1.exe`, 307808256 bytes, SHA-256 `441bf4f8372272099bce88466ea3dadd3fdaed0185e5580dbf3602507cbc75b4`.
