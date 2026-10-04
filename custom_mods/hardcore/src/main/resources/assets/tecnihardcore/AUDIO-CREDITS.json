@@ -11,6 +11,11 @@
     "thunder_real_1.ogg": "adef1fd5ebb7c5f8e016fcb7c3dbbb00034dd4a4bc81e8ccb1b67f0f8ce98435",
     "thunder_real_2.ogg": "93945f578a1df22946e5c3ee4cd18df69a4bd174e7fdc59ce339bfc8c034420e",
     "thunder_real_3.ogg": "6196fad3acfc94a1cea918457460bee9145812257eead7b39ad18952e563e8e3",
-    "wind_real.ogg": "3014c9a03e5da5dada63dc9c4d5f3b6db3d3c90569d93e5397443d4d5e902da2"
-  }
+    "wind_real.ogg": "3014c9a03e5da5dada63dc9c4d5f3b6db3d3c90569d93e5397443d4d5e902da2",
+    "wind_smooth.ogg": "ba25623f26c5b4ec5df65eee86584e912139ba4b57da6d924f6f4fa351e9fe47",
+    "wind_thunder_1.ogg": "52f8ff84bf804e1df320b245ee394e817610634256715367d0c22470676209aa",
+    "wind_thunder_2.ogg": "87f437da3554967dea8cbd62d2ce56bbe74956c99d545ec797b65c42d7a09653",
+    "wind_thunder_3.ogg": "d3103434721fd4a410e5008104e6fb8d37ddd198131521fed946924eb50864f8"
+  },
+  "tornado261": "Original smooth filtered-noise wind and dry thunder synthesis; no rain field recording in tornado wind/thunder."
 }

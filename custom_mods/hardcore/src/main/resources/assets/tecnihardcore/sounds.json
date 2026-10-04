@@ -92,7 +92,7 @@
   "disaster.wind": {
     "sounds": [
       {
-        "name": "tecnihardcore:disaster/wind_real",
+        "name": "tecnihardcore:disaster/wind_smooth",
         "stream": true
       }
     ],
@@ -147,5 +147,13 @@
       }
     ],
     "subtitle": "subtitles.tecnihardcore.disaster_alarm"
+  },
+  "disaster.wind_thunder": {
+    "sounds": [
+      "tecnihardcore:disaster/wind_thunder_1",
+      "tecnihardcore:disaster/wind_thunder_2",
+      "tecnihardcore:disaster/wind_thunder_3"
+    ],
+    "subtitle": "subtitles.tecnihardcore.disaster_thunder"
   }
 }

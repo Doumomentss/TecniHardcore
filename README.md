@@ -60,3 +60,5 @@ El Custodio ofrece botín personal según participación y una tirada de cinco m
 La dimensión de eventos incluye Ojo de la tormenta, Circuito de cristal y Defensa del núcleo. El operador anuncia **ENSAYO** o **HARDCORE** antes de la inscripción. Ensayo guarda y restaura el estado original; hardcore utiliza vidas y objetos reales. Los biomas de Nature’s Spirit y Regions Unexplored aparecen en terreno nuevo; Handcrafted y Chipped aportan decoración. Consulta [comandos, reglas y recuperación](EVENTOS-Y-MONTURAS.md) y [el estado verificable de las pruebas 2.5](RESULTADOS-2.5.md).
 
 Novedades y comandos actuales: [TecniHardcore 2.6](NOVEDADES-2.6.md). Pruebas y límites: [resultados 2.6](RESULTADOS-2.6.md).
+
+Parche 2.6.1: tornado que sigue desniveles sin rechazar obstáculos, viento sin grabación de lluvia, meteoritos visibles con daño y cráteres 0–4, y terremoto con fracturas conectadas. [Comandos y niveles](NOVEDADES-2.6.1.md).

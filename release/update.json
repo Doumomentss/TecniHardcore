@@ -1,15 +1,15 @@
 {
   "schema": 1,
-  "version": "2.6.0",
-  "packVersion": "2.6.0",
+  "version": "2.6.1",
+  "packVersion": "2.6.1",
   "minecraft": "1.20.1",
   "ritualProtocol": 3,
   "soulProtocol": 3,
-  "packProtocol": 7,
-  "notes": "Tormentas con alarma y audio real, tornado de ancho configurable y escombros visuales, destrucción opcional por niveles, baliza de largo alcance, skins, iconos originales y corrección de Espacio. Eventos sin ID obligatorio; conserva mundo, identidades y actualización segura.",
+  "packProtocol": 8,
+  "notes": "Tornado que sigue el terreno y baja pendientes, admite obstáculos y se mueve un 50 % más rápido; viento sin lluvia metálica. Meteoritos visibles con daño real y cráteres 0–4; terremoto con fracturas profundas. Conserva datos y protección del spawn.",
   "installer": {
-    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.6.0/TecniHardcore-Setup-2.6.0.exe",
-    "bytes": 307686912,
-    "sha256": "3fa3dc8f8a4b705f96795f4cb0a7e7ed2e4ca256f7b3b48fda9001f646986b90"
+    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.6.1/TecniHardcore-Setup-2.6.1.exe",
+    "bytes": 307808256,
+    "sha256": "441bf4f8372272099bce88466ea3dadd3fdaed0185e5580dbf3602507cbc75b4"
   }
 }

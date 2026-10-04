@@ -14,6 +14,16 @@ public final class ExpansionQa {
         if(!Files.exists(s.getRunDirectory().toPath().resolve(".tecni-test-world")))throw new IllegalStateException("Isolated-world marker required");
         String[] args=command.split(" ");if(args.length<2||!args[1].matches("E25[A-Za-z0-9_]{1,13}"))throw new IllegalArgumentException("Only E25 test accounts may be changed");
         var p=s.getPlayerManager().getPlayer(args[1]);if(p==null)throw new IllegalArgumentException("Test player not connected");
+        if(args[0].equals("terrain")){
+            int x=Integer.parseInt(args[3]),z=Integer.parseInt(args[4]),air=0,surface=0;
+            for(int dx=-12;dx<=12;dx++)for(int dz=-12;dz<=12;dz++)for(int y=80;y<=95;y++){
+                var pos=new net.minecraft.util.math.BlockPos(x+dx,y,z+dz);
+                if(!p.getServerWorld().isChunkLoaded(pos))throw new IllegalStateException("QA terrain must already be loaded");
+                if(p.getServerWorld().getBlockState(pos).isAir()){air++;if(y==95)surface++;}
+            }
+            var result=new com.google.gson.JsonObject();result.addProperty("air",air);result.addProperty("surface",surface);
+            Path directory=s.getRunDirectory().toPath().resolve("qa-results");Files.createDirectories(directory);Files.writeString(directory.resolve(args[1]+"-"+args[2]+".json"),result.toString());
+        }
         if(args[0].equals("benchmark")){if(!args[2].matches("[a-z0-9-]{1,40}"))throw new IllegalArgumentException("Benchmark name");benchmark=args[2];remaining=Math.max(20,Math.min(2400,Integer.parseInt(args[3])));tickTimes.clear();}
         if(args[0].equals("lethal"))p.damage(p.getDamageSources().generic(),100000);
         if(args[0].equals("boss-hit")){for(var e:p.getServerWorld().iterateEntities())if(e instanceof TrialBoss b&&b.isAlive()&&b.squaredDistanceTo(p)<96*96){b.damage(p.getDamageSources().playerAttack(p),Float.parseFloat(args[2]));break;}}
