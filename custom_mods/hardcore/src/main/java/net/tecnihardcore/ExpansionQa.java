@@ -5,8 +5,20 @@ import java.nio.file.*;
 /** Explicitly opt-in test host command spool, never enabled by the production start script. */
 public final class ExpansionQa {
     private static long tickStart;private static int remaining;private static String benchmark="";private static final java.util.List<Double> tickTimes=new java.util.ArrayList<>();
+    private static net.minecraft.server.world.ServerWorld countWorld;
+    private static long countIndex,countSolid,countFluid,countTotal;
+    private static int countX,countY,countZ,countSX,countSY,countSZ;
+    private static String countName;
     public static void init(){if(!Boolean.getBoolean("tecni.testServer"))return;
         ServerTickEvents.START_SERVER_TICK.register(s->tickStart=System.nanoTime());
+        ServerTickEvents.END_SERVER_TICK.register(s->{if(countWorld==null)return;long deadline=System.nanoTime()+2_000_000;var pos=new net.minecraft.util.math.BlockPos.Mutable();
+            for(int i=0;i<20000&&countIndex<countTotal&&System.nanoTime()<deadline;i++,countIndex++){
+                pos.set(countX+(int)(countIndex%countSX),countY+(int)(countIndex/countSX%countSY),countZ+(int)(countIndex/(countSX*(long)countSY)));
+                if(!countWorld.isChunkLoaded(pos)){countWorld=null;throw new IllegalStateException("QA count requires already loaded chunks");}
+                var state=countWorld.getBlockState(pos);if(state.getBlock() instanceof net.minecraft.block.FluidBlock)countFluid++;else if(!state.isAir()&&!state.isOf(net.minecraft.block.Blocks.STRUCTURE_VOID))countSolid++;
+            }
+            if(countIndex==countTotal)try{var json=new com.google.gson.JsonObject();json.addProperty("solid",countSolid);json.addProperty("fluid",countFluid);json.addProperty("volume",countTotal);Path directory=s.getRunDirectory().toPath().resolve("qa-results");Files.createDirectories(directory);Files.writeString(directory.resolve(countName+".json"),json.toString());countWorld=null;}catch(Exception error){countWorld=null;Hardcore.LOG.error("QA count failed",error);}
+        });
         ServerTickEvents.END_SERVER_TICK.register(s->{if(remaining<=0)return;tickTimes.add((System.nanoTime()-tickStart)/1e6);if(--remaining==0)try{var sorted=new java.util.ArrayList<>(tickTimes);java.util.Collections.sort(sorted);var json=new com.google.gson.JsonObject();json.addProperty("ticks",sorted.size());json.addProperty("meanMs",sorted.stream().mapToDouble(Double::doubleValue).average().orElse(0));json.addProperty("p95Ms",sorted.get(Math.min(sorted.size()-1,(int)Math.ceil(sorted.size()*.95)-1)));json.addProperty("maxMs",sorted.get(sorted.size()-1));Path directory=s.getRunDirectory().toPath().resolve("qa-results");Files.createDirectories(directory);Files.writeString(directory.resolve(benchmark+"-ticks.json"),json.toString());}catch(Exception error){Hardcore.LOG.error("QA benchmark failed",error);}});
         ServerTickEvents.END_SERVER_TICK.register(s->{if(s.getTicks()%10!=0)return;Path p=s.getRunDirectory().toPath().resolve("qa-commands.txt");try{if(!Files.exists(p))return;var commands=Files.readAllLines(p);Files.delete(p);for(String line:commands)if(!line.isBlank()){Hardcore.LOG.info("QA command: {}",line);if(line.startsWith("qa25 "))probe(s,line.substring(5));else s.getCommandManager().executeWithPrefix(s.getCommandSource(),line);}}catch(Exception e){Hardcore.LOG.error("QA spool failed",e);}});
     }
@@ -14,6 +26,14 @@ public final class ExpansionQa {
         if(!Files.exists(s.getRunDirectory().toPath().resolve(".tecni-test-world")))throw new IllegalStateException("Isolated-world marker required");
         String[] args=command.split(" ");if(args.length<2||!args[1].matches("E25[A-Za-z0-9_]{1,13}"))throw new IllegalArgumentException("Only E25 test accounts may be changed");
         var p=s.getPlayerManager().getPlayer(args[1]);if(p==null)throw new IllegalArgumentException("Test player not connected");
+        if(args[0].equals("volume")){
+            if(countWorld!=null||!args[2].matches("[a-z0-9-]{1,40}"))throw new IllegalArgumentException("QA volume busy or invalid name");
+            countX=Integer.parseInt(args[3]);countY=Integer.parseInt(args[4]);countZ=Integer.parseInt(args[5]);
+            countSX=Integer.parseInt(args[6]);countSY=Integer.parseInt(args[7]);countSZ=Integer.parseInt(args[8]);
+            countTotal=(long)countSX*countSY*countSZ;
+            if(countSX<1||countSX>160||countSY<1||countSY>320||countSZ<1||countSZ>160||countY<p.getWorld().getBottomY()||countY+countSY>p.getWorld().getTopY())throw new IllegalArgumentException("QA volume bounds");
+            countIndex=countSolid=countFluid=0;countName=args[1]+"-"+args[2];countWorld=p.getServerWorld();
+        }
         if(args[0].equals("terrain")){
             int x=Integer.parseInt(args[3]),z=Integer.parseInt(args[4]),air=0,surface=0;
             for(int dx=-12;dx<=12;dx++)for(int dz=-12;dz<=12;dz++)for(int y=80;y<=95;y++){

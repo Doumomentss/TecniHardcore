@@ -1,15 +1,15 @@
 {
   "schema": 1,
-  "version": "2.6.1",
-  "packVersion": "2.6.1",
+  "version": "2.6.2",
+  "packVersion": "2.6.2",
   "minecraft": "1.20.1",
   "ritualProtocol": 3,
   "soulProtocol": 3,
-  "packProtocol": 8,
-  "notes": "Tornado que sigue el terreno y baja pendientes, admite obstáculos y se mueve un 50 % más rápido; viento sin lluvia metálica. Meteoritos visibles con daño real y cráteres 0–4; terremoto con fracturas profundas. Conserva datos y protección del spawn.",
+  "packProtocol": 9,
+  "notes": "Tornado con destrucción 0–20, demolición de columnas completas y fuerza proporcional al radio y la anchura. Conserva meteoritos, terremotos, mundo, identidades y protección del spawn.",
   "installer": {
-    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.6.1/TecniHardcore-Setup-2.6.1.exe",
-    "bytes": 307808256,
-    "sha256": "441bf4f8372272099bce88466ea3dadd3fdaed0185e5580dbf3602507cbc75b4"
+    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.6.2/TecniHardcore-Setup-2.6.2.exe",
+    "bytes": 307810304,
+    "sha256": "80274523e441e956c17426c645e7c0f626faddab09d32e2614dc2d4dd978c36c"
   }
 }

@@ -14,9 +14,10 @@ final class StormDestruction {
         int pulse=(h.age-200)%160;
         if(h.type==1&&pulse==40){h.fractureCursor=0;h.pendingBlocks.clear();}
         if(h.type==1&&(pulse<40||pulse>100))return;
-        int budget=WeatherRules.blockBudget(h.type,h.destruction);
-        long deadline=System.nanoTime()+1_200_000;
-        for(int i=0;i<24&&h.destroyed<budget&&System.nanoTime()<deadline;i++){
+        int budget=h.type==0?WeatherRules.tornadoBudget(h.destruction,h.radius,h.width):WeatherRules.blockBudget(h.type,h.destruction);
+        int attempts=h.type==0?Math.min(640,Math.max(24,(budget+19)/20+8)):24;
+        long deadline=System.nanoTime()+(h.type==0?2_000_000:1_200_000);
+        for(int i=0;i<attempts&&h.destroyed<budget&&System.nanoTime()<deadline;i++){
             if(h.pendingBlocks.isEmpty()){
                 if(h.type==4)break;
                 if(h.type==1)fracture(h);else erosion(h);
@@ -36,12 +37,25 @@ final class StormDestruction {
         var probe=new BlockPos(x,h.world.getBottomY(),z);
         if(!h.world.isChunkLoaded(probe)||SpawnProtection.inside(h.world,probe)||!h.world.getWorldBorder().contains(probe))return;
         int y=h.world.getTopY(Heightmap.Type.MOTION_BLOCKING,x,z)-1;
-        for(int d=0;d<depth&&y-d>=h.world.getBottomY();d++)h.pendingBlocks.addLast(new BlockPos(x,y-d,z));
+        for(int d=0;d<depth&&y-d>=h.world.getBottomY();d++){
+            var pos=new BlockPos(x,y-d,z);
+            if(h.type!=0||allowed(h,pos,h.world.getBlockState(pos)))h.pendingBlocks.addLast(pos);
+        }
     }
     private static void erosion(Cataclysms.Hazard h){
         var center=h.position();var random=h.world.random;
-        double radius=Math.min(h.radius,h.width*.22),a=random.nextDouble()*Math.PI*2,d=Math.sqrt(random.nextDouble())*radius;
-        column(h,(int)Math.floor(center.x+Math.cos(a)*d),(int)Math.floor(center.z+Math.sin(a)*d),WeatherRules.depth(h.type,h.destruction));
+        double radius=WeatherRules.tornadoDamageRadius(h.radius,h.width);int bestX=0,bestZ=0,bestY=h.world.getBottomY()-1;
+        // Prefer the tallest exposed column among bounded samples: strip roofs,
+        // towers and their supports before spending the whole budget in air.
+        for(int i=0;i<(h.destruction>4?4:1);i++){
+            double a=random.nextDouble()*Math.PI*2,d=Math.sqrt(random.nextDouble())*radius;
+            int x=(int)Math.floor(center.x+Math.cos(a)*d),z=(int)Math.floor(center.z+Math.sin(a)*d);
+            var probe=new BlockPos(x,h.world.getBottomY(),z);
+            if(!h.world.isChunkLoaded(probe)||!h.world.getWorldBorder().contains(probe)||SpawnProtection.inside(h.world,probe))continue;
+            int y=h.world.getTopY(Heightmap.Type.MOTION_BLOCKING,x,z)-1;
+            if(y>bestY){bestY=y;bestX=x;bestZ=z;}
+        }
+        if(bestY>=h.world.getBottomY())column(h,bestX,bestZ,WeatherRules.depth(h.type,h.destruction));
     }
     private static void fracture(Cataclysms.Hazard h){
         int width=WeatherRules.fractureWidth(h.destruction),length=Math.max(8,Math.min(72,(int)(h.radius*.75))),cursor=h.fractureCursor++;
