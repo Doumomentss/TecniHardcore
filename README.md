@@ -1,6 +1,6 @@
 # TecniHardcore
 
-Minecraft **1.20.1 Fabric** · paquete y launcher **2.7.0**.
+Minecraft **1.20.1 Fabric** · paquete y launcher **2.7.1**.
 
 ## Descargar y jugar
 
