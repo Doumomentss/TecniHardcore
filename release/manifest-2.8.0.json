@@ -10,11 +10,11 @@
   "files": {
     "TecniHardcore-Setup-2.8.0.exe": {
       "bytes": 307930624,
-      "sha256": "040e96eaed98d66a3444f57d3ed07e3fbe9e6d128c1136c4e7067c62f7536d25"
+      "sha256": "e6849839d4230577509c93550767144e7cb40d9efa7deae5187f852e2e3754ee"
     },
     "tecnihardcore-2.8.0.jar": {
-      "bytes": 2511459,
-      "sha256": "c89732fa976e42366befeaca1e10be931a600dbef573d570d515d19706efc8b8"
+      "bytes": 2511580,
+      "sha256": "61b718767541a6e51314c54c3272c2f6b2ffe78c19c304e864fe7960716181f2"
     },
     "tecni-death-overlay-1.0.0.jar": {
       "bytes": 48331632,
@@ -22,7 +22,7 @@
     },
     "update.json": {
       "bytes": 612,
-      "sha256": "eb87315c40e5c2530498cd1a9e1071079ba2d6edaa7859995370c4ed54bf96ed"
+      "sha256": "1da9d41a45d7f5d9d9751d5c132e8fbd5b9e40708443ca7f5b605f2845d008fe"
     },
     "THIRD-PARTY-MODS.json": {
       "bytes": 30930,

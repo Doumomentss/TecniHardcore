@@ -14,9 +14,9 @@ import com.replaymod.replaystudio.lib.viaversion.api.protocol.packet.State;
 @Pseudo
 @Mixin(targets="me.senseiwells.replay.viewer.ReplayViewer", remap=false)
 public abstract class ReplayViewerSafetyMixin {
-    // 1.20.1 has LOGIN -> PLAY, with no CONFIGURATION phase (introduced in 1.20.2).
+    // 1.20.1 has no CONFIGURATION phase; recorded game packets use PLAY.
     @Redirect(method="streamReplay",at=@At(value="FIELD",target="Lcom/replaymod/replaystudio/lib/viaversion/api/protocol/packet/State;CONFIGURATION:Lcom/replaymod/replaystudio/lib/viaversion/api/protocol/packet/State;"),remap=false)
-    private State tecni$startAtLoginProtocol() {return State.LOGIN;}
+    private State tecni$usePlayProtocol() {return State.PLAY;}
 
     @Inject(method="shouldSendPacket",at=@At("HEAD"),cancellable=true,remap=false)
     private void tecni$ignoreRecordedHeartbeat(Packet<?> packet, CallbackInfoReturnable<Boolean> result) {

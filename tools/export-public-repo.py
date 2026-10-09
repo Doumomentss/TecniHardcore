@@ -62,6 +62,7 @@ for name in ['spawn24-final','boss-death-fracture','boss-death-dissipation','con
     src=f'tools/test-runtime/boss-preview/game/screenshots/sanctuary-{name}.png'
     if (root/src).exists():copy(src,f'docs/{name}.png')
 for name in ['NOVEDADES-2.7.1.md','RESULTADOS-2.7.1.md']:copy(name)
+for name in ['NOVEDADES-2.8.md','RESULTADOS-2.8.md']:copy(name)
 for name in ['backup-before271.py','qa-five-lives271.cjs','build-npc-skins.py','install-npc-skins.py','test-npc-skins27.cjs']:copy('tools/'+name)
 for name in ['ines','bruno','selma','preview']:copy('assets/npc-skins/'+name+'.png')
 copy('assets/npc-skins/manifest.json')
