@@ -10,7 +10,7 @@ let mainWindow;
 let preferences;
 try{preferences=new (require('./settings').Settings)(path.join(app.getPath('appData'),'TecniHardcore'));}catch(error){dialog.showErrorBox('Ajustes de TecniHardcore',error.message+'\n'+path.join(app.getPath('appData'),'TecniHardcore','settings.json'));app.exit(1);throw error;}
 const graphics=require('./graphics');
-function desktopShortcut(){if(!app.isPackaged||process.platform!=='win32')return;try{const link=path.join(app.getPath('desktop'),'TecniHardcore.lnk');if(!shell.writeShortcutLink(link,fs.existsSync(link)?'update':'create',{target:process.execPath,cwd:path.dirname(process.execPath),icon:process.execPath,iconIndex:0,description:'TecniHardcore 1.20.1 Fabric',appUserModelId:'com.tecnihardcore.launcher'}))console.warn('No se pudo crear el acceso directo.');}catch(error){console.warn('Acceso directo: '+error.message);}}
+function desktopShortcut(){if(!app.isPackaged||process.platform!=='win32')return;try{const link=path.join(app.getPath('desktop'),'TecniHardcore.lnk');if(!shell.writeShortcutLink(link,fs.existsSync(link)?'update':'create',{target:process.execPath,cwd:path.dirname(process.execPath),icon:process.execPath,iconIndex:0,description:'TecniHardcore',appUserModelId:'com.tecnihardcore.launcher'}))console.warn('No se pudo crear el acceso directo.');}catch(error){console.warn('Acceso directo: '+error.message);}}
 
 
 if (process.platform === 'win32') {

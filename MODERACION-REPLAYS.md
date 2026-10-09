@@ -1,4 +1,4 @@
-# Moderación: replays y protección PvP (2.8.0)
+# Moderación: replays y protección PvP (2.8.1)
 
 ## Protección tras una muerte PvP
 
@@ -10,23 +10,24 @@ La interfaz muestra el tiempo restante. `/tecni proteccion` permite consultarlo;
 
 ## Replays privados de las muertes
 
-El servidor graba los paquetes de los jugadores autenticados en segmentos de dos minutos. Al morir, conserva el segmento actual, el anterior si existe y quince segundos posteriores. No necesita bots conectados ni instalar ReplayMod en los clientes. Son grabaciones 3D `.mcpr`, no videos MP4; la visibilidad está limitada a los chunks y entidades que recibió el jugador. Una muerte inmediatamente después de autenticarse puede ocurrir antes de iniciar el grabador; se registra explícitamente como `sin_grabacion`.
+El servidor graba los paquetes de los jugadores autenticados en segmentos de dos minutos. Al morir, conserva el segmento actual, el anterior si existe y quince segundos posteriores. `/tecni replay play` salta automáticamente hasta 30 segundos antes de la muerte dentro del segmento; si acaba de empezar un segmento, puede haber menos contexto y el anterior se abre por separado. No necesita bots conectados ni instalar ReplayMod en los clientes. Son grabaciones 3D `.mcpr`, no videos MP4; la visibilidad está limitada a los chunks y entidades que recibió el jugador. Una muerte inmediatamente después de autenticarse puede ocurrir antes de iniciar el grabador; se registra explícitamente como `sin_grabacion`.
 
 Los replays y el registro de muertes permanecen en el servidor:
 
 - `server/recordings/tecni-moderacion/<UUID>/*.mcpr`
 - `server/world/tecnihardcore-moderacion.json`
 
-El registro incluye nombre, atacante identificado, causa, fecha, dimensión, coordenadas y segundo de la muerte. Los IDs son números cortos. Solo operadores de nivel 4 tienen acceso a los comandos de replays; no se habilitan descargas públicas. Chat y voz no se graban. Los paquetes de juego pueden contener información del inventario: tratar los archivos como evidencia privada.
+El registro incluye nombre, atacante identificado, causa, fecha, dimensión, coordenadas y segundo de la muerte. Cada jugador tiene IDs de muerte propios, empezando en 0 y estables aunque mueran otros jugadores. El registro interno conserva sus IDs globales para que la evidencia anterior siga siendo accesible. Solo operadores de nivel 4 tienen acceso a los comandos de replays; no se habilitan descargas públicas. Chat y voz no se graban. Los paquetes de juego pueden contener información del inventario: tratar los archivos como evidencia privada.
 
 ```text
 /tecni replays estado
-/tecni replays listar
-/tecni replays ver 1
-/tecni replays ver 1 antes
+/tecni replay lista Doumoment
+/tecni replay play Doumoment 0
+/tecni replay play Doumoment 1
+/tecni replay listar
 ```
 
-`ver` abre el segmento de la muerte; `antes` abre el segmento previo. Esperar unos segundos después de morir hasta que figure `lista`. Durante la reproducción:
+`lista Nombre` muestra todas sus muertes y el estado de cada archivo. `play Nombre ID` abre el segmento de la muerte y busca los 30 segundos previos disponibles. `listar Nombre` es sinónimo de `lista Nombre`; `listar` sin nombre muestra jugadores recientes. Los comandos anteriores `ver ID` y `ver ID antes` siguen disponibles para abrir los segmentos por ID global. Esperar unos segundos después de morir hasta que figure `lista`. Durante la reproducción:
 
 ```text
 /replay view pause

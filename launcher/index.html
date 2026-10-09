@@ -34,7 +34,6 @@
         <div class="brand-badge">TECNI-HARDCORE</div>
         <img src="assets/tecnihardcore_logo.png" class="brand-logo" alt="Logo">
         <h2 class="brand-title">TECNIHARDCORE</h2>
-        <span class="brand-sub">1.20.1 FABRIC</span>
       </div>
 
       <nav class="sidebar-nav">
@@ -69,7 +68,6 @@
       <!-- Pestaña JUGAR (Dashboard) -->
       <section id="tab-play" class="tab-panel active">
         <div class="hero-banner">
-          <div class="hero-tag">MODPACK OFICIAL 1.20.1 FABRIC</div>
           <h1 class="hero-headline"><span class="gradient-text">TECNIHARDCORE</span></h1>
           <p class="hero-desc">
             Cada decisión cuenta. Tienes 5 vidas sagradas antes del juicio final.
@@ -99,10 +97,6 @@
           <div class="dock-divider"></div>
 
           <div class="dock-specs-col">
-            <div class="dock-spec-item">
-              <span class="spec-label">MOTOR</span>
-              <span class="spec-val">Fabric 1.20.1</span>
-            </div>
             <div class="dock-spec-item">
               <span class="spec-label">SERVIDOR</span>
               <span class="spec-val highlight" id="dock-server-val">VERIFICANDO</span>
@@ -142,18 +136,13 @@
         </div>
         <div class="server-detail-grid">
           <div class="glass-card server-detail"><div class="detail-heading"><h3>SUPERVIVIENTES CONECTADOS</h3><span id="online-count">SIN DATOS</span></div><div id="online-roster" class="online-roster" role="status">Consultando…</div><p class="stat-sub">Lista de jugadores autenticados · se actualiza cada 5 segundos</p></div>
-          <div class="glass-card server-detail"><h3>NOVEDADES</h3><div id="server-news" role="status">Consultando…</div></div>
         </div>
-        <p id="server-pack-versions" class="stat-sub">Consultando versiones…</p>
       </section>
       <section id="tab-settings" class="tab-panel">
         <div class="panel-header"><h2>AJUSTES DEL CLIENTE</h2><p>Instalación independiente y paquete oficial verificado.</p></div>
         <div class="glass-card" style="padding:24px;display:grid;gap:18px">
           <label>Memoria: <span id="ram-slider-display">6 GB</span><input id="ram-slider" type="range" min="2" max="8" value="6" style="width:100%"></label>
-          <label>Java (vacío: detección e instalación automática)<input id="java-path-input" type="text" style="width:100%" placeholder="Ruta opcional a java.exe"></label>
           <p id="connection-address">Consultando dirección…</p>
-          <button id="btn-copy-ip">Copiar dirección</button>
-          <button id="btn-save-settings">Guardar ajustes</button>
           <label>CARPETA DEL JUEGO</label><p id="game-folder"></p><button id="choose-game-folder">Cambiar carpeta del juego</button><p id="folder-status" role="status"></p>
           <button id="btn-repair">Verificar y reparar paquete</button>
           <p id="repair-status"></p>
@@ -179,7 +168,7 @@
 
       <div class="loading-titles">
         <h2 class="loading-main-title">INICIANDO TECNIHARDCORE</h2>
-        <span class="loading-status-text" id="loading-status-msg">Cargando Fabric Loader 1.20.1 y Mods...</span>
+        <span class="loading-status-text" id="loading-status-msg">Preparando Minecraft y los mods...</span>
       </div>
 
       <!-- Barra de Progreso de Carga Estilo Eufonia -->

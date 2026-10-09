@@ -1,6 +1,6 @@
 # TecniHardcore
 
-Minecraft **1.20.1 Fabric** · paquete y launcher **2.7.1**.
+Minecraft **1.20.1 Fabric** · paquete y launcher **2.8.1**.
 
 ## Descargar y jugar
 
@@ -57,16 +57,16 @@ Los mods externos conservan sus licencias y créditos en `THIRD-PARTY-MODS.json`
 
 ## Plaza y reliquias
 
-El spawn tiene un único santuario de resurrección y una plaza protegida. Su tablón muestra las texturas de Brasa, Bastión y Eco; al pulsarlo puedes consultar efectos, penalizaciones y recetas. La pestaña Servidor del launcher muestra estadísticas y novedades reales, actualizadas cada cinco segundos. El Custodio de Pizarra solo aparece mediante invocación administrativa fuera de la plaza. Tiene tres barras (400/500/1000) y se transforma en el Espectro del Núcleo. No aparece de forma natural.
+El spawn tiene un único santuario de resurrección y una plaza protegida. Su tablón muestra las texturas de Brasa, Bastión y Eco; al pulsarlo puedes consultar efectos, penalizaciones y recetas. La pestaña Servidor del launcher muestra estadísticas actualizadas cada cinco segundos. El Custodio de Pizarra solo aparece mediante invocación administrativa fuera de la plaza. Tiene tres barras (400/500/1000) y se transforma en el Espectro del Núcleo. No aparece de forma natural.
 
 ## Cataclismos y Bestias de Cristal
 
-Cinco desastres activados por operadores: tornado monumental, terremoto, lluvia ácida, tormenta eléctrica y meteoritos. Causan daño real sin destruir terreno. Cada uno anuncia su inicio y conserva avisos visibles con partículas mínimas. La plaza está excluida.
+Cinco desastres activados por operadores: tornado monumental, terremoto, lluvia ácida, tormenta eléctrica y meteoritos. Causan daño real; el operador elige destrucción 0 para conservar el terreno o niveles mayores para modificarlo en tornado, terremoto y meteoritos. Cada uno anuncia su inicio y conserva avisos visibles con partículas mínimas. La plaza está excluida.
 
 El Custodio ofrece botín personal según participación y una tirada de cinco monturas cristalinas: mantarraya, ave, grifo, wyvern y dragón. Su registro por UUID evita duplicar criaturas mediante objetos copiados. Pueden intercambiarse guardadas, volar con controles configurables y llevar un jugador que utilice sus propias armas. Una montura muerta se pierde definitivamente.
 
 La dimensión de eventos incluye Ojo de la tormenta, Circuito de cristal y Defensa del núcleo. El operador anuncia **ENSAYO** o **HARDCORE** antes de la inscripción. Ensayo guarda y restaura el estado original; hardcore utiliza vidas y objetos reales. Los biomas de Nature’s Spirit y Regions Unexplored aparecen en terreno nuevo; Handcrafted y Chipped aportan decoración. Consulta [comandos, reglas y recuperación](EVENTOS-Y-MONTURAS.md) y [el estado verificable de las pruebas 2.5](RESULTADOS-2.5.md).
 
-Novedades y comandos actuales: [TecniHardcore 2.6](NOVEDADES-2.6.md). Pruebas y límites: [resultados 2.6](RESULTADOS-2.6.md).
+Las muertes autenticadas se graban en privado para operadores. `/tecni replay lista Nombre` muestra IDs por jugador desde 0 y `/tecni replay play Nombre ID` abre hasta 30 segundos antes de morir. Tras una muerte PvP, la víctima tiene protección mutua entre jugadores durante 30 minutos de conexión. Consulta [la guía de moderación](MODERACION-REPLAYS.md), [novedades 2.8.1](NOVEDADES-2.8.1.md) y [pruebas 2.8.1](RESULTADOS-2.8.1.md).
 
 Parche 2.6.1: tornado que sigue desniveles sin rechazar obstáculos, viento sin grabación de lluvia, meteoritos visibles con daño y cráteres 0–4, y terremoto con fracturas conectadas. [Comandos y niveles](NOVEDADES-2.6.1.md).

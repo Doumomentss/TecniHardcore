@@ -13,6 +13,7 @@ import net.minecraft.util.*;
 import java.util.*;
 import static net.minecraft.server.command.CommandManager.*;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 
 public final class Moderation {
     public static final Identifier SYNC=Hardcore.id("pvp_guard_v1");
@@ -50,12 +51,46 @@ public final class Moderation {
         CommandRegistrationCallback.EVENT.register((d,r,e)->{
             d.register(literal("tecni").then(literal("proteccion").executes(c->{var p=c.getSource().getPlayerOrThrow();if(!AuthBootstrap.authenticated(p))return 0;c.getSource().sendFeedback(()->Text.literal(description(p)),false);return 1;})
                 .then(argument("jugador",net.minecraft.command.argument.EntityArgumentType.player()).requires(s->s.hasPermissionLevel(2)).executes(c->{var p=net.minecraft.command.argument.EntityArgumentType.getPlayer(c,"jugador");c.getSource().sendFeedback(()->Text.literal(description(p)),false);return 1;}))));
-            d.register(literal("tecni").then(literal("replays").requires(s->s.hasPermissionLevel(4))
+            var replay=d.register(literal("tecni").then(literal("replays").requires(s->s.hasPermissionLevel(4))
+                .executes(c->{c.getSource().sendFeedback(()->Text.literal("/tecni replay lista Nombre · /tecni replay play Nombre ID · para salir: /replay view close"),false);return 1;})
                 .then(literal("estado").executes(c->{c.getSource().sendFeedback(()->Text.literal(DeathReplays.status()),false);return 1;}))
-                .then(literal("listar").executes(c->{var clips=new ArrayList<>(store.data.clips.values());Collections.reverse(clips);clips.stream().limit(12).forEach(clip->c.getSource().sendFeedback(()->Text.literal("#"+clip.id+" · "+clip.name+" · "+clip.damage+" · "+clip.status+" · /tecni replays ver "+clip.id),false));return clips.size();}))
+                .then(literal("listar").executes(c->listRecent(c.getSource()))
+                    .then(argument("jugador",StringArgumentType.word()).executes(c->listPlayer(c.getSource(),StringArgumentType.getString(c,"jugador")))))
+                .then(literal("lista").then(argument("jugador",StringArgumentType.word()).executes(c->listPlayer(c.getSource(),StringArgumentType.getString(c,"jugador")))))
+                .then(literal("play").then(argument("jugador",StringArgumentType.word())
+                    .then(argument("id",IntegerArgumentType.integer(0)).executes(c->play(c.getSource(),StringArgumentType.getString(c,"jugador"),IntegerArgumentType.getInteger(c,"id"))))))
+                .then(literal("reproducir").then(argument("id",IntegerArgumentType.integer(1)).executes(c->view(c.getSource(),IntegerArgumentType.getInteger(c,"id"),false))))
                 .then(literal("ver").then(argument("id",IntegerArgumentType.integer(1)).executes(c->view(c.getSource(),IntegerArgumentType.getInteger(c,"id"),false))
                     .then(literal("antes").executes(c->view(c.getSource(),IntegerArgumentType.getInteger(c,"id"),true)))))));
+            d.register(literal("tecni").then(literal("replay").requires(s->s.hasPermissionLevel(4)).redirect(replay.getChild("replays"))));
         });
+    }
+    private static int listRecent(net.minecraft.server.command.ServerCommandSource source) {
+        var clips=new ArrayList<>(store.data.clips.values());Collections.reverse(clips);
+        if(clips.isEmpty())source.sendFeedback(()->Text.literal("Todavía no hay muertes registradas. "+DeathReplays.status()),false);
+        clips.stream().limit(12).forEach(clip->source.sendFeedback(()->Text.literal(clip.name+" · "+clip.damage+" · "+clip.status+" · /tecni replay lista "+clip.name),false));
+        return clips.size();
+    }
+    private static int listPlayer(net.minecraft.server.command.ServerCommandSource source,String name) {
+        if(ReplayIndex.ambiguous(store.data.clips.values(),name)){source.sendError(Text.literal("Ese nombre figura con varios UUID; contactá al administrador del registro."));return 0;}
+        var history=ReplayIndex.history(store.data.clips.values(),name);
+        if(history.isEmpty()){source.sendError(Text.literal("No hay muertes registradas para "+name+"."));return 0;}
+        source.sendFeedback(()->Text.literal("Muertes de "+history.get(history.size()-1).name+" ("+history.size()+") · IDs 0–"+(history.size()-1)),false);
+        for(int i=0;i<history.size();i++){
+            var clip=history.get(i);int id=i;
+            source.sendFeedback(()->Text.literal("["+id+"] "+new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(clip.time))+" · "+clip.damage+" · "+clip.status+" · /tecni replay play "+name+" "+id),false);
+        }
+        return history.size();
+    }
+    private static int play(net.minecraft.server.command.ServerCommandSource source,String name,int id) {
+        if(ReplayIndex.ambiguous(store.data.clips.values(),name)){source.sendError(Text.literal("Ese nombre figura con varios UUID; no se elegirá una replay ambigua."));return 0;}
+        var history=ReplayIndex.history(store.data.clips.values(),name);
+        if(id>=history.size()){source.sendError(Text.literal("No existe la muerte "+id+" de "+name+". Usá /tecni replay lista "+name));return 0;}
+        var clip=history.get(id);
+        int result=view(source,Integer.parseInt(clip.id),false);
+        if(source.getEntity() instanceof ServerPlayerEntity player)
+            DeathReplays.seekBeforeDeath(player,clip,30_000);
+        return result;
     }
     private static int view(net.minecraft.server.command.ServerCommandSource source,int id,boolean previous) {
         var clip=store.data.clips.get(Integer.toString(id));if(clip==null){source.sendError(Text.literal("No existe esa muerte."));return 0;}

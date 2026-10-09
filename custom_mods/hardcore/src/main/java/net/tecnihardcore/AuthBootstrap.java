@@ -18,7 +18,12 @@ public final class AuthBootstrap {
     private static Path pendingFile;
     private static Map<String,String> pending = new HashMap<>();
     public static boolean enabled() { return FabricLoader.getInstance().isModLoaded("easyauth"); }
-    public static boolean authenticated(ServerPlayerEntity p) { return !enabled() || ((PlayerAuth)p).easyAuth$isAuthenticated(); }
+    public static boolean serverBot(ServerPlayerEntity p) {
+        if(!FabricLoader.getInstance().isModLoaded("carpet"))return false;
+        try{return Class.forName("carpet.patches.EntityPlayerMPFake").isInstance(p);}
+        catch(ClassNotFoundException e){return false;}
+    }
+    public static boolean authenticated(ServerPlayerEntity p) { return serverBot(p) || !enabled() || ((PlayerAuth)p).easyAuth$isAuthenticated(); }
     public static void start(MinecraftServer s) {
         if(!enabled()) {
             if(!Boolean.getBoolean("tecni.testServer"))throw new IllegalStateException("EasyAuth is required on the production server");
@@ -111,6 +116,16 @@ public final class AuthBootstrap {
     }
 
     public static void welcome(ServerPlayerEntity p) {
+        if(serverBot(p)) {
+            if(enabled()) {
+                PlayerAuth auth=(PlayerAuth)p;
+                auth.easyAuth$setSkipAuth();
+                auth.easyAuth$setAuthenticated(true);
+                auth.easyAuth$setKickTimer(Long.MAX_VALUE);
+            }
+            Hardcore.LOG.info("Server-created Carpet bot authenticated: {}",p.getName().getString());
+            return;
+        }
         if(enabled() && pending.containsKey(p.getGameProfile().getName().toLowerCase(Locale.ROOT)))
             p.sendMessage(Text.literal("Registra tu cuenta con /register CLAVE CLAVE y entra con /login CLAVE. El primer registro de tu identidad requiere conexión local."),false);
     }

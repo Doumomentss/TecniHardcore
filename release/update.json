@@ -1,15 +1,15 @@
 {
   "schema": 1,
-  "version": "2.8.0",
-  "packVersion": "2.8.0",
+  "version": "2.8.1",
+  "packVersion": "2.8.1",
   "minecraft": "1.20.1",
   "ritualProtocol": 3,
   "soulProtocol": 3,
   "packProtocol": 13,
-  "notes": "Replays automáticos de muertes para moderación y protección PvP mutua de 30 minutos de conexión, persistente y con HUD. Mantiene cinco vidas, inventarios, equipos, mercado y skins.",
+  "notes": "Corrige grabación y reproducción de muertes con Simple Voice Chat y AntiXray. Añade /tecni replay lista Nombre y play Nombre ID, con IDs por jugador y hasta 30 segundos previos. Autentica bots Carpet de prueba, simplifica el launcher y conserva vidas, inventarios y preferencias.",
   "installer": {
-    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.8.0/TecniHardcore-Setup-2.8.0.exe",
-    "bytes": 307931648,
-    "sha256": "5ee62e27022c2f2e62ec375863b8f40fa5a740e65532a3cdb0e9a93c2676c95e"
+    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.8.1/TecniHardcore-Setup-2.8.1.exe",
+    "bytes": 307938816,
+    "sha256": "60a1fcc1cba221972b7ab8a58ac293e5d09ee2749311dd5f5cca02262971f26b"
   }
 }

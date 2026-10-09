@@ -19,8 +19,6 @@ const ramSlider = document.getElementById('ram-slider');
 const ramSliderDisplay = document.getElementById('ram-slider-display');
 const dockRamVal = document.getElementById('dock-ram-val');
 const dockServerVal = document.getElementById('dock-server-val');
-const javaPathInput = document.getElementById('java-path-input');
-const btnSaveSettings = document.getElementById('btn-save-settings');
 
 const liveServerPill = document.getElementById('live-server-pill');
 const serverStatusText = document.getElementById('server-status-text');
@@ -29,7 +27,6 @@ const serverOnlineState = document.getElementById('server-online-state');
 const serverPingBig = document.getElementById('server-ping-big');
 const playerLivesDisplay = document.getElementById('player-lives-display');
 const playerLivesHearts = document.getElementById('player-lives-hearts');
-const btnCopyIp = document.getElementById('btn-copy-ip');
 
 const btnPlayGame = document.getElementById('btn-play-game');
 const loadingScreen = document.getElementById('custom-loading-screen');
@@ -43,7 +40,7 @@ const btnCancelLaunch = document.getElementById('btn-cancel-launch');
 let settingsReady=false;
 const settingsLoaded=ipcRenderer.invoke('get-settings',{username:localStorage.getItem('launcher_username')||'',ram:localStorage.getItem('launcher_ram'),javaPath:localStorage.getItem('launcher_javapath')||''}).then((settings) => {
   currentUsername=settings.username;currentRam=settings.ram;customJavaPath=settings.javaPath;
-  ramSlider.value=currentRam;ramSliderDisplay.textContent=currentRam+' GB';javaPathInput.value=customJavaPath;
+  ramSlider.value=currentRam;ramSliderDisplay.textContent=currentRam+' GB';
   document.getElementById('game-folder').textContent=settings.gamePath;
   document.getElementById('graphics-mode').value=settings.graphicsMode||'vanilla';settingsReady=true;
   if (usernameInput) usernameInput.value = currentUsername;
@@ -94,24 +91,6 @@ if (ramSlider) {
   });
 }
 
-if (btnSaveSettings && javaPathInput) {
-  btnSaveSettings.addEventListener('click', () => {
-    customJavaPath = javaPathInput.value.trim();
-    localStorage.setItem('launcher_javapath', customJavaPath);
-    ipcRenderer.invoke('save-settings',{javaPath:customJavaPath});
-  });
-}
-
-if (btnCopyIp) {
-  btnCopyIp.addEventListener('click', async () => {
-    const connection=await ipcRenderer.invoke('get-connection');
-    if(connection.error){btnCopyIp.textContent='Sin dirección';return;}
-    await navigator.clipboard.writeText(connection.host+':'+connection.port);
-    btnCopyIp.textContent = '¡Copiado!';
-    setTimeout(() => { btnCopyIp.textContent = 'Copiar'; }, 2000);
-  });
-}
-
 // Consultar Vidas del Jugador
 async function updateLivesDisplay(user) {
   try {
@@ -146,14 +125,11 @@ async function updateLivesDisplay(user) {
 async function checkServerStatus() {
   try {
     const res = await ipcRenderer.invoke('ping-server');
-    const panel=res.dashboard||{fresh:false,players:[],news:[],version:'SIN DATOS'};
+    const panel=res.dashboard||{fresh:false,players:[]};
     document.getElementById('online-count').textContent=Number.isInteger(panel.online)?`${panel.online} / ${panel.max??'—'}`:'SIN DATOS';
-    document.getElementById('server-pack-versions').textContent=`Paquete del servidor: ${panel.version} · Launcher: ${res.launcherVersion||'SIN DATOS'}`;
     const roster=document.getElementById('online-roster');roster.replaceChildren();
     if(!panel.fresh||!panel.players.length)roster.textContent=panel.fresh?'No hay jugadores autenticados conectados.':'Sin datos vigentes.';
     for(const p of panel.players){const row=document.createElement('div');row.className='roster-player';const name=document.createElement('strong');name.textContent=p.name;const stats=document.createElement('span');stats.textContent=`${p.lives??'—'}/5 vidas · ${p.resurrections??'—'} resurrecciones`;row.append(name,stats);roster.append(row);}
-    const news=document.getElementById('server-news');news.replaceChildren();if(!panel.fresh||!panel.news.length)news.textContent=panel.fresh?'Sin novedades publicadas.':'Sin datos vigentes.';
-    for(const n of panel.news){const item=document.createElement('article');const title=document.createElement('h4');title.textContent=n.title;const body=document.createElement('p');body.textContent=n.body;item.append(title,body);news.append(item);}
     const dot = liveServerPill.querySelector('.status-indicator-dot');
 
     if (res.online) {
@@ -202,7 +178,7 @@ btnPlayGame.addEventListener('click', async () => {
   loadingProgressFill.style.width = '0%';
   loadingPercentage.textContent = '…';
   loadingStatusMsg.textContent = 'Preparando TecniHardcore…';
-  loadingTaskName.textContent = 'Minecraft 1.20.1 · Fabric';
+  loadingTaskName.textContent = 'Preparando Minecraft';
   try {
     const result = await ipcRenderer.invoke('launch-game', {
       username: usernameInput.value.trim() || currentUsername,

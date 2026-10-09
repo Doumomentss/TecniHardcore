@@ -3,6 +3,7 @@ package net.tecnihardcore;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
@@ -16,6 +17,7 @@ final class DeathReplays {
     private static final Map<UUID,Session> active=new HashMap<>();
     private static final java.util.concurrent.ConcurrentLinkedQueue<Runnable> completions=new java.util.concurrent.ConcurrentLinkedQueue<>();
     private static final Map<UUID,Long> retryAt=new HashMap<>();
+    private static final Map<UUID,Seek> pendingSeeks=new HashMap<>();
     private static Class<?> manager;
     private static Path root;
     private static boolean ready;
@@ -23,9 +25,10 @@ final class DeathReplays {
     private static MinecraftServer server;
     private static final long SEGMENT_MS=120_000, POST_MS=15_000;
     private static class Session {Object recorder;String current,previous;long started,finishDeathAt;}
+    private record Seek(ServerPlayerEntity moderator,ModerationStore.Clip clip,long target,long deadline) {}
     static void start(MinecraftServer s) {
         server=s;root=s.getRunDirectory().toPath().resolve("recordings/tecni-moderacion").toAbsolutePath().normalize();
-        active.clear();retryAt.clear();completions.clear();ready=false;failure="";
+        active.clear();retryAt.clear();pendingSeeks.clear();completions.clear();ready=false;failure="";
         try {
             if(!FabricLoader.getInstance().isModLoaded("server-replay"))throw new IllegalStateException("Falta ServerReplay 1.2.2");
             manager=Class.forName("me.senseiwells.replay.player.PlayerRecorders");
@@ -41,6 +44,7 @@ final class DeathReplays {
         if(manager.getMethod("getByUUID",UUID.class).invoke(null,p.getUuid())!=null)throw new IllegalStateException("Ya existe otro grabador para este jugador");
         Object recorder=manager.getMethod("create",ServerPlayerEntity.class).invoke(null,p);
         Session session=new Session();session.recorder=recorder;session.started=System.currentTimeMillis();session.previous=previous;
+        try {
         Path base=((Path)call(recorder,"getLocation",new Class<?>[]{})).toAbsolutePath().normalize();
         Path finalFile=Path.of(base.toString()+".mcpr");
         if(!finalFile.startsWith(root)) {call(recorder,"stop",new Class<?>[]{boolean.class},false);throw new IllegalStateException("Configura player_recording_path como recordings/tecni-moderacion");}
@@ -49,10 +53,18 @@ final class DeathReplays {
         var record=new ModerationStore.Segment();record.path=session.current;record.player=p.getUuidAsString();record.started=session.started;
         Moderation.store.data.segments.put(record.path,record);Moderation.store.save();
         if(!(boolean)call(recorder,"start",new Class<?>[]{boolean.class},false)){call(recorder,"stop",new Class<?>[]{boolean.class},false);throw new IllegalStateException("El grabador no pudo inicializar los chunks");}
-        active.put(p.getUuid(),session);return session;
+        active.put(p.getUuid(),session);failure="";retryAt.remove(p.getUuid());return session;
+        } catch(Exception error) {
+            // create() registers the recorder before initialization. A failed plugin
+            // must not leave an orphan that prevents every subsequent recording.
+            try{if(!stopped(recorder))call(recorder,"stop",new Class<?>[]{boolean.class},false);}
+            catch(Exception cleanup){error.addSuppressed(cleanup);}
+            if(session.current!=null){var record=Moderation.store.data.segments.get(session.current);if(record!=null){record.state="error";record.finished=System.currentTimeMillis();Moderation.store.save();}}
+            throw error;
+        }
     }
     static void tick() {
-        if(Moderation.store==null)return;Runnable completion;while((completion=completions.poll())!=null)completion.run();long now=System.currentTimeMillis();
+        if(Moderation.store==null)return;Runnable completion;while((completion=completions.poll())!=null)completion.run();long now=System.currentTimeMillis();serviceSeeks(now);
         if(ready)for(var p:server.getPlayerManager().getPlayerList()) {
             if(!AuthBootstrap.authenticated(p))continue;
             var session=active.get(p.getUuid());
@@ -95,10 +107,12 @@ final class DeathReplays {
         }catch(Exception e){Hardcore.LOG.error("Replay closing failed: {}",session.current,e);}
     }
     static void disconnect(ServerPlayerEntity p) {
+        pendingSeeks.remove(p.getUuid());
         var session=active.get(p.getUuid());if(session==null)return;
         finish(p.getUuid(),session,Moderation.store.data.segments.get(session.current).retained);removeUnused(session.previous);
     }
     static void shutdown() {
+        pendingSeeks.clear();
         for(var entry:new ArrayList<>(active.entrySet())){var s=entry.getValue();finish(entry.getKey(),s,Moderation.store.data.segments.get(s.current).retained);removeUnused(s.previous);}
         ready=false;
     }
@@ -121,5 +135,40 @@ final class DeathReplays {
         if(clip.segments.isEmpty())return null;String relative=clip.segments.get(previous?0:clip.segments.size()-1);
         if(!Files.isRegularFile(safeFile(relative)))return null;int slash=relative.indexOf('/');String uuid=relative.substring(0,slash),name=relative.substring(slash+1,relative.length()-5);
         return "replay view players "+uuid+" \""+name+"\"";
+    }
+    /** Open the recording thirty seconds before the death whenever that history is in this segment. */
+    static void seekBeforeDeath(ServerPlayerEntity moderator,ModerationStore.Clip clip,int beforeMillis) {
+        long target=Math.max(0,clip.markerMillis-beforeMillis);
+        if(target>0){pendingSeeks.put(moderator.getUuid(),new Seek(moderator,clip,target,System.currentTimeMillis()+30_000));Hardcore.LOG.info("Replay {} scheduled at {} ms",clip.id,target);}
+    }
+    private static void serviceSeeks(long now) {
+        for(var entry:new ArrayList<>(pendingSeeks.entrySet())) {
+            var request=entry.getValue();
+            if(trySeek(request))pendingSeeks.remove(entry.getKey());
+            else if(now>=request.deadline()) {
+                pendingSeeks.remove(entry.getKey());
+                request.moderator().sendMessage(Text.literal("Replay abierta desde el inicio. Salto manual: /replay view jump to marker named \"MUERTE-"+request.clip().id+"\" -30s"),false);
+                Hardcore.LOG.warn("Could not seek thirty seconds before death {} within 30 seconds",request.clip().id);
+            }
+        }
+    }
+    private static boolean trySeek(Seek request) {
+        try {
+            // The vendor command creates ReplayViewer directly; ReplayViewers.viewers()
+            // only tracks instances created through its own API.
+            Class<?> utils=Class.forName("me.senseiwells.replay.viewer.ReplayViewerUtils");
+            Object instance=utils.getField("INSTANCE").get(null);
+            Object viewer=utils.getMethod("getViewingReplay",ServerPlayNetworkHandler.class).invoke(instance,request.moderator().networkHandler);
+            if(viewer==null)return false;
+            Class<?> unit=Class.forName("kotlin.time.DurationUnit");
+            @SuppressWarnings({"unchecked","rawtypes"}) Object millis=Enum.valueOf((Class<Enum>)unit,"MILLISECONDS");
+            long duration=(long)Class.forName("kotlin.time.DurationKt").getMethod("toDuration",long.class,unit).invoke(null,request.target(),millis);
+            boolean jumped=(boolean)viewer.getClass().getMethod("jumpTo-LRDsOJo",long.class).invoke(viewer,duration);
+            if(jumped)Hardcore.LOG.info("Replay {} seeks to {} ms before death",request.clip().id,request.clip().markerMillis-request.target());
+            return jumped;
+        } catch(Exception e) {
+            Hardcore.LOG.debug("Replay seek pending: {}",e.toString());
+            return false;
+        }
     }
 }

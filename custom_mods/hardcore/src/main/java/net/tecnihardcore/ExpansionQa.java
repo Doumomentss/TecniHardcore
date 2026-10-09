@@ -26,6 +26,11 @@ public final class ExpansionQa {
         if(!Files.exists(s.getRunDirectory().toPath().resolve(".tecni-test-world")))throw new IllegalStateException("Isolated-world marker required");
         String[] args=command.split(" ");if(args.length<2||!args[1].matches("E25[A-Za-z0-9_]{1,13}"))throw new IllegalArgumentException("Only E25 test accounts may be changed");
         var p=s.getPlayerManager().getPlayer(args[1]);if(p==null)throw new IllegalArgumentException("Test player not connected");
+        if(args[0].equals("authenticate")&&AuthBootstrap.enabled()){
+            var auth=(xyz.nikitacartes.easyauth.utils.PlayerAuth)p;
+            auth.easyAuth$setSkipAuth();auth.easyAuth$setAuthenticated(true);auth.easyAuth$setKickTimer(Long.MAX_VALUE);
+        }
+        if(args[0].equals("protection-clear")){Moderation.store.data.protection.remove(p.getUuidAsString());Moderation.store.save();}
         if(args[0].equals("social-reset"))Social.store.commit(new SocialStore.Business(),"isolated QA reset");
         if(args[0].equals("civic")){var npc=CivicNpcs.find(args[2]);if(npc==null)throw new IllegalArgumentException("NPC not loaded");CivicNetwork.dialogue(p,npc,"inicio");}
         if(args[0].equals("social-report")){var json=new com.google.gson.JsonObject();json.addProperty("balance",Market.balance(p.getUuidAsString()));json.addProperty("team",Social.teamId(p.getUuidAsString()));json.addProperty("inventory",p.getInventory().writeNbt(new net.minecraft.nbt.NbtList()).toString());json.addProperty("health",p.getHealth());json.addProperty("npcCount",CivicNpcs.definitions.size());Path directory=s.getRunDirectory().toPath().resolve("qa-results");Files.createDirectories(directory);Files.writeString(directory.resolve(args[1]+"-"+args[2]+".json"),json.toString());}

@@ -17,6 +17,7 @@ if protocol==10:manifest['notes']='Tornado con arranque masivo de bloques y esco
 if protocol==11:manifest['notes']='NPCs con diálogos y skins, misiones iniciales, equipos y chat privado, treguas de conexión y mercado con Cristales Tecni. AntiXray y filtros de cliente; conserva mundo, vidas y actualización segura.'
 if protocol==12:manifest['notes']='Cinco vidas, cinco cristales en el HUD y launcher, migración única que conserva eliminados y muertes previas. Mantiene skins originales, equipos, mercado y actualización segura.'
 if protocol==13:manifest['notes']='Replays automáticos de muertes para moderación y protección PvP mutua de 30 minutos de conexión, persistente y con HUD. Mantiene cinco vidas, inventarios, equipos, mercado y skins.'
+if tuple(map(int,version.split('.'))) >= (2,8,1):manifest['notes']='Corrige grabación y reproducción de muertes con Simple Voice Chat y AntiXray. Añade /tecni replay lista Nombre y play Nombre ID, con IDs por jugador y hasta 30 segundos previos. Autentica bots Carpet de prueba, simplifica el launcher y conserva vidas, inventarios y preferencias.'
 (root/'dist/update.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
 core=root/f'installer_payload/mods/tecnihardcore-{pack}.jar'
 compiled=root/f'custom_mods/hardcore/build/libs/tecnihardcore-{pack}.jar'
