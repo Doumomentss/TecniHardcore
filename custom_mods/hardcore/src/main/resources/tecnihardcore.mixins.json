@@ -16,7 +16,8 @@
     "EventIsolationMixin",
     "MountVehicleMixin",
     "SkinAuthMixin",
-    "ReplayViewerSafetyMixin"
+    "ReplayViewerSafetyMixin",
+    "ReplayVoicechatCompatibilityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -16,6 +16,7 @@ dependencies {
     compileOnly files('../../tools/vendor/spigot-api-compile-only.jar')
     // Only ReplayStudio's Java 8 enum is referenced by the optional server viewer patch.
     compileOnly files('../../tools/vendor/ServerReplay-1.2.2+mc1.20.1.jar')
+    compileOnly fileTree('../../server/mods') { include 'voicechat-fabric-*.jar' }
     compileOnly fileTree('../../client/mods') { include 'sodium-*.jar' }
     testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
 }

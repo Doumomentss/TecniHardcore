@@ -9,7 +9,7 @@
   "notes": "Replays automáticos de muertes para moderación y protección PvP mutua de 30 minutos de conexión, persistente y con HUD. Mantiene cinco vidas, inventarios, equipos, mercado y skins.",
   "installer": {
     "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.8.0/TecniHardcore-Setup-2.8.0.exe",
-    "bytes": 307930624,
-    "sha256": "e6849839d4230577509c93550767144e7cb40d9efa7deae5187f852e2e3754ee"
+    "bytes": 307931648,
+    "sha256": "5ee62e27022c2f2e62ec375863b8f40fa5a740e65532a3cdb0e9a93c2676c95e"
   }
 }
