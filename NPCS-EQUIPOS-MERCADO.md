@@ -43,6 +43,8 @@ Cada acción se valida en el servidor: distancia al mercader, autenticación, id
 
 ## Administración de NPCs
 
+Los tres personajes del spawn usan skins originales de TecniHardcore: Inés lleva un atuendo verde de exploradora, Bruno un uniforme azul con delantal y Selma un traje violeta con detalles dorados. El servidor envía sus PNG de 64×64 a los clientes 2.7.0 y verifica los archivos por SHA-256; no hay que instalar un resource pack ni descargar otra versión del launcher. Se conservan en `world/tecni-npc-skins` y sus referencias en `config/tecnihardcore/npcs.json`. Respaldar ambos juntos. Las skins por URL siguen disponibles para nuevos personajes o reemplazos.
+
 Operador nivel 4, cerca del NPC para editar:
 
 ```mcfunction

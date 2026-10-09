@@ -22,7 +22,7 @@ Los launchers antiguos necesitan instalar **2.1.1 una vez** para obtener el actu
 
 ## Santuarios de las Almas
 
-Tres vidas, dificultad difícil y resurrecciones ilimitadas. El único santuario del servidor está en la plaza del spawn, en **0, 96, 0**. Un superviviente ofrece un Corazón Sagrado, selecciona al eliminado cercano y canaliza 30 segundos. Cada ritual completo consume un corazón y devuelve una vida. Daño, distancia, desconexión o pérdida de la ofrenda cancelan sin coste.
+Cinco vidas, dificultad difícil y resurrecciones ilimitadas. El único santuario del servidor está en la plaza del spawn, en **0, 96, 0**. Un superviviente ofrece un Corazón Sagrado, selecciona al eliminado cercano y canaliza 30 segundos. Cada ritual completo consume un corazón y devuelve una vida. Daño, distancia, desconexión o pérdida de la ofrenda cancelan sin coste.
 
 El núcleo monumental 3D tiene cristal flotante, anillos animados, runas, fragmentos, iluminación emisiva y sonido posicional. Al activarse expande una cúpula negra de 32 bloques. A los diez segundos ambos participantes ven una toma desde la espalda del oficiante. La skin del revivido aparece sobre el cristal y desciende con una hélice azul hasta el suelo. `Esc` recupera la cámara sin cancelar el ritual. Los observadores conservan su cámara. También incluye Brasa, Bastión y Eco, enfriamiento compartido de tótems, indicador de vidas con cristales y video de muerte con audio.
 

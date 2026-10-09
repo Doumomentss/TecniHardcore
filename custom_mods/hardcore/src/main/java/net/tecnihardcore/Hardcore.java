@@ -53,6 +53,7 @@ public final class Hardcore implements ModInitializer {
             server = s;
             AuthBootstrap.start(s);
             souls = new SoulStore(s.getSavePath(WorldSavePath.ROOT).resolve("tecnihardcore-souls.json"));
+            souls.save();
             Sanctuaries.repairKnown(s);
             Rituals.recoverPayments(s);
             // Old functions are replaced during migration; fail closed if old tick logic survived.
@@ -63,7 +64,7 @@ public final class Hardcore implements ModInitializer {
             s.getGameRules().get(GameRules.DO_IMMEDIATE_RESPAWN).set(true, s);
             publish();
             BackupService.start(s);
-            LOG.info("TecniHardcore 2.7.0: unlimited resurrections and Sanctuaries of Souls ready");
+            LOG.info("TecniHardcore 2.7.1: unlimited resurrections and Sanctuaries of Souls ready");
         });
         ServerLifecycleEvents.SERVER_STOPPING.register(s -> { if (souls != null) souls.save(); BackupService.stop(); });
         ServerPlayConnectionEvents.JOIN.register((h, sender, s) -> {
@@ -103,7 +104,7 @@ public final class Hardcore implements ModInitializer {
             if (++ticks % 20 == 0) {
                 // Disconnecting an outdated client removes it from the live player list.
                 for (ServerPlayerEntity p : new ArrayList<>(s.getPlayerManager().getPlayerList())) {
-                    if(p.age>120&&!RitualNetwork.compatible(p)){p.networkHandler.disconnect(Text.literal("Necesitas TecniHardcore 2.7.0. Cierra el juego y ejecuta el launcher actualizado para instalar el paquete."));continue;}
+                    if(p.age>120&&!RitualNetwork.compatible(p)){p.networkHandler.disconnect(Text.literal("Necesitas TecniHardcore 2.7.1. Cierra el juego y ejecuta el launcher actualizado para instalar el paquete."));continue;}
                     Rituals.finishRecovery(p);
                     if(soul(p).lives==0 && AuthBootstrap.authenticated(p) && !p.isSpectator())p.changeGameMode(GameMode.SPECTATOR);
                     soul(p).seen=System.currentTimeMillis();send(p);
@@ -120,8 +121,8 @@ public final class Hardcore implements ModInitializer {
                 .then(literal("ritual").then(argument("objetivo", net.minecraft.command.argument.EntityArgumentType.player()).executes(c ->
                     Rituals.begin(c.getSource().getPlayerOrThrow(), net.minecraft.command.argument.EntityArgumentType.getPlayer(c,"objetivo")))))
                 .then(literal("vidas").requires(s -> s.hasPermissionLevel(2)).then(argument("jugador", net.minecraft.command.argument.EntityArgumentType.player())
-                    .executes(c -> { var p = net.minecraft.command.argument.EntityArgumentType.getPlayer(c,"jugador"); c.getSource().sendFeedback(() -> Text.literal(p.getName().getString()+": "+soul(p).lives+"/3, resurrecciones: "+soul(p).resurrections), false); return 1; })
-                    .then(argument("cantidad", IntegerArgumentType.integer(0,3)).executes(c -> {
+                    .executes(c -> { var p = net.minecraft.command.argument.EntityArgumentType.getPlayer(c,"jugador"); c.getSource().sendFeedback(() -> Text.literal(p.getName().getString()+": "+soul(p).lives+"/5, resurrecciones: "+soul(p).resurrections), false); return 1; })
+                    .then(argument("cantidad", IntegerArgumentType.integer(0,Rules.MAX_LIVES)).executes(c -> {
                         var p = net.minecraft.command.argument.EntityArgumentType.getPlayer(c,"jugador"); var entry = soul(p);
                         int before = entry.lives; entry.lives = IntegerArgumentType.getInteger(c,"cantidad"); souls.save();
                         p.changeGameMode(entry.lives == 0 ? GameMode.SPECTATOR : GameMode.SURVIVAL);
@@ -155,7 +156,7 @@ public final class Hardcore implements ModInitializer {
     }
     public static void publish() {
         if (souls == null) return;
-        JsonObject root = new JsonObject(); root.addProperty("protocol",2); root.addProperty("packVersion","2.7.0"); root.addProperty("updatedAt", System.currentTimeMillis());
+        JsonObject root = new JsonObject(); root.addProperty("protocol",2); root.addProperty("maxLives",Rules.MAX_LIVES); root.addProperty("packVersion","2.7.1"); root.addProperty("updatedAt", System.currentTimeMillis());
         JsonArray players = new JsonArray();
         souls.data.players.entrySet().stream().sorted(Comparator.comparingLong((Map.Entry<String,SoulStore.Soul> e) -> e.getValue().seen).reversed()).limit(128).forEach(e -> {
             JsonObject v=new JsonObject(); v.addProperty("name",e.getValue().name); v.addProperty("lives",e.getValue().lives); v.addProperty("resurrections",e.getValue().resurrections); v.addProperty("seenAt",e.getValue().seen); var online=server.getPlayerManager().getPlayer(java.util.UUID.fromString(e.getKey()));v.addProperty("online",online!=null&&AuthBootstrap.authenticated(online));players.add(v);
@@ -187,7 +188,7 @@ public final class Hardcore implements ModInitializer {
     private static void effect(ServerPlayerEntity p, StatusEffect e, int seconds,int amp) { p.addStatusEffect(new StatusEffectInstance(e,seconds*20,amp)); }
     public static ItemStack guide() {
         ItemStack book=new ItemStack(Items.WRITTEN_BOOK); NbtCompound n=book.getOrCreateNbt(); n.putString("title","Guía TecniHardcore"); n.putString("author","TecniHardcore"); n.putInt("TecniGuideVersion",27); NbtList pages=new NbtList();
-        for(String page : new String[]{"TECNIHARDCORE\nTres vidas. Cada muerte real resta una. A cero, espectador. Un tótem no devuelve vidas.\n\n/tecni guia: este libro.\n/tecni-video: probar el video.",
+        for(String page : new String[]{"TECNIHARDCORE\nCinco vidas. Cada muerte real resta una. A cero, espectador. Un tótem no devuelve vidas.\n\n/tecni guia: este libro.\n/tecni-video: probar el video.",
             "RELIQUIAS\nBrasa: fuego 30s, debilidad II 30s.\nBastión: resistencia II 10s, lentitud II 20s.\nEco: invisibilidad 15s, debilidad II 20s.\nTodas dejan 2 corazones, sin regeneración.",
             "FABRICACIÓN\nUn tótem + un lingote de netherita + una estrella del Nether + sello.\nPrimer Wither: Brasa.\nPrimer dragón: Bastión.\nPrimer guardián anciano: Eco.\nEl sello se entrega al autor del golpe final.",
             "LÍMITES\nTodos los tótems comparten 5 minutos de enfriamiento; dentro de 48 bloques de un jefe en combate, 1 minuto desde la última activación, incluso el vanilla. Se consume estando en una mano. No funciona en el vacío ni con /kill. Los sellos se obtienen una vez por jugador y jefe.",

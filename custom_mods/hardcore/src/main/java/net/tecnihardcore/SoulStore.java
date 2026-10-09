@@ -11,7 +11,7 @@ public final class SoulStore {
     public static final Gson JSON = new GsonBuilder().setPrettyPrinting().create();
     public static class Soul {
         public String name = "";
-        public int lives = 3;
+        public int lives = Rules.MAX_LIVES;
         public boolean revived;
         public int resurrections;
         public long totemReadyAt;
@@ -25,6 +25,8 @@ public final class SoulStore {
     }
     public static class Data {
         public int schema = 3;
+        // Legacy JSON has no capacity field. Its budget was three lives.
+        public int maxLives = 3;
         public Map<String, Soul> players = new LinkedHashMap<>();
         public Map<String, String> ritualPayments = new LinkedHashMap<>();
         public Set<String> sanctuaries = new HashSet<>();
@@ -38,13 +40,16 @@ public final class SoulStore {
             if (data == null || (data.schema != 1 && data.schema != 2 && data.schema != 3) || data.players == null) throw new IllegalStateException("Invalid soul state");
             if(data.ritualPayments==null)data.ritualPayments=new LinkedHashMap<>();
             if(data.sanctuaries==null)data.sanctuaries=new HashSet<>();
+            if (!Files.exists(file)) data.maxLives = Rules.MAX_LIVES;
+            if (data.maxLives != 3 && data.maxLives != Rules.MAX_LIVES) throw new IllegalStateException("Invalid life budget");
             for (Soul soul : data.players.values()) {
-                soul.lives = Rules.clampLives(soul.lives);
+                soul.lives = Rules.migrateLives(soul.lives, data.maxLives);
                 if(data.schema==1 && soul.revived)soul.resurrections=Math.max(1,soul.resurrections);
                 soul.resurrections=Math.max(0,soul.resurrections);
                 if(data.schema<3 && soul.totemReadyAt>0)soul.totemUsedAt=Math.max(0,soul.totemReadyAt-Rules.COOLDOWN_MS);
             }
             data.schema=3;
+            data.maxLives=Rules.MAX_LIVES;
         } catch (Exception e) { throw new IllegalStateException("Cannot load " + file + "; refusing to reset lives", e); }
     }
     public void save() {

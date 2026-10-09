@@ -151,7 +151,7 @@ async function checkServerStatus() {
     document.getElementById('server-pack-versions').textContent=`Paquete del servidor: ${panel.version} · Launcher: ${res.launcherVersion||'SIN DATOS'}`;
     const roster=document.getElementById('online-roster');roster.replaceChildren();
     if(!panel.fresh||!panel.players.length)roster.textContent=panel.fresh?'No hay jugadores autenticados conectados.':'Sin datos vigentes.';
-    for(const p of panel.players){const row=document.createElement('div');row.className='roster-player';const name=document.createElement('strong');name.textContent=p.name;const stats=document.createElement('span');stats.textContent=`${p.lives??'—'}/3 vidas · ${p.resurrections??'—'} resurrecciones`;row.append(name,stats);roster.append(row);}
+    for(const p of panel.players){const row=document.createElement('div');row.className='roster-player';const name=document.createElement('strong');name.textContent=p.name;const stats=document.createElement('span');stats.textContent=`${p.lives??'—'}/5 vidas · ${p.resurrections??'—'} resurrecciones`;row.append(name,stats);roster.append(row);}
     const news=document.getElementById('server-news');news.replaceChildren();if(!panel.fresh||!panel.news.length)news.textContent=panel.fresh?'Sin novedades publicadas.':'Sin datos vigentes.';
     for(const n of panel.news){const item=document.createElement('article');const title=document.createElement('h4');title.textContent=n.title;const body=document.createElement('p');body.textContent=n.body;item.append(title,body);news.append(item);}
     const dot = liveServerPill.querySelector('.status-indicator-dot');

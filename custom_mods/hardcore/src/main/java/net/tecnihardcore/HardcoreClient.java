@@ -15,7 +15,7 @@ public final class HardcoreClient implements ClientModInitializer {
     private static long ready;
     private static boolean arena;
     public void onInitializeClient() {
-        ClientLoginNetworking.registerGlobalReceiver(RitualNetwork.HELLO,(c,h,b,listener)->{int protocol=b.readVarInt();var response=net.fabricmc.fabric.api.networking.v1.PacketByteBufs.create();response.writeVarInt(protocol==11?11:0);return java.util.concurrent.CompletableFuture.completedFuture(response);});
+        ClientLoginNetworking.registerGlobalReceiver(RitualNetwork.HELLO,(c,h,b,listener)->{int protocol=b.readVarInt();var response=net.fabricmc.fabric.api.networking.v1.PacketByteBufs.create();response.writeVarInt(protocol==12?12:0);return java.util.concurrent.CompletableFuture.completedFuture(response);});
         net.minecraft.client.render.block.entity.BlockEntityRendererFactories.register(Sanctuaries.ENTITY,SanctuaryRenderer::new);
         RitualVisuals.init(); BossVisuals.init(); RescueHud.init(); ExpansionClient.init(); CivicScreen.initNetwork();
         net.minecraft.client.render.block.entity.BlockEntityRendererFactories.register(TotemBoard.ENTITY,TotemBoardRenderer::new);
@@ -33,12 +33,12 @@ public final class HardcoreClient implements ClientModInitializer {
         HudRenderCallback.EVENT.register((draw,delta)->{
             MinecraftClient c=MinecraftClient.getInstance(); if(lives<0||c.player==null||c.options.hudHidden)return;
             int x=12,y=12; RenderSystem.enableBlend();
-            for(int i=0;i<3;i++) {
+            for(int i=0;i<Rules.MAX_LIVES;i++) {
                 draw.setShaderColor(i<lives?1:.25F,i<lives?1:.25F,i<lives?1:.25F,1);
                 draw.drawTexture(new Identifier("tecnihardcore","textures/gui/heart.png"),x+i*22,y,0,0,20,20,20,20);
             }
             draw.setShaderColor(1,1,1,1);
-            draw.drawTextWithShadow(c.textRenderer,lives==0?"ELIMINADO":lives+" / 3 vidas",x,y+23,lives==1?0xff7755:0xf4d59b);
+            draw.drawTextWithShadow(c.textRenderer,lives==0?"ELIMINADO":lives+" / 5 vidas",x,y+23,lives==1?0xff7755:0xf4d59b);
             long seconds=Math.max(0,(ready-System.nanoTime()+999_999_999)/1_000_000_000);
             draw.drawTextWithShadow(c.textRenderer,seconds>0?String.format("Tótems: %d:%02d",seconds/60,seconds%60):"Tótems preparados",x,y+35,seconds>0?0xf29d74:0x8cdbb5);
             draw.drawTextWithShadow(c.textRenderer,lives==0?"Ritual disponible · Resurrecciones: "+resurrections:"Resurrecciones: "+resurrections,x,y+47,0xb1b7c7);

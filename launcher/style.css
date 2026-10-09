@@ -595,12 +595,14 @@ body {
 
 .lives-display {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 7px;
   min-height: 38px;
 }
 
 .life-crystal {
+  flex: 0 0 32px;
   width: 32px;
   height: 32px;
   object-fit: contain;

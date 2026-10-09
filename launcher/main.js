@@ -104,7 +104,7 @@ ipcMain.handle('detect-java', async () => { try { return require('./client-insta
 ipcMain.handle('get-connection', () => { try { return getConnection(process.resourcesPath); } catch(error) { return {error:error.message}; } });
 ipcMain.handle('get-player-lives', async (event, username) => {
   try { return serverStatus.livesFrom(await serverStatus.snapshot(getConnection(process.resourcesPath)),String(username||'')); }
-  catch(error) { return {lives:null,max:3,display:'SIN DATOS',description:error.message}; }
+  catch(error) { return {lives:null,max:5,display:'SIN DATOS',description:error.message}; }
 });
 ipcMain.handle('ping-server', async () => {
   try { const result=await serverStatus.snapshot(getConnection(process.resourcesPath)); return {...result,dashboard:serverStatus.dashboard(result),launcherVersion:app.getVersion()}; }

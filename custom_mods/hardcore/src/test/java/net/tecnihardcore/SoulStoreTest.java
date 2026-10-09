@@ -18,6 +18,9 @@ class SoulStoreTest {
   Path file=temp.resolve("souls.json");Files.writeString(file,"{\"schema\":99,\"players\":{}}");assertThrows(IllegalStateException.class,()->new SoulStore(file));
  }
  @Test void oldActiveCooldownRetainsActivationAndReloadDoesNotRebase() throws Exception {
-  Path file=temp.resolve("cooldown.json");Files.writeString(file,"{\"schema\":2,\"players\":{\"a\":{\"lives\":2,\"totemReadyAt\":1300000,\"resurrections\":4}}}");var store=new SoulStore(file);assertEquals(1000000,store.data.players.get("a").totemUsedAt);assertEquals(2,store.data.players.get("a").lives);store.save();assertEquals(1000000,new SoulStore(file).data.players.get("a").totemUsedAt);
+  Path file=temp.resolve("cooldown.json");Files.writeString(file,"{\"schema\":2,\"players\":{\"a\":{\"lives\":2,\"totemReadyAt\":1300000,\"resurrections\":4}}}");var store=new SoulStore(file);assertEquals(1000000,store.data.players.get("a").totemUsedAt);assertEquals(4,store.data.players.get("a").lives);store.save();var reloaded=new SoulStore(file);assertEquals(1000000,reloaded.data.players.get("a").totemUsedAt);assertEquals(4,reloaded.data.players.get("a").lives);assertEquals(5,reloaded.data.maxLives);
+ }
+ @Test void newPlayersReceiveFiveAndMigrationIsNotRepeated() throws Exception {
+  Path file=temp.resolve("five.json");Files.writeString(file,"{\"schema\":3,\"players\":{\"a\":{\"lives\":3},\"b\":{\"lives\":0}}}");var store=new SoulStore(file);assertEquals(5,store.data.players.get("a").lives);assertEquals(0,store.data.players.get("b").lives);store.save();assertEquals(5,new SoulStore(file).data.players.get("a").lives);assertEquals(5,new SoulStore.Soul().lives);
  }
 }

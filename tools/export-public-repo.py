@@ -60,6 +60,10 @@ copy('tools/test-update241.cs')
 for name in ['spawn24-final','boss-death-fracture','boss-death-dissipation','content24-inventory']:
     src=f'tools/test-runtime/boss-preview/game/screenshots/sanctuary-{name}.png'
     if (root/src).exists():copy(src,f'docs/{name}.png')
+for name in ['NOVEDADES-2.7.1.md','RESULTADOS-2.7.1.md']:copy(name)
+for name in ['backup-before271.py','qa-five-lives271.cjs','build-npc-skins.py','install-npc-skins.py','test-npc-skins27.cjs']:copy('tools/'+name)
+for name in ['ines','bruno','selma','preview']:copy('assets/npc-skins/'+name+'.png')
+copy('tools/test-runtime/expansion25/game/screenshots/sanctuary-five-lives271-scale2.png','docs/five-lives271.png')
 version=json.loads((root/'launcher/package.json').read_text())['version']
 copy(f'dist/manifest-{version}.json',f'release/manifest-{version}.json');copy(f'dist/SHA256SUMS-{version}.txt',f'release/SHA256SUMS-{version}.txt')
 (target/'.gitignore').write_text('node_modules/\n.gradle/\n**/build/\n**/pack/\npublish/\ndist/\nbackups/\nlogs/\nserver/\nclient/\nplayit/\ninstaller_payload/mods/\nTecniHardcore Launcher/\ntools/test-runtime/\ntools/build-launcher-stage/\ntools/vendor/\n*.fma\ninstaller/*.zip\nconnection.local.json\n*.sqlite*\n*.db\n.env*\n')

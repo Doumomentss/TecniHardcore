@@ -100,7 +100,7 @@ element {
   appearance_delay = no_delay
   fade_in_v2 = no_fading
   base_opacity = 1.0
-  source = Tres vidas. Un mundo sin segundas oportunidades.
+  source = Cinco vidas. Un mundo sin segundas oportunidades.
   source_mode = direct
   scale = 0.68
   base_color = #A9B0B3

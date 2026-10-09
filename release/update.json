@@ -1,15 +1,15 @@
 {
   "schema": 1,
-  "version": "2.7.0",
-  "packVersion": "2.7.0",
+  "version": "2.7.1",
+  "packVersion": "2.7.1",
   "minecraft": "1.20.1",
   "ritualProtocol": 3,
   "soulProtocol": 3,
-  "packProtocol": 11,
-  "notes": "NPCs con diálogos y skins, misiones iniciales, equipos y chat privado, treguas de conexión y mercado con Cristales Tecni. AntiXray y filtros de cliente; conserva mundo, vidas y actualización segura.",
+  "packProtocol": 12,
+  "notes": "Cinco vidas, cinco cristales en el HUD y launcher, migración única que conserva eliminados y muertes previas. Mantiene skins originales, equipos, mercado y actualización segura.",
   "installer": {
-    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.7.0/TecniHardcore-Setup-2.7.0.exe",
+    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.7.1/TecniHardcore-Setup-2.7.1.exe",
     "bytes": 307906560,
-    "sha256": "66eb98affe2e00ba238075b74d8e30d58b7f42d8aada8da5fe4aa8118f618078"
+    "sha256": "7e0e37bbcf22f4f5948afd68ec6f1e38888f01aeed3bfa689f5a60be3a262897"
   }
 }
