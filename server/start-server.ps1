@@ -15,6 +15,16 @@ if(-not (Test-Path -LiteralPath $runtimeDirectory -PathType Container)){throw 'A
 if(-not (Test-Path -LiteralPath (Join-Path $PSScriptRoot 'fabric-server-launch.jar') -PathType Leaf)){throw 'Falta server/fabric-server-launch.jar. Restaura los archivos del servidor.'}
 $javaCandidates=Get-ChildItem -LiteralPath $runtimeDirectory -Directory | ForEach-Object {Join-Path $_.FullName 'bin/java.exe'}
 $javaPath=$javaCandidates | Where-Object {Test-Path -LiteralPath $_} | Select-Object -First 1
+$runtimeConfig=Join-Path $PSScriptRoot 'runtime-java.json'
+$requiredJava=17
+if(Test-Path -LiteralPath $runtimeConfig){
+  $runtimeSettings=Get-Content -LiteralPath $runtimeConfig -Raw | ConvertFrom-Json
+  if($runtimeSettings.major -ne 21){throw 'Configuración de Java del servidor inválida.'}
+  $serverRuntimeRoot=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot 'runtime')).TrimEnd('\')+'\'
+  $verifiedJava=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot $runtimeSettings.java))
+  if(-not $verifiedJava.StartsWith($serverRuntimeRoot,[StringComparison]::OrdinalIgnoreCase) -or -not (Test-Path -LiteralPath $verifiedJava -PathType Leaf)){throw 'Falta el Java 21 del servidor. Ejecuta tools/prepare-moderation28.py.'}
+  $javaPath=$verifiedJava;$requiredJava=21
+}
 if(-not $javaPath){throw 'Abre el juego una vez desde el launcher para instalar Java 17.'}
 $javaCheck=New-Object System.Diagnostics.Process
 $javaCheck.StartInfo=New-Object System.Diagnostics.ProcessStartInfo
@@ -27,7 +37,7 @@ $javaCheck.StartInfo.RedirectStandardError=$true
 $versionText=$javaCheck.StandardError.ReadToEnd()
 $javaCheck.WaitForExit()
 $javaCheck.Dispose()
-if($versionText -notmatch 'version "17\.'){throw 'El servidor requiere el runtime verificado de Java 17.'}
+if($versionText -notmatch ('version "'+$requiredJava+'\.')){throw "El servidor requiere el runtime verificado de Java $requiredJava."}
 if($MaxMemoryGB -eq 8){
   $memory=Get-CimInstance Win32_OperatingSystem
   if($memory.TotalVisibleMemorySize -lt 24GB/1KB -or $memory.FreePhysicalMemory -lt 12GB/1KB){throw 'No hay margen suficiente para asignar 8 GB con el cliente abierto. Usa 6 GB.'}

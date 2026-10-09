@@ -26,6 +26,11 @@
       "path": "tools/vendor/spigot-api-compile-only.jar",
       "url": "https://hub.spigotmc.org/nexus/content/repositories/snapshots/org/spigotmc/spigot-api/1.20.1-R0.1-SNAPSHOT/spigot-api-1.20.1-R0.1-20230921.163938-66.jar",
       "sha256": "d8aa356781e32896e7d78490813975cac7ca8d99126adc41c2836c56c68b9c3e"
+    },
+    {
+      "path": "tools/vendor/ServerReplay-1.2.2+mc1.20.1.jar",
+      "url": "https://cdn.modrinth.com/data/qCvSZ8ra/versions/vlJUpYqQ/ServerReplay-1.2.2%2Bmc1.20.1.jar",
+      "sha256": "b6c015c1849b2957a168e796ae2637ba981b090f559aba417881009ac954f0a5"
     }
   ]
 }

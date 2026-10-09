@@ -15,7 +15,8 @@
     "BossRootMoveMixin",
     "EventIsolationMixin",
     "MountVehicleMixin",
-    "SkinAuthMixin"
+    "SkinAuthMixin",
+    "ReplayViewerSafetyMixin"
   ],
   "injectors": {
     "defaultRequire": 1

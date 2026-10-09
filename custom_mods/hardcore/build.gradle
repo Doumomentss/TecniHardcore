@@ -1,5 +1,5 @@
 plugins { id 'fabric-loom' version '1.10.5' }
-version = '2.7.1'
+version = '2.8.0'
 group = 'net.tecnihardcore'
 base { archivesName = 'tecnihardcore' }
 repositories { mavenCentral() }
@@ -14,6 +14,8 @@ dependencies {
     compileOnly files('../../tools/vendor/easyauth-mc1.20-3.3.6.jar')
     compileOnly files('../../tools/vendor/grim-api-1.2.4.0.jar')
     compileOnly files('../../tools/vendor/spigot-api-compile-only.jar')
+    // Only ReplayStudio's Java 8 enum is referenced by the optional server viewer patch.
+    compileOnly files('../../tools/vendor/ServerReplay-1.2.2+mc1.20.1.jar')
     compileOnly fileTree('../../client/mods') { include 'sodium-*.jar' }
     testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
 }

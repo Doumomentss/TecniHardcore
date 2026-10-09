@@ -1,15 +1,15 @@
 {
   "schema": 1,
-  "version": "2.7.1",
-  "packVersion": "2.7.1",
+  "version": "2.8.0",
+  "packVersion": "2.8.0",
   "minecraft": "1.20.1",
   "ritualProtocol": 3,
   "soulProtocol": 3,
-  "packProtocol": 12,
-  "notes": "Cinco vidas, cinco cristales en el HUD y launcher, migración única que conserva eliminados y muertes previas. Mantiene skins originales, equipos, mercado y actualización segura.",
+  "packProtocol": 13,
+  "notes": "Replays automáticos de muertes para moderación y protección PvP mutua de 30 minutos de conexión, persistente y con HUD. Mantiene cinco vidas, inventarios, equipos, mercado y skins.",
   "installer": {
-    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.7.1/TecniHardcore-Setup-2.7.1.exe",
-    "bytes": 307906560,
-    "sha256": "7e0e37bbcf22f4f5948afd68ec6f1e38888f01aeed3bfa689f5a60be3a262897"
+    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.8.0/TecniHardcore-Setup-2.8.0.exe",
+    "bytes": 307930624,
+    "sha256": "040e96eaed98d66a3444f57d3ed07e3fbe9e6d128c1136c4e7067c62f7536d25"
   }
 }
