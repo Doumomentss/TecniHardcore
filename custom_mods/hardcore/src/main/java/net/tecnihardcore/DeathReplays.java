@@ -23,12 +23,13 @@ final class DeathReplays {
     private static boolean ready;
     private static String failure="";
     private static MinecraftServer server;
+    private static boolean pausedForGrace;
     private static final long SEGMENT_MS=120_000, POST_MS=15_000;
     private static class Session {Object recorder;String current,previous;long started,finishDeathAt;}
     private record Seek(ServerPlayerEntity moderator,ModerationStore.Clip clip,long target,long deadline) {}
     static void start(MinecraftServer s) {
         server=s;root=s.getRunDirectory().toPath().resolve("recordings/tecni-moderacion").toAbsolutePath().normalize();
-        active.clear();retryAt.clear();pendingSeeks.clear();completions.clear();ready=false;failure="";
+        active.clear();retryAt.clear();pendingSeeks.clear();completions.clear();ready=false;failure="";pausedForGrace=false;
         try {
             if(!FabricLoader.getInstance().isModLoaded("server-replay"))throw new IllegalStateException("Falta ServerReplay 1.2.2");
             manager=Class.forName("me.senseiwells.replay.player.PlayerRecorders");
@@ -64,7 +65,13 @@ final class DeathReplays {
         }
     }
     static void tick() {
-        if(Moderation.store==null)return;Runnable completion;while((completion=completions.poll())!=null)completion.run();long now=System.currentTimeMillis();serviceSeeks(now);
+        if(Moderation.store==null)return;
+        if(PhaseDay.grace()) {
+            if(ready){shutdown();pausedForGrace=true;failure="Grabación pausada durante el día de gracia";}
+            return;
+        }
+        if(pausedForGrace){pausedForGrace=false;start(server);}
+        Runnable completion;while((completion=completions.poll())!=null)completion.run();long now=System.currentTimeMillis();serviceSeeks(now);
         if(ready)for(var p:server.getPlayerManager().getPlayerList()) {
             if(!AuthBootstrap.authenticated(p))continue;
             var session=active.get(p.getUuid());
@@ -78,6 +85,7 @@ final class DeathReplays {
     }
     private static void warn(ServerPlayerEntity p,Exception e){failure=e.getCause()!=null?e.getCause().toString():e.toString();Hardcore.LOG.error("Replay for {} unavailable: {}",p.getUuid(),failure);for(var op:server.getPlayerManager().getPlayerList())if(server.getPlayerManager().isOperator(op.getGameProfile()))op.sendMessage(Text.literal("[Moderación] No se está grabando a "+p.getName().getString()+": "+failure),false);}
     static void death(ServerPlayerEntity p,DamageSource damage,UUID killer,String killerName) {
+        if(PhaseDay.grace())return;
         var clip=new ModerationStore.Clip();clip.id=Integer.toString(Moderation.store.data.nextId++);clip.player=p.getUuidAsString();clip.name=p.getName().getString();clip.killer=killer==null?"":killer.toString();clip.killerName=killerName;clip.damage=damage.getName();clip.time=System.currentTimeMillis();clip.dimension=p.getWorld().getRegistryKey().getValue().toString();clip.x=p.getX();clip.y=p.getY();clip.z=p.getZ();
         var session=active.get(p.getUuid());
         if(session!=null)try {

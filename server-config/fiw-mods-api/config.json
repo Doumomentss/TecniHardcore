@@ -88,11 +88,6 @@
         "fingerprint": "ae69bc020ba1f4c2dd3a13b443e2c8304401dc671fe85501dc5bebbf563715bb"
       },
       {
-        "id": "bettercombat",
-        "version": "1.9.0+1.20.1",
-        "fingerprint": "c1b680dd03d3af3bf670cf0d024d58bd06360f5b0818eabfec6d7c8e6a11ec07"
-      },
-      {
         "id": "betterdungeons",
         "version": "1.20-Fabric-4.0.4",
         "fingerprint": "6c69fd0316c448cf9c70b72dbea424a85be881f9adc3e7a56e8f0b08e3611fff"
@@ -900,6 +895,11 @@
         "id": "yungsapi",
         "version": "1.20-Fabric-4.0.6",
         "fingerprint": "26b6dc81f876aabf3d53ead59e5908a8b0f5434d46c150cfd376c027ac54053e"
+      },
+      {
+        "id": "xaerominimap",
+        "version": "26.6.0",
+        "fingerprint": "996bd2784d1bf9653f1922fda2e7f15d3efbd0a9d88735b99ce9c667f8e4f1c0"
       }
     ]
   }

@@ -10,6 +10,16 @@ let mainWindow;
 let preferences;
 try{preferences=new (require('./settings').Settings)(path.join(app.getPath('appData'),'TecniHardcore'));}catch(error){dialog.showErrorBox('Ajustes de TecniHardcore',error.message+'\n'+path.join(app.getPath('appData'),'TecniHardcore','settings.json'));app.exit(1);throw error;}
 const graphics=require('./graphics');
+function enforceVoiceDefaults(root){
+  const file=path.join(root,'config','voicechat','voicechat-client.properties');
+  if(!fs.existsSync(file))return;
+  let value=fs.readFileSync(file,'utf8');
+  for(const [key,next] of [['onboarding_finished','true'],['microphone',''],['speaker',''],['muted','false'],['disabled','false']]){
+    const pattern=new RegExp('^'+key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'=.*$','m');
+    value=pattern.test(value)?value.replace(pattern,key+'='+next):value+'\n'+key+'='+next;
+  }
+  fs.writeFileSync(file,value);
+}
 function desktopShortcut(){if(!app.isPackaged||process.platform!=='win32')return;try{const link=path.join(app.getPath('desktop'),'TecniHardcore.lnk');if(!shell.writeShortcutLink(link,fs.existsSync(link)?'update':'create',{target:process.execPath,cwd:path.dirname(process.execPath),icon:process.execPath,iconIndex:0,description:'TecniHardcore',appUserModelId:'com.tecnihardcore.launcher'}))console.warn('No se pudo crear el acceso directo.');}catch(error){console.warn('Acceso directo: '+error.message);}}
 
 
@@ -165,6 +175,7 @@ ipcMain.handle('launch-game', async (event, options = {}) => {
     const endpoint = getConnection(process.resourcesPath);
     const java = await installation.ensureJava(root,options.javaPath,status);
     const installed = await installation.prepareClient(root, payload, status,endpoint);
+    enforceVoiceDefaults(root);
     try{await graphics.ensureOptionalShaders(root,path.join(payload,'optional-shaders.json'),status);}
     catch(error){status('Shaders opcionales pendientes: '+error.message);}
     if(options.withoutShaders)await graphics.disableOnce(root);

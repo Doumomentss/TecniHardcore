@@ -4,8 +4,8 @@ from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
 FILE=ROOT/'server/whitelist.json'
-INITIAL=['Doumoment','quasar_18','FRANC0CUL0SPINT0','L1MON9373','Jobloxcee',
-         'Adolf_Hitler','elveeer','wend121','PicanteSD','LukitasLA2244',
+INITIAL=['Doumoment','quasar_18','FRANC0CUL0SPINT0','L1MON9373','jobloxcee',
+         'Adolf_Hitler','elveeer','WEND121','PicanteSD','LukitasLA2244',
          'Pessuti_','TOT1','rastreo','pdiddy67cityboy','GaspidoxMC',
          'rosamelano','matheusqq','Kuclesss','sancsoff','caminoterreno3',
          'maehl','MRPOPONADA','BENJAMINPEROREAL']
@@ -36,7 +36,10 @@ def main(args):
     if len(args)!=2:raise SystemExit('Falta el nombre del jugador.')
     name=args[1];candidate=identity(name)
     if args[0]=='agregar':
-        if not any(p['name'].lower()==name.lower() for p in entries):entries.append({'uuid':candidate,'name':name})
+        matches=[p for p in entries if p['name'].lower()==name.lower()]
+        if matches:
+            matches[0].update({'uuid':candidate,'name':name})
+        else:entries.append({'uuid':candidate,'name':name})
     else:entries=[p for p in entries if p['name'].lower()!=name.lower()]
     save(entries);print(f'{name}: {args[0]}. El servidor 2.9 recargará la lista automáticamente.')
 

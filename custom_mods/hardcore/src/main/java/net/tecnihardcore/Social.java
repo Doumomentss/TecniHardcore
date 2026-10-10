@@ -44,7 +44,7 @@ public final class Social {
         });
     }
     static boolean ready(ServerPlayerEntity p){if(store==null||!AuthBootstrap.authenticated(p)){say(p,"Primero debes autenticarte con /login o /register.");return false;}return true;}
-    public static void say(ServerPlayerEntity p,String text){p.sendMessage(Text.literal(text),false);}
+    public static void say(ServerPlayerEntity p,String text){p.sendMessage(Text.literal("§6§l[TECNI] §r§f"+text),false);}
     static int channel(ServerPlayerEntity p,boolean team){if(!ready(p))return 0;if(team&&team(p.getUuidAsString())==null){say(p,"No pertenecés a un equipo. Usa /team crear Nombre.");return 0;}if(team)privateChat.add(p.getUuidAsString());else privateChat.remove(p.getUuidAsString());say(p,team?"Chat privado del equipo ACTIVADO. /chat vuelve al general.":"Chat GENERAL activado.");return 1;}
     static int toggle(ServerPlayerEntity p){return channel(p,!privateChat.contains(p.getUuidAsString()));}
     static int create(ServerPlayerEntity p,String name){if(!ready(p))return 0;if(!SocialRules.teamName(name)||team(p.getUuidAsString())!=null||store.data.teams.values().stream().anyMatch(t->t.name.equalsIgnoreCase(name))){say(p,"Nombre ocupado o inválido (3–20 letras, números o _), o ya pertenecés a un equipo.");return 0;}var b=store.copy();var t=new SocialStore.Team();t.id=UUID.randomUUID().toString();t.name=name;t.owner=p.getUuidAsString();t.members.add(t.owner);b.teams.put(t.id,t);store.commit(b,"create team "+t.id);say(p,"Equipo "+name+" creado. /team invitar Nombre · /team activa el chat privado.");return 1;}

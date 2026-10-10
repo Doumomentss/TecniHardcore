@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "packVersion": "2.8.0",
+  "packVersion": "2.9.1",
   "files": [
     {
       "name": "appleskin-fabric-mc1.20.1-2.5.2.jar",
@@ -480,15 +480,6 @@
       "version": "Tq7tcDiO"
     },
     {
-      "name": "bettercombat-fabric-1.9.0+1.20.1.jar",
-      "url": "https://cdn.modrinth.com/data/5sy6g3kz/versions/OtwNg4r4/bettercombat-fabric-1.9.0%2B1.20.1.jar",
-      "bytes": 907055,
-      "sha256": "c1b680dd03d3af3bf670cf0d024d58bd06360f5b0818eabfec6d7c8e6a11ec07",
-      "sha512": "477b53b13620c003dbf3da4c8facf9e5df81b101c72137aaee01a16e53b7be0bedc354d1d6e2039c40fe82a53cc92a324995d418cd6b8d6301ad02f6ad110717",
-      "project": "5sy6g3kz",
-      "version": "OtwNg4r4"
-    },
-    {
       "name": "player-animation-lib-fabric-1.0.2-rc1+1.20.jar",
       "url": "https://cdn.modrinth.com/data/gedNE4y2/versions/yDqYTUaf/player-animation-lib-fabric-1.0.2-rc1%2B1.20.jar",
       "bytes": 181008,
@@ -606,6 +597,15 @@
       "sha256": "a0996717433a4533ace77e7f8aa2b479eeb92220300ed356025aec692786daaf",
       "project": "BUXFUwPg",
       "version": "gXwiMQAF"
+    },
+    {
+      "name": "xaerominimap-fabric-1.20.1-26.6.0.jar",
+      "url": "https://cdn.modrinth.com/data/1bokaNcj/versions/PTqhBV8t/xaerominimap-fabric-1.20.1-26.6.0.jar",
+      "bytes": 2229001,
+      "sha512": "8d8c3d69f13e62530b0046bf6620b72fb770c9ae63dff3b9f640481f379bae49bf0fc76f11f18a1cd088c2abc74bb7b09bdfbcfd18dffa3a6392c2aff160d4c3",
+      "sha256": "996bd2784d1bf9653f1922fda2e7f15d3efbd0a9d88735b99ce9c667f8e4f1c0",
+      "project": "1bokaNcj",
+      "version": "PTqhBV8t"
     }
   ]
 }
