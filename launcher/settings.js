@@ -1,5 +1,5 @@
 const fs=require('fs'),path=require('path');
-const MODES=['vanilla','optimized','ultra-optimized','quality','ultra-quality'];
+const MODES=['vanilla','optimized','ultra-optimized','juana-manso','quality','ultra-quality'];
 const validName=name=>typeof name==='string'&&/^[A-Za-z0-9_]{3,16}$/.test(name);
 class Settings {
  constructor(directory){this.file=path.join(directory,'settings.json');this.data={schema:1,username:'',ram:6,javaPath:'',gamePath:'',graphicsMode:null,graphicsPending:false};if(fs.existsSync(this.file)){try{Object.assign(this.data,JSON.parse(fs.readFileSync(this.file,'utf8')));}catch{throw Error('No se pudieron leer tus ajustes. Conserva settings.json antes de repararlo.');}}if(!validName(this.data.username))this.data.username='';}

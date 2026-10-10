@@ -12,7 +12,7 @@ for directory in ['launcher','custom_mods/hardcore/src','custom_mods/death-overl
         copy(relative)
 for name in ['build.gradle','settings.gradle','gradle.properties']:copy('custom_mods/hardcore/'+name)
 copy('custom_mods/death-overlay/README.md')
-for name in ['mods-downloads.json','shaders-download.json','servers.dat']:copy('installer_payload/'+name)
+for name in ['mods-downloads.json','shaders-download.json','optional-shaders.json','servers.dat']:copy('installer_payload/'+name)
 for name in ['video_sin_fondo_transparente.webm','video_sin_fondo_transparente.ogg','revive_heart_crystal.png']:copy('assets/'+name)
 for name in ['package-launcher.ps1','build-installer.py','create-release-manifest.py','build-sanctuary-assets.py','build-death-video.py','build-death-mod.py','fetch-development.cjs','development-dependencies.json','prepare-payload.cjs','export-public-repo.py','publish-release.ps1','test-installer-transactions.py','test-installer-transactions.cs','test-installation.cjs','verify-update-install.cjs','test-launcher-update-ui.cjs']:copy('tools/'+name)
 for name in ['ADMINISTRACION.md','RESULTADOS-2.1.md','RESULTADOS-2.2.md','RESULTADOS-ACTUALIZADOR.md','SPAWN.md','PRUEBA-JEFE.md','RESULTADOS-2.3.md','RESULTADOS-2.4.md','RESULTADOS-2.4.1.md','SEGURIDAD-INSTALADOR.md','MODERACION-REPLAYS.md']:copy(name)
@@ -38,6 +38,7 @@ for name in ['civic27-dialogue','civic27-market-scale2','civic27-market-scale4-n
 for name in ['qa-rubble263.cjs','backup-before263.py','verify-production263.py']:copy('tools/'+name)
 for name in ['mass-uproot','dense-vortex','stopped']:copy(f'tools/test-runtime/expansion25/game/screenshots/sanctuary-r263-{name}.png',f'docs/r263-{name}.png')
 copy('playit/start-playit.ps1');copy('server/start-server.ps1');copy('server/iniciar.bat');copy('INICIAR_SERVIDOR.bat');copy('INICIAR_PLAYIT.bat')
+copy('server/config/fiw-mods-api/config.json','server-config/fiw-mods-api/config.json')
 copy('tools/server-control/GracefulStop.java');copy('tools/server-control/MANIFEST.MF')
 for name in ['w26-icons-final','w26-tornado','w26-electric-ultra-quality','w26-beacon-99000-six-chunks','w26-skin-full-final']:
     src=f'tools/test-runtime/expansion25/game/screenshots/sanctuary-{name}.png'
@@ -64,6 +65,12 @@ for name in ['spawn24-final','boss-death-fracture','boss-death-dissipation','con
 for name in ['NOVEDADES-2.7.1.md','RESULTADOS-2.7.1.md']:copy(name)
 for name in ['NOVEDADES-2.8.md','RESULTADOS-2.8.md']:copy(name)
 for name in ['NOVEDADES-2.8.1.md','RESULTADOS-2.8.1.md']:copy(name)
+for name in ['NOVEDADES-2.9.md','RESULTADOS-2.9.md']:copy(name)
+for name in ['season29_spawn.py','season29_archive.py','verify-season29.py','build-intro29-audio.py','qa-season29-client.cjs']:copy('tools/'+name)
+copy('tools/build-optional-shaders29.py');copy('tools/whitelist29.py');copy('AGREGAR_JUGADOR.bat')
+for name in ['season29-intro-orbit','season29-intro-five-hearts','season29-scale4']:
+    src=f'tools/test-runtime/season29-game/screenshots/sanctuary-{name}.png'
+    if (root/src).exists():copy(src,f'docs/{name}.png')
 copy('tools/qa-replay-packets.cjs')
 copy('tools/test-runtime/expansion25/game/screenshots/sanctuary-replay-verified-native.png','docs/replay-2.8.1.png')
 for name in ['backup-before271.py','qa-five-lives271.cjs','build-npc-skins.py','install-npc-skins.py','test-npc-skins27.cjs']:copy('tools/'+name)

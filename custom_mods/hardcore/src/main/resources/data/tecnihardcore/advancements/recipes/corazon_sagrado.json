@@ -1,0 +1,1 @@
+{"criteria":{"inventory":{"trigger":"minecraft:inventory_changed","conditions":{"items":[{"items":["minecraft:nether_star"]}]}}},"rewards":{"recipes":["tecnihardcore:corazon_sagrado"]}}

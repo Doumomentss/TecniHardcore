@@ -1,5 +1,5 @@
 plugins { id 'fabric-loom' version '1.10.5' }
-version = '2.8.1'
+version = '2.9.0'
 group = 'net.tecnihardcore'
 base { archivesName = 'tecnihardcore' }
 repositories { mavenCentral() }

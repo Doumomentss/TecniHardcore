@@ -306,7 +306,7 @@ async function checkUpdates(){
     updateBanner.classList.toggle('hidden',!result.available);
     if(result.available){
       document.getElementById('update-title').textContent=`TecniHardcore ${result.manifest.version} disponible`;
-      document.getElementById('update-notes').textContent=`${result.manifest.notes} · ${Math.ceil(result.manifest.installer.bytes/1048576)} MB. Cierra Minecraft para actualizar.`;
+      document.getElementById('update-notes').textContent=`Hay una nueva actualización (${Math.ceil(result.manifest.installer.bytes/1048576)} MB). Cierra Minecraft para instalarla.`;
     }
   }finally{checkUpdate.disabled=false;}
 }

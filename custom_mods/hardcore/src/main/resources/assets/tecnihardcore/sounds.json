@@ -155,5 +155,14 @@
       "tecnihardcore:disaster/wind_thunder_3"
     ],
     "subtitle": "subtitles.tecnihardcore.disaster_thunder"
+  },
+  "intro.welcome": {
+    "sounds": [
+      {
+        "name": "tecnihardcore:intro/welcome",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitles.tecnihardcore.intro_welcome"
   }
 }

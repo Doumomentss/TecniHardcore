@@ -33,4 +33,4 @@ config=S/'config/ServerReplay/config.json';config.parent.mkdir(parents=True,exis
 settings={'enabled':True,'include_resource_packs':False,'allow_downloading_replays':False,'player_recording_name':'{uuid}','world_name':'TecniHardcore','server_name':'TecniHardcore','player_recording_path':'recordings/tecni-moderacion','chunk_recording_path':'recordings/tecni-chunks','max_file_size':'512MB','restart_after_max_file_size':False,'max_duration':'0s','restart_after_max_duration':False,'recover_unsaved_replays':True,'include_compressed_in_status':False,'notify_admins_of_status':False,'ignore_sound_packets':False,'ignore_light_packets':False,'ignore_chat_packets':True,'ignore_scoreboard_packets':False,'record_voice_chat':False,'player_predicate':{'type':'none'},'chunks':[]}
 if config.exists():config.with_suffix('.before-tecni28.json').write_bytes(config.read_bytes())
 config.write_text(json.dumps(settings,indent=2),encoding='utf8')
-print('Verified server-only ServerReplay and Kotlin; private player recording, no chat/voice/HTTP downloads.')
+print('Verified server-only ServerReplay; keep the pack Kotlin 1.9 runtime for Ledger compatibility.')

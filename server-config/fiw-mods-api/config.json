@@ -1,0 +1,906 @@
+{
+  "mode": "whitelist",
+  "timeout_seconds": 30,
+  "kick_message": "Paquete de cliente distinto al oficial. Ejecuta el launcher TecniHardcore y pulsa Reparar.",
+  "timeout_message": "No se pudo verificar el cliente. Actualiza el launcher TecniHardcore y vuelve a entrar.",
+  "detection": {
+    "preset": "custom",
+    "monitor_only": false,
+    "alert_staff": true,
+    "block": {
+      "cheat_clients": true,
+      "xray": true,
+      "fullbright": false,
+      "freecam": true,
+      "replay": false,
+      "minimap": false,
+      "autoclicker": true,
+      "schematic_printer": true,
+      "tweakeroo_utility": false,
+      "damage_indicators": false,
+      "zoom": false
+    },
+    "allow_overrides": [],
+    "banned_mods": [
+      "wurst",
+      "meteor-client",
+      "aristois",
+      "bleachhack",
+      "inertia",
+      "xray",
+      "advanced-xray",
+      "baritone",
+      "seedcrackerx"
+    ]
+  },
+  "resource_packs": {
+    "log": false,
+    "kick_on_banned": false,
+    "banned_packs": [],
+    "banned_fingerprints": []
+  },
+  "exemptions": {
+    "floodgate_auto": true,
+    "bypass_players": [],
+    "player_overrides": {},
+    "escalation_rules": []
+  },
+  "profiling": {
+    "enabled": true,
+    "max_history": 30
+  },
+  "whitelist": {
+    "require_all": true,
+    "official_mods": [
+      {
+        "id": "adventurez",
+        "version": "1.4.20",
+        "fingerprint": "59663cb3d9d6dd16605ef5d18179889af730e9175871843c6b48a66168e8c11a"
+      },
+      {
+        "id": "appleskin",
+        "version": "2.5.2+mc1.20.1",
+        "fingerprint": "821241285f534fd04aa15a91f3d1a6059135bce2d4b6e409fa1ae8825b4c9702"
+      },
+      {
+        "id": "architectury",
+        "version": "9.2.14",
+        "fingerprint": "bd7a7032bedb2ff96c6991a846a44c857336a51442a105f5859017e8ba9d1321"
+      },
+      {
+        "id": "artifacts",
+        "version": "9.5.17",
+        "fingerprint": "7a2ce37ac5a0a762546df8c0f974d3466056457d85c7af22cbef669640a71d66"
+      },
+      {
+        "id": "athena",
+        "version": "3.1.2",
+        "fingerprint": "da18e81a3b72263a67c40e325537c587b48fff2fabb625c612ca4d7c2f386ecd"
+      },
+      {
+        "id": "awesomedungeon",
+        "version": "3.2.0",
+        "fingerprint": "9777681f44b2ae54194d0fc14820757c5de73fb3c9f398ffef982c99384e05ca"
+      },
+      {
+        "id": "awesomedungeonnether",
+        "version": "3.1.1",
+        "fingerprint": "ae69bc020ba1f4c2dd3a13b443e2c8304401dc671fe85501dc5bebbf563715bb"
+      },
+      {
+        "id": "bettercombat",
+        "version": "1.9.0+1.20.1",
+        "fingerprint": "c1b680dd03d3af3bf670cf0d024d58bd06360f5b0818eabfec6d7c8e6a11ec07"
+      },
+      {
+        "id": "betterdungeons",
+        "version": "1.20-Fabric-4.0.4",
+        "fingerprint": "6c69fd0316c448cf9c70b72dbea424a85be881f9adc3e7a56e8f0b08e3611fff"
+      },
+      {
+        "id": "betterfortresses",
+        "version": "1.20-Fabric-2.0.6",
+        "fingerprint": "93e0e537fcf20b18c0ea340e6d4f2c20225a29c45252b9cf78e205107ab4f03a"
+      },
+      {
+        "id": "bettermineshafts",
+        "version": "1.20-Fabric-4.0.4",
+        "fingerprint": "0a4657689217339a1f6079a2d9dda03f6d01beacac59c14e093ded3357db2b86"
+      },
+      {
+        "id": "blue_endless_jankson",
+        "version": "1.2.3"
+      },
+      {
+        "id": "bookshelf",
+        "version": "20.2.15",
+        "fingerprint": "bfdcaea401be95943503cce660a68add5e8cdc08a2a8112b1d80dd63d7d63766"
+      },
+      {
+        "id": "bucketlib",
+        "version": "1.20.1-3.2.1.3"
+      },
+      {
+        "id": "cardinal-components-base",
+        "version": "5.2.2"
+      },
+      {
+        "id": "cardinal-components-entity",
+        "version": "5.2.2"
+      },
+      {
+        "id": "chipped",
+        "version": "3.0.7",
+        "fingerprint": "b1af1f1a653a65b200c5fd547c59a97e176f6d5b2e41519596f7a30394d4f330"
+      },
+      {
+        "id": "cloth-basic-math",
+        "version": "0.6.1"
+      },
+      {
+        "id": "cloth-config",
+        "version": "11.1.136",
+        "fingerprint": "844f49c339c8f3144e167ab21b7d0059f0d571054e26285a0749348da25c49fa"
+      },
+      {
+        "id": "collective",
+        "version": "8.40",
+        "fingerprint": "bb530e601fdd1217cdac24d700ad2888ac3ccc23f255869ab9947e4028267198"
+      },
+      {
+        "id": "com_electronwill_night-config_core",
+        "version": "3.6.7"
+      },
+      {
+        "id": "com_electronwill_night-config_toml",
+        "version": "3.6.7"
+      },
+      {
+        "id": "com_eliotlash_mclib_mclib",
+        "version": "20"
+      },
+      {
+        "id": "com_github_keksuccino_japng",
+        "version": "0.5.3"
+      },
+      {
+        "id": "com_github_rtyley_animated-gif-lib-for-java",
+        "version": "animated-gif-lib-1.7"
+      },
+      {
+        "id": "com_teamresourceful_bytecodecs",
+        "version": "1.0.2"
+      },
+      {
+        "id": "com_teamresourceful_yabn",
+        "version": "1.0.3"
+      },
+      {
+        "id": "com_twelvemonkeys_common_common-image",
+        "version": "3.12.0"
+      },
+      {
+        "id": "com_twelvemonkeys_common_common-io",
+        "version": "3.12.0"
+      },
+      {
+        "id": "com_twelvemonkeys_common_common-lang",
+        "version": "3.12.0"
+      },
+      {
+        "id": "com_twelvemonkeys_imageio_imageio-core",
+        "version": "3.12.0"
+      },
+      {
+        "id": "com_twelvemonkeys_imageio_imageio-metadata",
+        "version": "3.12.0"
+      },
+      {
+        "id": "com_twelvemonkeys_imageio_imageio-webp",
+        "version": "3.12.0"
+      },
+      {
+        "id": "config2brigadier",
+        "version": "1.2.3"
+      },
+      {
+        "id": "controlling",
+        "version": "12.0.2",
+        "fingerprint": "f7bbb7e37f2118af29450ec468d3ce4ec2606fead2861f4092a43509c6803ed6"
+      },
+      {
+        "id": "creativecore",
+        "version": "2.12.39",
+        "fingerprint": "c6780ecc0487e40b132dc2ed41692b14f4cdb37d95758cda86a8d55f9138a61f"
+      },
+      {
+        "id": "drippyloadingscreen",
+        "version": "3.1.5",
+        "fingerprint": "554702a7c0d1b74e683291b261d8af8ea262cac74a8ea5fcfb0c6b8206e098e4"
+      },
+      {
+        "id": "dungeons_arise",
+        "version": "2.1.57",
+        "fingerprint": "e8efd54576797faff7cc221e26a41a097e985baa7889398defb15da4135d7cf8"
+      },
+      {
+        "id": "dungeons_arise_seven_seas",
+        "version": "1.0.2",
+        "fingerprint": "e1d06438a5a9618fca45e754e7698b68b82eed15b3971ab742174c54d41d6ac9"
+      },
+      {
+        "id": "easy_hammers",
+        "version": "7.0.2",
+        "fingerprint": "4d83429588c839af8a0459f5fe750d2aafea7ae45b870592d17508b15ff9afcd"
+      },
+      {
+        "id": "enchantinginfuser",
+        "version": "8.0.3",
+        "fingerprint": "12ddb587239765a2f24e90f2689d6199515f66f84a6599d29937cee54ef250da"
+      },
+      {
+        "id": "entity_texture_features",
+        "version": "7.2.4",
+        "fingerprint": "c8bac35efcfb0bbef45b5253506015a0ddee386ff60577e2c2715e555ad51433"
+      },
+      {
+        "id": "entityculling",
+        "version": "1.11.2",
+        "fingerprint": "637b6f30d8c7d51f107eddce095ab205f5768751aa3f9bd9ad11577da04dbbd0"
+      },
+      {
+        "id": "expandability",
+        "version": "9.0.4"
+      },
+      {
+        "id": "fabric-api",
+        "version": "0.92.12+1.20.1",
+        "fingerprint": "4197ff4fbdac13cffccd267c1bc59e9fbabb2b5683a9d5f8023f4b5ea16a1c1e"
+      },
+      {
+        "id": "fabric-api-base",
+        "version": "0.4.32+1802ada577"
+      },
+      {
+        "id": "fabric-api-lookup-api-v1",
+        "version": "1.6.37+1802ada577"
+      },
+      {
+        "id": "fabric-biome-api-v1",
+        "version": "13.0.15+93aa238b77"
+      },
+      {
+        "id": "fabric-block-api-v1",
+        "version": "1.0.12+1802ada577"
+      },
+      {
+        "id": "fabric-block-view-api-v2",
+        "version": "1.0.3+924f046a77"
+      },
+      {
+        "id": "fabric-blockrenderlayer-v1",
+        "version": "1.1.42+1802ada577"
+      },
+      {
+        "id": "fabric-client-tags-api-v1",
+        "version": "1.2.0+238242b777"
+      },
+      {
+        "id": "fabric-command-api-v1",
+        "version": "1.2.35+f71b366f77"
+      },
+      {
+        "id": "fabric-command-api-v2",
+        "version": "2.2.14+1802ada577"
+      },
+      {
+        "id": "fabric-commands-v0",
+        "version": "0.2.52+df3654b377"
+      },
+      {
+        "id": "fabric-containers-v0",
+        "version": "0.1.68+df3654b377"
+      },
+      {
+        "id": "fabric-content-registries-v0",
+        "version": "4.0.13+1802ada577"
+      },
+      {
+        "id": "fabric-convention-tags-v1",
+        "version": "1.5.6+1802ada577"
+      },
+      {
+        "id": "fabric-crash-report-info-v1",
+        "version": "0.2.20+1802ada577"
+      },
+      {
+        "id": "fabric-data-attachment-api-v1",
+        "version": "1.0.2+de0fd6d177"
+      },
+      {
+        "id": "fabric-data-generation-api-v1",
+        "version": "12.4.0+238242b777"
+      },
+      {
+        "id": "fabric-dimensions-v1",
+        "version": "2.1.55+1802ada577"
+      },
+      {
+        "id": "fabric-entity-events-v1",
+        "version": "1.6.1+1c78457f77"
+      },
+      {
+        "id": "fabric-events-interaction-v0",
+        "version": "0.6.6+13a40c6677"
+      },
+      {
+        "id": "fabric-events-lifecycle-v0",
+        "version": "0.2.64+df3654b377"
+      },
+      {
+        "id": "fabric-game-rule-api-v1",
+        "version": "1.0.41+1802ada577"
+      },
+      {
+        "id": "fabric-item-api-v1",
+        "version": "2.1.29+1802ada577"
+      },
+      {
+        "id": "fabric-item-group-api-v1",
+        "version": "4.0.14+1802ada577"
+      },
+      {
+        "id": "fabric-key-binding-api-v1",
+        "version": "1.0.38+1802ada577"
+      },
+      {
+        "id": "fabric-keybindings-v0",
+        "version": "0.2.36+df3654b377"
+      },
+      {
+        "id": "fabric-language-kotlin",
+        "version": "1.10.19+kotlin.1.9.23",
+        "fingerprint": "4cc86a5ca56236f776ec9b84370fb02ac4f7cdf88a3c82886da9c558e1e4f39c"
+      },
+      {
+        "id": "fabric-lifecycle-events-v1",
+        "version": "2.2.23+1802ada577"
+      },
+      {
+        "id": "fabric-loot-api-v2",
+        "version": "1.2.3+1802ada577"
+      },
+      {
+        "id": "fabric-loot-tables-v1",
+        "version": "1.1.47+9e7660c677"
+      },
+      {
+        "id": "fabric-message-api-v1",
+        "version": "5.1.10+1802ada577"
+      },
+      {
+        "id": "fabric-mining-level-api-v1",
+        "version": "2.1.52+1802ada577"
+      },
+      {
+        "id": "fabric-model-loading-api-v1",
+        "version": "1.0.4+1802ada577"
+      },
+      {
+        "id": "fabric-models-v0",
+        "version": "0.4.3+9386d8a777"
+      },
+      {
+        "id": "fabric-networking-api-v1",
+        "version": "1.3.15+0caff8d077"
+      },
+      {
+        "id": "fabric-networking-v0",
+        "version": "0.3.55+df3654b377"
+      },
+      {
+        "id": "fabric-object-builder-api-v1",
+        "version": "11.1.5+e35120df77"
+      },
+      {
+        "id": "fabric-particles-v1",
+        "version": "1.1.3+1802ada577"
+      },
+      {
+        "id": "fabric-permissions-api-v0",
+        "version": "0.3.1"
+      },
+      {
+        "id": "fabric-recipe-api-v1",
+        "version": "1.0.25+1802ada577"
+      },
+      {
+        "id": "fabric-registry-sync-v0",
+        "version": "2.4.1+4c0a70e677"
+      },
+      {
+        "id": "fabric-renderer-api-v1",
+        "version": "3.2.2+1802ada577"
+      },
+      {
+        "id": "fabric-renderer-indigo",
+        "version": "1.5.3+85287f9f77"
+      },
+      {
+        "id": "fabric-renderer-registries-v1",
+        "version": "3.2.48+df3654b377"
+      },
+      {
+        "id": "fabric-rendering-data-attachment-v1",
+        "version": "0.3.39+92a0d36777"
+      },
+      {
+        "id": "fabric-rendering-fluids-v1",
+        "version": "3.0.29+1802ada577"
+      },
+      {
+        "id": "fabric-rendering-v0",
+        "version": "1.1.51+df3654b377"
+      },
+      {
+        "id": "fabric-rendering-v1",
+        "version": "3.0.10+54550fb677"
+      },
+      {
+        "id": "fabric-resource-conditions-api-v1",
+        "version": "2.3.9+1802ada577"
+      },
+      {
+        "id": "fabric-resource-loader-v0",
+        "version": "0.11.12+fb82e9d777"
+      },
+      {
+        "id": "fabric-screen-api-v1",
+        "version": "2.0.9+1802ada577"
+      },
+      {
+        "id": "fabric-screen-handler-api-v1",
+        "version": "1.3.34+1802ada577"
+      },
+      {
+        "id": "fabric-sound-api-v1",
+        "version": "1.0.14+1802ada577"
+      },
+      {
+        "id": "fabric-tag-api-v1",
+        "version": "1.3.0+238242b777"
+      },
+      {
+        "id": "fabric-transfer-api-v1",
+        "version": "3.3.6+8dd72ea377"
+      },
+      {
+        "id": "fabric-transitive-access-wideners-v1",
+        "version": "4.3.2+1802ada577"
+      },
+      {
+        "id": "fabrictailor",
+        "version": "2.1.2",
+        "fingerprint": "a18336f4c7289fd1934f22dc8a6f3908f89609dc81e3c9f079503ed17ab73c86"
+      },
+      {
+        "id": "fancymenu",
+        "version": "3.9.14",
+        "fingerprint": "24e6bf2904252ae567419e3d9b83f08276e5be9eee0a48ab0a785ba2d07a5026"
+      },
+      {
+        "id": "farmersdelight",
+        "version": "1.20.1-2.5.7+refabricated",
+        "fingerprint": "7f5c6cf0e05f66c11925c6e1e66c513fa4f9660a742e38762c929b3ca37de2d9"
+      },
+      {
+        "id": "ferritecore",
+        "version": "6.0.1",
+        "fingerprint": "c7ba1118a05b2da900d1c369fbe1017a3e3ec3cafe5e51398b851279b9becf24"
+      },
+      {
+        "id": "fiber",
+        "version": "0.23.0-2"
+      },
+      {
+        "id": "fiw-mods-api",
+        "version": "2.1.0",
+        "fingerprint": "a0996717433a4533ace77e7f8aa2b479eeb92220300ed356025aec692786daaf"
+      },
+      {
+        "id": "forgeconfigapiport",
+        "version": "8.0.3",
+        "fingerprint": "337a8f6c5ba48ef3b3da828f4f6a75d0552ba33f48ce97d3195befdb570e427a"
+      },
+      {
+        "id": "fzzy_config",
+        "version": "0.7.7+1.20.1",
+        "fingerprint": "719e2b5faa36104551f8f49e1c5f9189f8dcac65fcb648d61e1bae4d41aea1fa"
+      },
+      {
+        "id": "geckolib",
+        "version": "4.8.4",
+        "fingerprint": "ee8495a8db7a83aa63e8ef248d4eadda665ff57c5911b8e59fd608806137baa6"
+      },
+      {
+        "id": "graves",
+        "version": "1.0.0",
+        "fingerprint": "21cb9f8eae8603ea2d1803271aba793068447b3946052594be18c207c674cb4e"
+      },
+      {
+        "id": "handcrafted",
+        "version": "3.0.6",
+        "fingerprint": "aa82c95a7394c5fd7278c8b89e3554bb24dae0c3e6e73282a7f19d8bb6bf4a71"
+      },
+      {
+        "id": "immersive_armors",
+        "version": "1.7.2+1.20.1",
+        "fingerprint": "5bfdddc80a91337997e411163c7e67188dda17a18860418efe67625d9fefd6b6"
+      },
+      {
+        "id": "io_github_douira_glsl-transformer",
+        "version": "2.0.1"
+      },
+      {
+        "id": "iris",
+        "version": "1.7.6+mc1.20.1",
+        "fingerprint": "9eb15e563e0c9ae6eff15b7863f8432dd290cf9f724c7373e9b15b14aa829ed5"
+      },
+      {
+        "id": "jade",
+        "version": "11.13.3+fabric",
+        "fingerprint": "5a2830f6e5edabbb632c33eed5b9cabf45495ccb937c976a3656efe74a183375"
+      },
+      {
+        "id": "jei",
+        "version": "15.62.0.217",
+        "fingerprint": "14e85f737accd9354f5d8d1ea43d68d81b8405223254b7092f6a6680de723ce8"
+      },
+      {
+        "id": "konkrete",
+        "version": "1.8.1",
+        "fingerprint": "f87fc3ab29a8df63a5214fdfa58d2f9fa645255af64d38ba598a9f56fafccdb6"
+      },
+      {
+        "id": "libraryferret",
+        "version": "4.0.0",
+        "fingerprint": "194a4291dc0d3e47abf63266f16e06b16dcff4d6f05bb667c972743835eeca0e"
+      },
+      {
+        "id": "lithium",
+        "version": "0.11.4",
+        "fingerprint": "76133efe92aea907cf75562d9e26517deb170e2580e1ecd4979da2c8902de782"
+      },
+      {
+        "id": "mcpitanlib",
+        "version": "4.0.9-1.20.1-fabric",
+        "fingerprint": "1593ce12e4e190ba170884e2ba36a8b206a20cc48733d9bc27f4b20712abb2e1"
+      },
+      {
+        "id": "melody",
+        "version": "1.0.3",
+        "fingerprint": "3f7f5bab77a01a26af4702a70af5a7fd0a6f04f4fde51a4180113790e0c9e1e7"
+      },
+      {
+        "id": "mezz_config",
+        "version": "0.6.3"
+      },
+      {
+        "id": "midnightlib",
+        "version": "1.9.2"
+      },
+      {
+        "id": "mixinextras",
+        "version": "0.5.5"
+      },
+      {
+        "id": "mm",
+        "version": "2.3"
+      },
+      {
+        "id": "modernfix",
+        "version": "5.25.2+mc1.20.1",
+        "fingerprint": "5c1f852046e62a17056bb6b571164e61644076c5eb9029c92b31e337cc62c0d9"
+      },
+      {
+        "id": "natures_spirit",
+        "version": "2.2.5-1.20.1",
+        "fingerprint": "93ce1637124377e9b41a8ddb5c065b0e3c2e55dd55b463acd130a771cb9ce3a3"
+      },
+      {
+        "id": "net_minecraftforge_eventbus",
+        "version": "6.0.3"
+      },
+      {
+        "id": "net_peanuuutz_tomlkt_tomlkt-jvm",
+        "version": "0.3.7"
+      },
+      {
+        "id": "nether_ores_reborn",
+        "version": "1.0.2-1.20.1-Fabric",
+        "fingerprint": "e113fed0f5449c38c3cf4297f3d4fdb0a5decc29ecf411ab0598f8caf50c69eb"
+      },
+      {
+        "id": "org_anarres_jcpp",
+        "version": "1.4.14"
+      },
+      {
+        "id": "org_antlr_antlr4-runtime",
+        "version": "4.13.1"
+      },
+      {
+        "id": "org_javassist_javassist",
+        "version": "3.29.2-GA"
+      },
+      {
+        "id": "org_jetbrains_kotlin_kotlin-reflect",
+        "version": "1.9.23"
+      },
+      {
+        "id": "org_jetbrains_kotlin_kotlin-stdlib",
+        "version": "1.9.23"
+      },
+      {
+        "id": "org_jetbrains_kotlin_kotlin-stdlib-jdk7",
+        "version": "1.9.23"
+      },
+      {
+        "id": "org_jetbrains_kotlin_kotlin-stdlib-jdk8",
+        "version": "1.9.23"
+      },
+      {
+        "id": "org_jetbrains_kotlinx_atomicfu-jvm",
+        "version": "0.23.2"
+      },
+      {
+        "id": "org_jetbrains_kotlinx_kotlinx-coroutines-core-jvm",
+        "version": "1.8.0"
+      },
+      {
+        "id": "org_jetbrains_kotlinx_kotlinx-coroutines-jdk8",
+        "version": "1.8.0"
+      },
+      {
+        "id": "org_jetbrains_kotlinx_kotlinx-datetime-jvm",
+        "version": "0.5.0"
+      },
+      {
+        "id": "org_jetbrains_kotlinx_kotlinx-serialization-cbor-jvm",
+        "version": "1.6.3"
+      },
+      {
+        "id": "org_jetbrains_kotlinx_kotlinx-serialization-core-jvm",
+        "version": "1.6.3"
+      },
+      {
+        "id": "org_jetbrains_kotlinx_kotlinx-serialization-json-jvm",
+        "version": "1.6.3"
+      },
+      {
+        "id": "org_quiltmc_parsers_gson",
+        "version": "0.2.1"
+      },
+      {
+        "id": "org_quiltmc_parsers_json",
+        "version": "0.2.1"
+      },
+      {
+        "id": "org_reflections_reflections",
+        "version": "0.10.2"
+      },
+      {
+        "id": "patchouli",
+        "version": "1.20.1-85-FABRIC",
+        "fingerprint": "485e23ab9727c7e9f585f435020d733706a80c7f0a1dc20e85c7398e1d76b919"
+      },
+      {
+        "id": "player-animator",
+        "version": "1.0.2-rc1+1.20",
+        "fingerprint": "0b10021fa638997398110777747726b1cb7a27bc3f8ff1b12e2b93ac01784018"
+      },
+      {
+        "id": "porting_lib_accessors",
+        "version": "2.3.15+1.20.1"
+      },
+      {
+        "id": "porting_lib_attributes",
+        "version": "2.3.15+1.20.1"
+      },
+      {
+        "id": "porting_lib_base",
+        "version": "2.3.15+1.20.1"
+      },
+      {
+        "id": "porting_lib_common",
+        "version": "2.3.15+1.20.1"
+      },
+      {
+        "id": "porting_lib_config",
+        "version": "2.3.15+1.20.1"
+      },
+      {
+        "id": "porting_lib_core",
+        "version": "2.3.15+1.20.1"
+      },
+      {
+        "id": "porting_lib_entity",
+        "version": "2.3.15+1.20.1"
+      },
+      {
+        "id": "porting_lib_extensions",
+        "version": "2.3.15+1.20.1"
+      },
+      {
+        "id": "porting_lib_fluids",
+        "version": "2.3.15+1.20.1"
+      },
+      {
+        "id": "porting_lib_gui_utils",
+        "version": "2.3.15+1.20.1"
+      },
+      {
+        "id": "porting_lib_lazy_registration",
+        "version": "2.3.15+1.20.1"
+      },
+      {
+        "id": "porting_lib_loot",
+        "version": "2.3.15+1.20.1"
+      },
+      {
+        "id": "porting_lib_mixin_extensions",
+        "version": "2.3.15+1.20.1"
+      },
+      {
+        "id": "porting_lib_model_loader",
+        "version": "2.3.2+1.20.1"
+      },
+      {
+        "id": "porting_lib_networking",
+        "version": "2.3.15+1.20.1"
+      },
+      {
+        "id": "porting_lib_recipe_book_categories",
+        "version": "2.3.15+1.20.1"
+      },
+      {
+        "id": "porting_lib_tags",
+        "version": "3.0"
+      },
+      {
+        "id": "porting_lib_tool_actions",
+        "version": "2.3.15+1.20.1"
+      },
+      {
+        "id": "porting_lib_transfer",
+        "version": "2.3.15+1.20.1"
+      },
+      {
+        "id": "porting_lib_utility",
+        "version": "2.3.15+1.20.1"
+      },
+      {
+        "id": "puzzlesaccessapi",
+        "version": "20.1.1"
+      },
+      {
+        "id": "puzzleslib",
+        "version": "8.1.33",
+        "fingerprint": "855034e7a858f2f9ee76c1181aa1f4d5b9e605d63d8a81f7bba155faba2da7c5"
+      },
+      {
+        "id": "reach-entity-attributes",
+        "version": "2.4.0"
+      },
+      {
+        "id": "regions_unexplored",
+        "version": "0.5.6+1.20.1",
+        "fingerprint": "d24dc3a6a08432d51d042750fe50a6c5051f9d0c725cfc434cf9ce6eb8b7e332"
+      },
+      {
+        "id": "resourcefullib",
+        "version": "2.1.29",
+        "fingerprint": "2543d76f4f440d4401dccf7675f836381260919f0ac884e2696ae67e600adeeb"
+      },
+      {
+        "id": "roguelike",
+        "version": "2.1.0-1.20.1-fabric",
+        "fingerprint": "f2c3042a435098f376f017ef2e7de295862b7981678b1a7322c5081f6d760127"
+      },
+      {
+        "id": "searchables",
+        "version": "1.0.3",
+        "fingerprint": "f32e0b0c9bebc99944ddc6a9dba8f8336af666aaba151c6839b8353a2acdd53a"
+      },
+      {
+        "id": "simpleores",
+        "version": "2.1.0-1.20.1-fabric",
+        "fingerprint": "6ebda2f83654713472e3a7010f8577ac4d927e5939d259c04007b0f672c231e7"
+      },
+      {
+        "id": "simplyswords",
+        "version": "1.70.2-1.20.1",
+        "fingerprint": "b374382303e5ecdfa2b0e1156dd3b9a03af189279d2bf7ccd3c7017374757ad9"
+      },
+      {
+        "id": "simplytooltips",
+        "version": "0.1.5-1.20.1",
+        "fingerprint": "c7573a331ef9cfdb5da3ab3f63431ea8e3c870d2efa84ed4012127173d416d96"
+      },
+      {
+        "id": "sodium",
+        "version": "0.5.13+mc1.20.1",
+        "fingerprint": "688c26029ce69f0b1f7cf936866656ca6723228ac46c4aef5b5f793b1e6abd22"
+      },
+      {
+        "id": "sophisticatedbackpacks",
+        "version": "1.20.1-3.23.4.5.110",
+        "fingerprint": "1e4e268d079ebef8a21f41f6a7a35528435733a124a134e3ef240389f3aa87c1"
+      },
+      {
+        "id": "sophisticatedcore",
+        "version": "1.20.1-1.2.7.15.166",
+        "fingerprint": "dafca4311f94ed5eff18f34077e7ab91a169863a4bde2cc82ae525d869ee9396"
+      },
+      {
+        "id": "step-height-entity-attribute",
+        "version": "1.2.0"
+      },
+      {
+        "id": "team_reborn_energy",
+        "version": "3.0.0"
+      },
+      {
+        "id": "tecni_death",
+        "version": "1.0.1",
+        "fingerprint": "608b9108f7e69652449599e523318a0d568df5c609d9f54c29787ea3cdd933f5"
+      },
+      {
+        "id": "tecnihardcore",
+        "version": "2.9.0",
+        "fingerprint": "56b3f307e5d8e46c0be9f6a1dcf81947b70f54bfca38d09a253dc8dba33a6b55"
+      },
+      {
+        "id": "terrablender",
+        "version": "3.0.1.10",
+        "fingerprint": "d02d9aa2ccf091264b0fcef07644128b823b3421a02bfc40391a01aa1ccd0a24"
+      },
+      {
+        "id": "transition",
+        "version": "1.0.25"
+      },
+      {
+        "id": "trender",
+        "version": "1.0.17"
+      },
+      {
+        "id": "trinkets",
+        "version": "3.7.2",
+        "fingerprint": "a6f11a4206c1285cd260a60d9bfe9cefa9914d2190d08b3c52050f42044b53b3"
+      },
+      {
+        "id": "uncraftingtable76",
+        "version": "1.5.6",
+        "fingerprint": "21e9f883549f0f89a6f71dd13676e6d272783ac74ba2f20e711e26f8d8678022"
+      },
+      {
+        "id": "voicechat",
+        "version": "1.20.1-2.6.24",
+        "fingerprint": "d7cb238ab224d898210cecdf8ea8c0b4cbdf7839ee3cea36f44e63e1f1bd23dc"
+      },
+      {
+        "id": "voicechat_api",
+        "version": "2.6.24"
+      },
+      {
+        "id": "yet_another_config_lib_v3",
+        "version": "3.6.6+1.20.1-fabric",
+        "fingerprint": "7a2389ca436ea8f7abee787d6373f9526deece5d06785f3623b7fe89bd9b31ac"
+      },
+      {
+        "id": "yungsapi",
+        "version": "1.20-Fabric-4.0.6",
+        "fingerprint": "26b6dc81f876aabf3d53ead59e5908a8b0f5434d46c150cfd376c027ac54053e"
+      }
+    ]
+  }
+}

@@ -14,7 +14,7 @@ public abstract class RitualCameraMixin {
     @Inject(method="update",at=@At("TAIL"))
     private void cinema(BlockView world,Entity entity,boolean third,boolean inverse,float delta,CallbackInfo ci){
         float shake=CataclysmVisuals.shake(delta);if(shake!=0){var camera=(Camera)(Object)this;setRotation(camera.getYaw()+shake,camera.getPitch()+shake*.5F);}
-        var v=RitualCinema.current();if(v==null)return;var pose=RitualCinema.pose(v,delta);var d=pose[1].subtract(pose[0]);
+        var v=RitualCinema.current();var pose=IntroCinema.active()?IntroCinema.pose(delta):v==null?null:RitualCinema.pose(v,delta);if(pose==null)return;var d=pose[1].subtract(pose[0]);
         setRotation((float)Math.toDegrees(Math.atan2(-d.x,d.z)),(float)-Math.toDegrees(Math.atan2(d.y,Math.sqrt(d.x*d.x+d.z*d.z))));
         setPos(pose[0].x,pose[0].y,pose[0].z);thirdPerson=true;
     }

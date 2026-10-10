@@ -22,7 +22,7 @@ Los clientes anteriores reciben un mensaje para actualizar. No mezclar distintas
 
 Cuentas nuevas: `/register CLAVE CLAVE`, usando dos veces la misma contraseña de 12 a 128 caracteres. En las siguientes conexiones: `/login CLAVE`. No hacen falta códigos. Las cuentas existentes conservan contraseña, UUID, inventario y permisos.
 
-Las identidades anteriores reservadas que todavía no se registraron deben hacerlo una vez desde la conexión local exacta de este equipo. Las conexiones públicas de Playit no tienen ese privilegio. Después pueden iniciar sesión desde cualquier conexión. Doumoment conserva operador de nivel 4; no se han restaurado ni descontado sus vidas para estas pruebas.
+Las identidades anteriores reservadas que todavía no se registraron deben hacerlo una vez desde la conexión local exacta de este equipo. Las conexiones públicas de Playit no tienen ese privilegio. Después pueden iniciar sesión desde cualquier conexión. Doumoment conserva operador de nivel 4. La temporada 2.9 reinicia las vidas a 5 y todo el progreso de juego, incluidos inventarios; las cuentas y permisos se conservan.
 
 ## Cómo resucitar
 
@@ -49,7 +49,7 @@ La cámara, movimiento y vista normal se recuperan al terminar, cancelar, descon
 - `/tecni guia`: entrega la guía actualizada.
 - `/tecni ritual Nombre`: inicia el mismo ritual con un objetivo explícito.
 - `/tecni vidas Nombre`: consulta vidas e historial de un jugador conectado; requiere operador.
-- `/tecni vidas Nombre 0..3`: ajuste administrativo registrado. Ejemplo: `/tecni vidas Doumoment 3`. No reinicia enfriamientos ni borra historial.
+- `/tecni vidas Nombre 0..5`: ajuste administrativo registrado. Ejemplo: `/tecni vidas Doumoment 5`. No reinicia enfriamientos ni borra historial.
 - `/tecni santuario crear x y z`: crea la ruina de 11×11 tras comprobar suelo natural seco, altura y espacio libre; requiere operador. Las coordenadas son las del núcleo, un bloque encima del suelo ceremonial. La zona debe estar cargada. Rechaza bloques ocupados y contenedores.
 - `/tecni santuario localizar`: muestra el santuario descubierto más cercano en la dimensión; requiere operador. No busca ni genera chunks lejanos.
 - `/tecni backup`: copia consistente; requiere operador.
@@ -104,3 +104,12 @@ El pedestal del santuario tiene colisión por celdas protegidas y abre su interf
 La plaza ampliada mantiene núcleo en 0,96,0 y protección de 32 bloques, añade talleres, caminos, luces y un cartel construido TECNIHARDCORE. `tools/build-spawn24.py` audita el mundo y produce `tools/spawn24-pack`; no escribe regiones. Se copia como datapack del servidor y se aplica una vez con `function tecni_spawn24:upgrade`, después de backup y prueba sobre copia. La función revalida todas las posiciones; si alguna cambió, cancela sin colocar ningún bloque. No aplicar el constructor antiguo del spawn sobre una plaza existente.
 
 El daño base del Custodio aumenta según fase: melee 16/20/24; ataques finales hasta 26 antes de armadura. La primera transición dura cuatro segundos, la transformación final seis y la derrota definitiva seis. Se conserva entidad/UUID, sin repetir impactos al reiniciar. El equilibrio de duración requiere una pelea real de dos jugadores con diamante sin encantamientos; las pruebas automatizadas no sustituyen esa medición.
+# Temporada 2.9
+
+- Inicia el servidor con `INICIAR_SERVIDOR.bat`. El script abre Playit, comprueba puertos TCP y UDP, usa Java 21 y evita un bucle infinito si falla. Si indica que el puerto de voz está ocupado, cierra la otra instancia: dos servidores no pueden usar a la vez UDP 24454.
+- `AGREGAR_JUGADOR.bat` pide el nombre exacto y lo agrega a la whitelist. Para quitarlo: `python tools/whitelist29.py quitar Nombre`; para listar: `python tools/whitelist29.py listar`. Los cambios se recargan en unos cinco segundos.
+- `/tecni fase 1` inicia **una sola vez** el día de gracia; `/tecni fase estado` consulta la fase. La cuenta baja solo mientras el servidor está encendido. El archivo persistente es `server/world/tecnihardcore-phase.json`; no editarlo mientras se ejecuta.
+- El spawn está en 0,96,20 y la precarga Chunky cubre un cuadrado de radio 512 bloques. No hace falta repetirla para abrir. Para ampliarla otro día, medir antes RAM y TPS.
+- La dificultad hostil aumenta cada 3.000 bloques desde 0,0, con límite para impedir daño o generación descontrolados.
+- Los shaders opcionales se descargan al abrir el juego. Se eligen desde Iris; ninguno queda activo por la descarga. Los contenidos añadidos fuera del paquete se conservan bajo `backups` dentro de la carpeta de juego.
+- El control de mods depende de los datos enviados por el cliente. Es útil para rechazar instalaciones accidentales o desactualizadas, pero no constituye una prueba criptográfica del launcher, shaders o resource packs.

@@ -1,0 +1,31 @@
+{
+  "files": [
+    {
+      "title": "BSL",
+      "version": "10.1.8",
+      "name": "BSL_v10.1.8.zip",
+      "url": "https://cdn.modrinth.com/data/Q1vvjJYV/versions/Y68yiql9/BSL_v10.1.8.zip",
+      "bytes": 1134153,
+      "sha256": "36b0a50ff7918bf10e9422c401d93779f9d0088a26acea975b435243f96930b5",
+      "sha512": "94a3c25d6820868db624e11347873e6b572e7cd571967d9ac6f4690ca5d37ca302a7645d85eec800e0654541e3825fba14d37b5a25d3996aaf038178552be26f"
+    },
+    {
+      "title": "MakeUp Ultra Fast",
+      "version": "9.5g",
+      "name": "MakeUp-UltraFast-9.5g.zip",
+      "url": "https://cdn.modrinth.com/data/izsIPI7a/versions/pgb0JjoN/MakeUp-UltraFast-9.5g.zip",
+      "bytes": 405096,
+      "sha256": "0036da17e0c7158e1c669593e6322d53fce3f5a42fb5124b935e9e21a5719db8",
+      "sha512": "90a2f75eb073eaae5fe65f2ea5f8d656c122760c07ff75306728df4b162c42f88be531f026d174e035fea153f0ac5e227e8885d8b199335d3beadb6a58f79239"
+    },
+    {
+      "title": "Complementary Unbound",
+      "version": "r5.9.3",
+      "name": "ComplementaryUnbound_r5.9.3.zip",
+      "url": "https://cdn.modrinth.com/data/R6NEzAwj/versions/B1kyfoUZ/ComplementaryUnbound_r5.9.3.zip",
+      "bytes": 553400,
+      "sha256": "98ac741dee294d2a3c82d153349148c3bb7fb688c30eb3b49c3b9ac37e968c5a",
+      "sha512": "a085d1d8cda67cd17a2b414eeba48bbd809da069f269bab46246235ec8fe714a275013c70d0504527b0987d810deddddba4564332414ab3b3bd7435932ff808c"
+    }
+  ]
+}

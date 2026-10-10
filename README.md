@@ -1,6 +1,6 @@
 # TecniHardcore
 
-Minecraft **1.20.1 Fabric** · paquete y launcher **2.8.1**.
+Minecraft **1.20.1 Fabric** · paquete y launcher **2.9.0**.
 
 ## Descargar y jugar
 
@@ -9,6 +9,8 @@ Descarga [el instalador de la última versión publicada](https://github.com/Dou
 El instalador contiene launcher, menú, modelos, texturas, sonido y mods propios. El primer inicio descarga 67 mods externos de sus URLs oficiales de Modrinth, con SHA-512 y SHA-256; obtiene Java 17, Fabric y Minecraft desde sus proveedores oficiales cuando hacen falta. Necesitas Internet y una cuenta/licencia de Minecraft conforme a las condiciones de Mojang. El launcher no entrega cuentas ni incluye credenciales.
 
 Servidor público: `rails-acorn.tun.ply.gg:6906`. Primera conexión: `/register CONTRASEÑA CONTRASEÑA` (12–128 caracteres); siguientes: `/login CONTRASEÑA`.
+
+La temporada 2.9 comienza en un mundo nuevo: Overworld, Nether y End reiniciados; la plaza original permanece en **0, 96, 0**. Todos empiezan con cinco vidas y sin progreso anterior. Se conservan las cuentas, contraseñas, UUID y permisos. Tras autenticarse por primera vez en este mundo, cada jugador ve una introducción individual obligatoria de 30 segundos. Si se interrumpe, vuelve a reproducirse en el siguiente ingreso. [Cambios de temporada](NOVEDADES-2.9.md) y [pruebas](RESULTADOS-2.9.md).
 
 ## Actualizaciones
 

@@ -28,9 +28,9 @@ static class Payload {
  const string Journal=".tecni-update-journal.txt";
  static string Digest(string file) {using(var sha=SHA256.Create())using(var input=File.OpenRead(file))return BitConverter.ToString(sha.ComputeHash(input)).Replace("-","").ToLowerInvariant();}
  static string Target(string root,string relative) {
-  if(String.IsNullOrWhiteSpace(relative)||Path.IsPathRooted(relative)||relative.IndexOf(':')>=0)throw new Exception("Ruta inválida en el paquete.");
+  if(String.IsNullOrWhiteSpace(relative)||Path.IsPathRooted(relative)||relative.IndexOf(':')>=0)throw new Exception("Ruta inválida en el paquete: "+relative);
   string normalized=relative.Replace('/',Path.DirectorySeparatorChar);
-  foreach(string part in normalized.Split(Path.DirectorySeparatorChar))if(part==".."||part=="."||part.Length==0)throw new Exception("Ruta inválida en el paquete.");
+  foreach(string part in normalized.Split(Path.DirectorySeparatorChar))if(part==".."||part=="."||part.Length==0)throw new Exception("Ruta inválida en el paquete: "+relative);
   string first=normalized.Split(Path.DirectorySeparatorChar)[0];
   if(first.Equals("game",StringComparison.OrdinalIgnoreCase)||first.Equals("backups",StringComparison.OrdinalIgnoreCase)||first.StartsWith(".tecni",StringComparison.OrdinalIgnoreCase))throw new Exception("El paquete intenta modificar datos personales.");
   string target=Path.GetFullPath(Path.Combine(root,normalized));

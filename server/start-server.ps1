@@ -4,16 +4,22 @@ Set-Location -LiteralPath $PSScriptRoot
 $workspace=Split-Path -Parent $PSScriptRoot
 $portLine=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'server.properties') | Where-Object {$_ -match '^server-port='} | Select-Object -First 1
 $serverPort=if($portLine){[int]($portLine -split '=',2)[1]}else{25565}
-& (Join-Path $workspace 'playit/start-playit.ps1')
 $listener=Get-NetTCPConnection -State Listen -LocalPort $serverPort -ErrorAction SilentlyContinue
 if($listener){Write-Host "Ya hay un proceso escuchando en el puerto $serverPort (PID $($listener[0].OwningProcess)). No se abrirá otro servidor.";exit 0}
+$voiceConfig=Join-Path $PSScriptRoot 'config/voicechat/voicechat-server.properties'
+$voiceLine=if(Test-Path -LiteralPath $voiceConfig){Get-Content -LiteralPath $voiceConfig | Where-Object {$_ -match '^port='} | Select-Object -First 1}
+$voicePort=if($voiceLine){[int]($voiceLine -split '=',2)[1]}else{24454}
+if($voicePort -gt 0){
+  $voiceOwner=Get-NetUDPEndpoint -LocalPort $voicePort -ErrorAction SilentlyContinue | Select-Object -First 1
+  if($voiceOwner){throw "El puerto de voz UDP $voicePort ya está ocupado por el PID $($voiceOwner.OwningProcess). Cierra el servidor de prueba o la otra instancia antes de iniciar TecniHardcore."}
+}
 $mutex=New-Object System.Threading.Mutex($false,('Local\TecniHardcore-Server-'+$serverPort))
 if(-not $mutex.WaitOne(0)){Write-Host "Ya se está iniciando el servidor en el puerto $serverPort.";$mutex.Dispose();exit 0}
 try {
+& (Join-Path $workspace 'playit/start-playit.ps1')
 $runtimeDirectory=Join-Path $workspace 'client/runtime'
-if(-not (Test-Path -LiteralPath $runtimeDirectory -PathType Container)){throw 'Abre el juego una vez desde el launcher para instalar Java 17.'}
 if(-not (Test-Path -LiteralPath (Join-Path $PSScriptRoot 'fabric-server-launch.jar') -PathType Leaf)){throw 'Falta server/fabric-server-launch.jar. Restaura los archivos del servidor.'}
-$javaCandidates=Get-ChildItem -LiteralPath $runtimeDirectory -Directory | ForEach-Object {Join-Path $_.FullName 'bin/java.exe'}
+$javaCandidates=if(Test-Path -LiteralPath $runtimeDirectory -PathType Container){Get-ChildItem -LiteralPath $runtimeDirectory -Directory | ForEach-Object {Join-Path $_.FullName 'bin/java.exe'}}else{@()}
 $javaPath=$javaCandidates | Where-Object {Test-Path -LiteralPath $_} | Select-Object -First 1
 $runtimeConfig=Join-Path $PSScriptRoot 'runtime-java.json'
 $requiredJava=17
@@ -42,14 +48,19 @@ if($MaxMemoryGB -eq 8){
   $memory=Get-CimInstance Win32_OperatingSystem
   if($memory.TotalVisibleMemorySize -lt 24GB/1KB -or $memory.FreePhysicalMemory -lt 12GB/1KB){throw 'No hay margen suficiente para asignar 8 GB con el cliente abierto. Usa 6 GB.'}
 }
+$failures=0
 while($true){
   # Reuse or reopen our linked agent before restarting Minecraft after a crash.
   & (Join-Path $workspace 'playit/start-playit.ps1')
   # Java writes normal diagnostics to stderr; PowerShell 5 must not abort on it.
   $ErrorActionPreference='Continue'
-  try { & $javaPath '-Xms2G' "-Xmx${MaxMemoryGB}G" '-Dtecni.allowTrialBoss=true' '-XX:+UseG1GC' '-XX:+ParallelRefProcEnabled' '-XX:MaxGCPauseMillis=200' '-jar' 'fabric-server-launch.jar' 'nogui';$result=$LASTEXITCODE }
+  try { & $javaPath '-Xms1G' "-Xmx${MaxMemoryGB}G" '-Dtecni.allowTrialBoss=true' '-XX:+UseG1GC' '-XX:+ParallelRefProcEnabled' '-XX:+UseStringDeduplication' '-XX:MaxGCPauseMillis=200' '-jar' 'fabric-server-launch.jar' 'nogui';$result=$LASTEXITCODE }
   finally {$ErrorActionPreference='Stop'}
   if($result -eq 0){Write-Host 'Apagado solicitado. No se reiniciará.';break}
+  $failures++
+  $bindError=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'logs/latest.log') -Tail 100 -ErrorAction SilentlyContinue | Select-String 'Address already in use|BindException' | Select-Object -Last 1
+  if($bindError){throw "El servidor no pudo ocupar un puerto ($bindError). Comprueba que no haya otra instancia o servidor de pruebas abierto."}
+  if($failures -ge 3){throw "El servidor falló tres veces seguidas (último código $result). Revisa server/logs/latest.log; no se seguirá reiniciando."}
   Write-Warning "Fallo del servidor (código $result). Reinicio en 10 segundos."
   Start-Sleep -Seconds 10
 }

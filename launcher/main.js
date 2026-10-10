@@ -165,6 +165,8 @@ ipcMain.handle('launch-game', async (event, options = {}) => {
     const endpoint = getConnection(process.resourcesPath);
     const java = await installation.ensureJava(root,options.javaPath,status);
     const installed = await installation.prepareClient(root, payload, status,endpoint);
+    try{await graphics.ensureOptionalShaders(root,path.join(payload,'optional-shaders.json'),status);}
+    catch(error){status('Shaders opcionales pendientes: '+error.message);}
     if(options.withoutShaders)await graphics.disableOnce(root);
     else if(preferences.data.graphicsPending){await graphics.apply(root,preferences.data.graphicsMode,payload,status);preferences.save({graphicsPending:false});}
     else if(graphics.PRESETS[preferences.data.graphicsMode]?.shader)await graphics.ensureShader(root,path.join(payload,'shaders-download.json'),status);

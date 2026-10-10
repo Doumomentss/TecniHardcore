@@ -8,6 +8,10 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(LivingEntity.class)
 public class LivingMixin {
+    @ModifyVariable(method="damage",at=@At("HEAD"),argsOnly=true,ordinal=0)
+    private float tecniDistanceDamage(float amount,DamageSource source) {
+        return DistanceDifficulty.damage(source,amount);
+    }
     @Inject(method="tryUseTotem",at=@At("HEAD"),cancellable=true)
     private void relic(DamageSource source, CallbackInfoReturnable<Boolean> ci) {
         if ((Object)this instanceof ServerPlayerEntity p) {

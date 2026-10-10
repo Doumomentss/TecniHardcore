@@ -141,6 +141,22 @@ async function prepareClient(root, payload, status, endpoint) {
   const workers=await Promise.allSettled(Array.from({length:4},downloadWorker));
   const failure=workers.find(worker=>worker.status==='rejected');if(failure)throw failure.reason;
   await sync('mods'); await sync('config'); await sync('resourcepacks');
+  // Keep the official client set reproducible. Personal additions are backed up, never deleted.
+  const shaderNames=new Set();
+  for(const catalog of ['shaders-download.json','optional-shaders.json']){
+    const file=path.join(payload,catalog);if(!fs.existsSync(file))continue;
+    const data=JSON.parse(await fsp.readFile(file,'utf8'));
+    for(const item of Array.isArray(data.files)?data.files:[data])if(item.name)shaderNames.add(item.name);
+  }
+  for(const [folder,allowed] of [['mods',shippedMods],['resourcepacks',new Set(await fsp.readdir(path.join(payload,'resourcepacks')))],['shaderpacks',shaderNames]]){
+    const directory=path.join(root,folder);if(!fs.existsSync(directory))continue;
+    for(const name of await fsp.readdir(directory)){
+      if(allowed.has(name)||(folder==='shaderpacks'&&name.endsWith('.txt')&&shaderNames.has(name.slice(0,-4))))continue;
+      const source=path.join(directory,name),backup=path.join(root,'backups',String(Date.now()),folder,name);
+      await fsp.mkdir(path.dirname(backup),{recursive:true});await fsp.rename(source,backup);
+      status(`Contenido ajeno al paquete guardado en respaldos: ${folder}/${name}`);
+    }
+  }
   for(const relative of Object.keys(old)) {
     if (!next[relative] && relative.startsWith('mods'+path.sep) && fs.existsSync(path.join(root,relative))) {
       const dest=path.join(root,'backups',String(Date.now()),relative);

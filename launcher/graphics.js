@@ -3,6 +3,7 @@ const PRESETS={
  vanilla:{distance:11,fancy:true,particles:0,mipmaps:4,entities:1,ao:true,clouds:'fancy'},
  optimized:{distance:10,fancy:false,particles:1,mipmaps:2,entities:.75,ao:true,clouds:'false'},
  'ultra-optimized':{distance:6,fancy:false,particles:2,mipmaps:0,entities:.5,ao:false,clouds:'false'},
+ 'juana-manso':{distance:4,fancy:false,particles:2,mipmaps:0,entities:.25,ao:false,clouds:'false'},
  quality:{distance:11,fancy:true,particles:0,mipmaps:4,entities:1,ao:true,clouds:'false',shader:'MEDIUM'},
  'ultra-quality':{distance:11,fancy:true,particles:0,mipmaps:4,entities:1,ao:true,clouds:'false',shader:'ULTRA'}
 };
@@ -11,7 +12,27 @@ function properties(text,patch){for(const[key,value]of Object.entries(patch)){co
 async function read(file,fallback=''){return fs.existsSync(file)?fsp.readFile(file,'utf8'):fallback;}
 async function write(file,text){await fsp.mkdir(path.dirname(file),{recursive:true});if(fs.existsSync(file)){const dest=path.join(path.dirname(file),'backups','graphics',Date.now()+'-'+path.basename(file));await fsp.mkdir(path.dirname(dest),{recursive:true});await fsp.copyFile(file,dest);}const tmp=file+'.graphics-tmp';await fsp.writeFile(tmp,text);await fsp.rename(tmp,file);}
 async function ensureShader(root,manifest,status,fetcher=fetch){const shader=JSON.parse(await fsp.readFile(manifest,'utf8')),dest=path.join(root,'shaderpacks',shader.name);const good=bytes=>bytes.length===shader.bytes&&crypto.createHash('sha256').update(bytes).digest('hex')===shader.sha256&&crypto.createHash('sha512').update(bytes).digest('hex')===shader.sha512;if(fs.existsSync(dest)&&good(await fsp.readFile(dest)))return {shader,file:dest};status('Descargando Complementary Reimagined desde Modrinth…');const response=await fetcher(shader.url,{signal:AbortSignal.timeout(180000)});if(!response.ok)throw Error('No se pudo descargar el shader. Reintenta o elige Optimizado.');const bytes=Buffer.from(await response.arrayBuffer());if(!good(bytes))throw Error('Falló la verificación del shader. Reintenta o elige Optimizado.');await fsp.mkdir(path.dirname(dest),{recursive:true});await fsp.writeFile(dest+'.tmp',bytes);await fsp.rename(dest+'.tmp',dest);return {shader,file:dest};}
+async function ensureOptionalShaders(root,manifest,status=()=>{},fetcher=fetch){
+ const entries=JSON.parse(await fsp.readFile(manifest,'utf8')).files;
+ if(!Array.isArray(entries))throw Error('Catálogo de shaders inválido.');
+ const installed=[];
+ for(const entry of entries){
+  if(!/^[A-Za-z0-9_.+() -]+\.zip$/.test(entry.name)||!entry.url?.startsWith('https://cdn.modrinth.com/data/')||!Number.isSafeInteger(entry.bytes)||!/^[a-f0-9]{64}$/.test(entry.sha256)||!/^[a-f0-9]{128}$/.test(entry.sha512))throw Error('Catálogo de shaders inválido.');
+  const dest=path.join(root,'shaderpacks',entry.name);
+  const good=bytes=>bytes.length===entry.bytes&&crypto.createHash('sha256').update(bytes).digest('hex')===entry.sha256&&crypto.createHash('sha512').update(bytes).digest('hex')===entry.sha512;
+  if(fs.existsSync(dest)&&good(await fsp.readFile(dest))){installed.push(entry.name);continue;}
+  status('Descargando shader opcional: '+entry.title+'…');
+  const response=await fetcher(entry.url,{signal:AbortSignal.timeout(180000)});
+  if(!response.ok)throw Error('No se pudo descargar '+entry.title+' desde Modrinth.');
+  const bytes=Buffer.from(await response.arrayBuffer());
+  if(!good(bytes))throw Error('La verificación de '+entry.title+' falló.');
+  await fsp.mkdir(path.dirname(dest),{recursive:true});
+  if(fs.existsSync(dest)){const backup=path.join(root,'backups',String(Date.now()),'shaderpacks',entry.name);await fsp.mkdir(path.dirname(backup),{recursive:true});await fsp.copyFile(dest,backup);}
+  const temp=dest+'.tecni-tmp';await fsp.writeFile(temp,bytes);await fsp.rename(temp,dest);installed.push(entry.name);
+ }
+ return installed;
+}
 async function apply(root,mode,payload,status=()=>{},fetcher=fetch){const preset=PRESETS[mode];if(!preset)throw Error('Perfil gráfico desconocido.');let shader;if(preset.shader)({shader}=await ensureShader(root,path.join(payload,'shaders-download.json'),status,fetcher));const options=path.join(root,'options.txt'),sodium=path.join(root,'config','sodium-options.json'),iris=path.join(root,'config','iris.properties');const existing=await read(options);let sodiumData;try{sodiumData=JSON.parse(await read(sodium,'{}'));}catch{throw Error('La configuración de Sodium está dañada. No se sobrescribió: usa Reparar.');}await write(options,lines(existing,{renderDistance:preset.distance,graphicsMode:preset.fancy?1:0,particles:preset.particles,mipmapLevels:preset.mipmaps,entityDistanceScaling:preset.entities,ao:preset.ao?2:0,renderClouds:preset.clouds}));sodiumData.quality={...sodiumData.quality,weather_quality:preset.fancy?'FANCY':'FAST',leaves_quality:preset.fancy?'FANCY':'FAST'};sodiumData.performance={...sodiumData.performance,animate_only_visible_textures:true,use_entity_culling:true,use_fog_occlusion:true,use_block_face_culling:true};await write(sodium,JSON.stringify(sodiumData,null,2));await write(iris,properties(await read(iris),{enableShaders:Boolean(preset.shader),...(shader?{shaderPack:shader.name}:{})}));if(shader){const prefs=properties(await read(path.join(root,'shaderpacks',shader.name+'.txt')),shader.profiles[preset.shader]);await write(path.join(root,'shaderpacks',shader.name+'.txt'),prefs);}return {mode,shader:shader?.name||null};}
 async function disableOnce(root){const file=path.join(root,'config','iris.properties');await write(file,properties(await read(file),{enableShaders:false}));}
 function shaderError(log){return /(?:ShaderCompileException|Shader compilation failed|Failed to compile (?:vertex|fragment|shader)|Couldn't compile shader|Failed to create shader rendering pipeline)/i.test(log);}
-module.exports={PRESETS,lines,properties,apply,ensureShader,disableOnce,shaderError};
+module.exports={PRESETS,lines,properties,apply,ensureShader,ensureOptionalShaders,disableOnce,shaderError};

@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.*;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
@@ -47,8 +48,10 @@ public final class Hardcore implements ModInitializer {
     private static Item item(String path) { return Registry.register(Registries.ITEM, id(path), new Item(new Item.Settings().maxCount(1).fireproof().rarity(Rarity.EPIC))); }
 
     @Override public void onInitialize() {
-        Sanctuaries.init(); RitualNetwork.init(); SanctuaryEffects.init(); SpawnProtection.init(); TotemBoard.init(); TrialBoss.init(); TrialShard.init(); TrialArena.init(); BossRoots.init(); RescueBeacon.init(); LibraryShutdown.init(); Expansion.init(); EventDirector.init(); Social.init(); CivicNpcs.init(); SecurityBridge.init(); Moderation.init();
-        for(String sound:new String[]{"boss.wake","boss.strike","boss.melee","boss.warning","boss.prison","boss.volley","boss.phase","boss.transform","boss.death","disaster.wind","disaster.wind_thunder","disaster.quake","disaster.rain","disaster.thunder","disaster.impact","disaster.alarm","disaster.storm"})Registry.register(Registries.SOUND_EVENT,id(sound),SoundEvent.of(id(sound)));
+        Sanctuaries.init(); RitualNetwork.init(); IntroServer.init(); WhitelistReload.init(); PhaseDay.init(); DistanceDifficulty.init(); SanctuaryEffects.init(); SpawnProtection.init(); TotemBoard.init(); TrialBoss.init(); TrialShard.init(); TrialArena.init(); BossRoots.init(); RescueBeacon.init(); LibraryShutdown.init(); Expansion.init(); EventDirector.init(); Social.init(); CivicNpcs.init(); SecurityBridge.init(); Moderation.init();
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> {entries.add(BRASA);entries.add(BASTION);entries.add(ECO);});
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {entries.add(SEAL_BRASA);entries.add(SEAL_BASTION);entries.add(SEAL_ECO);entries.add(HEART);entries.add(RescueBeacon.ITEM);});
+        for(String sound:new String[]{"intro.welcome","boss.wake","boss.strike","boss.melee","boss.warning","boss.prison","boss.volley","boss.phase","boss.transform","boss.death","disaster.wind","disaster.wind_thunder","disaster.quake","disaster.rain","disaster.thunder","disaster.impact","disaster.alarm","disaster.storm"})Registry.register(Registries.SOUND_EVENT,id(sound),SoundEvent.of(id(sound)));
         ServerLifecycleEvents.SERVER_STARTED.register(s -> {
             server = s;
             AuthBootstrap.start(s);
@@ -64,7 +67,7 @@ public final class Hardcore implements ModInitializer {
             s.getGameRules().get(GameRules.DO_IMMEDIATE_RESPAWN).set(true, s);
             publish();
             BackupService.start(s);
-            LOG.info("TecniHardcore 2.8.1: unlimited resurrections and Sanctuaries of Souls ready");
+            LOG.info("TecniHardcore 2.9.0: nueva temporada e introducción listas");
         });
         ServerLifecycleEvents.SERVER_STOPPING.register(s -> { if (souls != null) souls.save(); BackupService.stop(); });
         ServerPlayConnectionEvents.JOIN.register((h, sender, s) -> {
@@ -83,7 +86,7 @@ public final class Hardcore implements ModInitializer {
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
             if (entity instanceof ServerPlayerEntity player) {
                 SoulStore.Soul soul = soul(player);
-                soul.lives = Rules.afterDeath(soul.lives); soul.seen = System.currentTimeMillis();
+                if(!PhaseDay.grace())soul.lives = Rules.afterDeath(soul.lives); soul.seen = System.currentTimeMillis();
                 Rituals.cancelFor(player.getUuid());
                 souls.save(); send(player); publish();
                 LOG.info("Death: {} now has {} lives", player.getName().getString(), soul.lives);
@@ -104,7 +107,7 @@ public final class Hardcore implements ModInitializer {
             if (++ticks % 20 == 0) {
                 // Disconnecting an outdated client removes it from the live player list.
                 for (ServerPlayerEntity p : new ArrayList<>(s.getPlayerManager().getPlayerList())) {
-                    if(p.age>120&&!AuthBootstrap.serverBot(p)&&!RitualNetwork.compatible(p)){p.networkHandler.disconnect(Text.literal("Necesitas TecniHardcore 2.8.1. Cierra el juego y ejecuta el launcher actualizado para instalar el paquete."));continue;}
+                    if(p.age>120&&!AuthBootstrap.serverBot(p)&&!RitualNetwork.compatible(p)){p.networkHandler.disconnect(Text.literal("Necesitas TecniHardcore 2.9.0. Cierra el juego y ejecuta el launcher actualizado para instalar la nueva temporada."));continue;}
                     Rituals.finishRecovery(p);
                     if(soul(p).lives==0 && AuthBootstrap.authenticated(p) && !p.isSpectator())p.changeGameMode(GameMode.SPECTATOR);
                     soul(p).seen=System.currentTimeMillis();send(p);
@@ -156,7 +159,7 @@ public final class Hardcore implements ModInitializer {
     }
     public static void publish() {
         if (souls == null) return;
-        JsonObject root = new JsonObject(); root.addProperty("protocol",2); root.addProperty("maxLives",Rules.MAX_LIVES); root.addProperty("packVersion","2.8.1"); root.addProperty("updatedAt", System.currentTimeMillis());
+        JsonObject root = new JsonObject(); root.addProperty("protocol",2); root.addProperty("maxLives",Rules.MAX_LIVES); root.addProperty("packVersion","2.9.0"); root.addProperty("updatedAt", System.currentTimeMillis());
         JsonArray players = new JsonArray();
         souls.data.players.entrySet().stream().sorted(Comparator.comparingLong((Map.Entry<String,SoulStore.Soul> e) -> e.getValue().seen).reversed()).limit(128).forEach(e -> {
             JsonObject v=new JsonObject(); v.addProperty("name",e.getValue().name); v.addProperty("lives",e.getValue().lives); v.addProperty("resurrections",e.getValue().resurrections); v.addProperty("seenAt",e.getValue().seen); var online=server.getPlayerManager().getPlayer(java.util.UUID.fromString(e.getKey()));v.addProperty("online",online!=null&&AuthBootstrap.authenticated(online));players.add(v);

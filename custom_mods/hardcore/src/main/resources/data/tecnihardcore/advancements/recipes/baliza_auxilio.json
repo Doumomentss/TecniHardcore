@@ -1,0 +1,1 @@
+{"criteria":{"inventory":{"trigger":"minecraft:inventory_changed","conditions":{"items":[{"items":["minecraft:echo_shard"]}]}}},"rewards":{"recipes":["tecnihardcore:baliza_auxilio"]}}
