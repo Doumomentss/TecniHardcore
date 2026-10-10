@@ -5,8 +5,12 @@ Push-Location $root
 try {
   $version=(Get-Content launcher/package.json -Raw | ConvertFrom-Json).version
   if(-not $BuildOnly){
+    $previousErrorPreference=$ErrorActionPreference
+    $ErrorActionPreference='SilentlyContinue'
     gh release view "v$version" --repo Doumomentss/TecniHardcore --json tagName 2>$null | Out-Null
-    if($LASTEXITCODE -eq 0){throw "La versión $version ya está publicada. Incrementa package.json y package-lock.json antes de publicar otra."}
+    $releaseExists=($LASTEXITCODE -eq 0)
+    $ErrorActionPreference=$previousErrorPreference
+    if($releaseExists){throw "La versión $version ya está publicada. Incrementa package.json y package-lock.json antes de publicar otra."}
   }
   node --test launcher/test/updater.test.js
   if($LASTEXITCODE -ne 0){throw 'Updater tests failed'}

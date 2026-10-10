@@ -851,8 +851,8 @@
       },
       {
         "id": "tecnihardcore",
-        "version": "2.9.1",
-        "fingerprint": "431443cbaa36f29a5c75e2aa122c0e91321751be4470a61331d5a36238717bf5"
+        "version": "2.9.0",
+        "fingerprint": "56b3f307e5d8e46c0be9f6a1dcf81947b70f54bfca38d09a253dc8dba33a6b55"
       },
       {
         "id": "terrablender",
@@ -887,15 +887,6 @@
         "version": "2.6.24"
       },
       {
-        "id": "xaerolib",
-        "version": "1.7.3"
-      },
-      {
-        "id": "xaerominimap",
-        "version": "26.6.0",
-        "fingerprint": "996bd2784d1bf9653f1922fda2e7f15d3efbd0a9d88735b99ce9c667f8e4f1c0"
-      },
-      {
         "id": "yet_another_config_lib_v3",
         "version": "3.6.6+1.20.1-fabric",
         "fingerprint": "7a2389ca436ea8f7abee787d6373f9526deece5d06785f3623b7fe89bd9b31ac"
@@ -904,6 +895,11 @@
         "id": "yungsapi",
         "version": "1.20-Fabric-4.0.6",
         "fingerprint": "26b6dc81f876aabf3d53ead59e5908a8b0f5434d46c150cfd376c027ac54053e"
+      },
+      {
+        "id": "xaerominimap",
+        "version": "26.6.0",
+        "fingerprint": "996bd2784d1bf9653f1922fda2e7f15d3efbd0a9d88735b99ce9c667f8e4f1c0"
       }
     ]
   }

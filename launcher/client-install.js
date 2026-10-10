@@ -110,8 +110,11 @@ async function prepareClient(root, payload, status, endpoint) {
   status('Sincronizando el paquete completo de mods y el menú…');
   const shippedMods=new Set([...(await fsp.readdir(path.join(payload,'mods'))),...downloads.map(m=>m.name)]);
   const modsPath=path.join(root,'mods');
+  // These mods were part of older official releases. Always retire them during
+  // repair/update so stale installations cannot fail the server's client check.
+  const obsoleteOfficialMods=new Set(['bettercombat-fabric-1.9.0+1.20.1.jar']);
   if(fs.existsSync(modsPath))for(const name of await fsp.readdir(modsPath)){
-    if(/^tecnihardcore-\d+\.\d+\.\d+\.jar$/i.test(name)&&!shippedMods.has(name)){
+    if((/^tecnihardcore-\d+\.\d+\.\d+\.jar$/i.test(name)&&!shippedMods.has(name))||obsoleteOfficialMods.has(name.toLowerCase())){
       const backup=path.join(root,'backups',String(Date.now()),'mods',name);
       await fsp.mkdir(path.dirname(backup),{recursive:true});await fsp.rename(path.join(modsPath,name),backup);
     }
