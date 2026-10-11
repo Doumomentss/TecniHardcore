@@ -15,7 +15,7 @@ public final class SocialStore {
     public static final class Truce {public String expelled="",team="",name="";public Set<String> members=new HashSet<>();public int remaining=7200;public boolean notified;}
     public static final class Offer {public String id="",seller="",sellerName="",item="",state="open";public long price,created;}
     public static final class Parcel {public String id="",owner="",item="",reason="";}
-    public static final class Business {public int schema=1;public Map<String,Team> teams=new LinkedHashMap<>();public List<Truce> truces=new ArrayList<>();public Map<String,Long> wallets=new HashMap<>();public Map<String,Offer> offers=new LinkedHashMap<>();public Map<String,Parcel> parcels=new LinkedHashMap<>();public Map<String,Set<String>> quests=new HashMap<>();}
+    public static final class Business {public int schema=1;public Map<String,Team> teams=new LinkedHashMap<>();public List<Truce> truces=new ArrayList<>();public Map<String,Long> wallets=new HashMap<>();public Map<String,Offer> offers=new LinkedHashMap<>();public Map<String,Parcel> parcels=new LinkedHashMap<>();public Map<String,Set<String>> quests=new HashMap<>();public Map<String,Long> shopClaims=new HashMap<>();}
     public static final class Pending {public String player="",inventory="",business="",reason="";}
     private static final class FileData {Business data=new Business();Pending pending;}
     public Business data;private Pending pending;private final MinecraftServer server;private final Path file;
