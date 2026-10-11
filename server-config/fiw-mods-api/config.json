@@ -852,7 +852,7 @@
       {
         "id": "tecnihardcore",
         "version": "2.9.2",
-        "fingerprint": "52f83e2054fd1cf1294feb00b375b371206eec564908e47f42c359aedbfe8c49"
+        "fingerprint": "191e8084d4f8aeba6ce2be2b9ac45a212bc495e640b2c1fe65722d8b6d97f78f"
       },
       {
         "id": "terrablender",
@@ -908,7 +908,3 @@
     ]
   }
 }
-
-
-
-
