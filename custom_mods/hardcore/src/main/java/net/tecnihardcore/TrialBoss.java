@@ -60,7 +60,7 @@ public final class TrialBoss extends HostileEntity implements GeoEntity {
  @Override protected void initDataTracker(){super.initDataTracker();dataTracker.startTracking(ATTACK,0);dataTracker.startTracking(AGE,0);dataTracker.startTracking(PHASE,1);dataTracker.startTracking(TRANSITION,0);dataTracker.startTracking(AIM,0F);dataTracker.startTracking(MELEE,0);dataTracker.startTracking(DYING,0);}
  public int dying(){return dataTracker.get(DYING);}
  public int attack(){return dataTracker.get(ATTACK);}public int attackAge(){return dataTracker.get(AGE);}public int phase(){return dataTracker.get(PHASE);}public float aim(){return dataTracker.get(AIM);}public int transition(){return dataTracker.get(TRANSITION);}
- public static boolean arena(ServerPlayerEntity p){if(!enabled()||SpawnProtection.inside(p.getWorld(),p.getBlockPos()))return false;return !p.getServerWorld().getEntitiesByClass(TrialBoss.class,p.getBoundingBox().expand(48),b->b.isAlive()&&b.fighting&&b.squaredDistanceTo(p)<=48*48).isEmpty();}
+ public static boolean arena(ServerPlayerEntity p){if(!enabled()||SpawnProtection.inside(p.getWorld(),p.getBlockPos())||!BossDungeons.inside(p))return false;return !p.getServerWorld().getEntitiesByClass(TrialBoss.class,p.getBoundingBox().expand(48),b->b.isAlive()&&b.fighting&&b.squaredDistanceTo(p)<=48*48).isEmpty();}
  private List<ServerPlayerEntity> fighters(){return ((ServerWorld)getWorld()).getPlayers(p->p.isAlive()&&!p.isCreative()&&!p.isSpectator()&&AuthBootstrap.authenticated(p)&&!SpawnProtection.inside(p.getWorld(),p.getBlockPos())&&p.squaredDistanceTo(this)<=48*48);}
  @Override public void tick(){
   super.tick();if(getWorld().isClient)return;if(!enabled()){discard();return;}if(isDead())return;

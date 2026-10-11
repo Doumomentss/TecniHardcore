@@ -76,6 +76,7 @@ public final class BossDungeons {
         Arrays.sort(heights);return MathHelper.clamp((heights[3]+heights[4])/2,62,180);
     }
     private static void tick(MinecraftServer s){
+        if(s.getTicks()%20==0&&state!=null&&state.built.size()==3){for(Arena a:ARENAS){int y=state.y.getOrDefault(a.id,96);var w=s.getOverworld();var bosses=w.getEntitiesByClass(TrialBoss.class,new Box(a.center(y)).expand(70),b->b.isAlive());for(int i=1;i<bosses.size();i++)bosses.get(i).discard();for(var e:w.getOtherEntities(null,new Box(a.center(y)).expand(46),e->!(e instanceof ServerPlayerEntity)&&!(e instanceof TrialBoss))){e.discard();}}}
         if(!BUILD.isEmpty()){
             for(int i=0;i<5000&&!BUILD.isEmpty();i++){Job j=BUILD.removeFirst();j.world.getChunk(j.pos);j.world.setBlockState(j.pos,j.block,2);}
             if(BUILD.isEmpty()){
@@ -114,6 +115,7 @@ public final class BossDungeons {
     private static int teleport(ServerPlayerEntity p,Arena a){int y=state.y.getOrDefault(a.id,96);p.teleport(server.getOverworld(),a.x+.5,y+3,a.z+31.5,180,0);return 1;}
     private static String format(long ms){long total=ms/1000;return String.format("%02d:%02d:%02d",total/3600,total/60%60,total%60);}
     private static boolean protectedAt(World w,BlockPos p){if(!(w instanceof ServerWorld)||w.getRegistryKey()!=World.OVERWORLD||state==null)return false;for(Arena a:ARENAS){long dx=p.getX()-a.x,dz=p.getZ()-a.z;if(dx*dx+dz*dz<=46L*46&&p.getY()>=state.y.getOrDefault(a.id,96)-3&&p.getY()<=state.y.getOrDefault(a.id,96)+26)return true;}return false;}
+    static boolean inside(ServerPlayerEntity p){if(state==null||p.getWorld().getRegistryKey()!=World.OVERWORLD)return false;for(Arena a:ARENAS){int y=state.y.getOrDefault(a.id,96);long dx=Math.round(p.getX())-a.x,dz=Math.round(p.getZ())-a.z;if(dx*dx+dz*dz<=42L*42&&p.getY()>=y-2&&p.getY()<=Math.min(y+18,84))return true;}return false;}
     private static void put(ServerWorld w,BlockPos p,Block block){BUILD.addLast(new Job(w,p,block.getDefaultState()));}
     private static void queue(ServerWorld w,Arena a,int y){
         BlockPos c=a.center(y);int r=45;
