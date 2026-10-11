@@ -3,7 +3,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 class AuthRulesTest {
     @Test void invalidRegistrationExplainsExactFailure() {
-        assertTrue(AuthRules.registrationError(new String[]{"register","12345678","12345678"}).contains("8 caracteres"));
+        assertNull(AuthRules.registrationError(new String[]{"register","1","1"}));
         assertTrue(AuthRules.registrationError(new String[]{"register","abcdefghijkl","mnopqrstuvwx"}).contains("no coinciden"));
         assertTrue(AuthRules.registrationError(new String[]{"register","a".repeat(129),"a".repeat(129)}).contains("máximo de 128"));
         assertTrue(AuthRules.registrationError(new String[]{"register","abcdefghijkl"}).contains("Formato incorrecto"));

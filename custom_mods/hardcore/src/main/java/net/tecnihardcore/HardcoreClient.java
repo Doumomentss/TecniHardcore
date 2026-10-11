@@ -15,8 +15,8 @@ public final class HardcoreClient implements ClientModInitializer {
     private static long ready;
     private static boolean arena;
     public void onInitializeClient() {
-        ModerationClient.init(); IntroCinema.init();
-        ClientLoginNetworking.registerGlobalReceiver(RitualNetwork.HELLO,(c,h,b,listener)->{int protocol=b.readVarInt();var response=net.fabricmc.fabric.api.networking.v1.PacketByteBufs.create();response.writeVarInt(protocol==14?14:0);return java.util.concurrent.CompletableFuture.completedFuture(response);});
+        ModerationClient.init(); IntroCinema.init(); HudSettings.init();
+        ClientLoginNetworking.registerGlobalReceiver(RitualNetwork.HELLO,(c,h,b,listener)->{int protocol=b.readVarInt();var response=net.fabricmc.fabric.api.networking.v1.PacketByteBufs.create();response.writeVarInt(protocol==15?15:0);return java.util.concurrent.CompletableFuture.completedFuture(response);});
         net.minecraft.client.render.block.entity.BlockEntityRendererFactories.register(Sanctuaries.ENTITY,SanctuaryRenderer::new);
         RitualVisuals.init(); BossVisuals.init(); RescueHud.init(); ExpansionClient.init(); CivicScreen.initNetwork();
         net.minecraft.client.render.block.entity.BlockEntityRendererFactories.register(TotemBoard.ENTITY,TotemBoardRenderer::new);
@@ -33,10 +33,11 @@ public final class HardcoreClient implements ClientModInitializer {
         ClientPlayConnectionEvents.DISCONNECT.register((handler,client)->{lives=-1;ready=0;});
         HudRenderCallback.EVENT.register((draw,delta)->{
             MinecraftClient c=MinecraftClient.getInstance(); if(lives<0||c.player==null||c.options.hudHidden)return;
-            int x=12,y=12; RenderSystem.enableBlend();
+            int panel=220,x=HudSettings.x(draw.getScaledWindowWidth(),panel),y=HudSettings.y(draw.getScaledWindowHeight());
+            int heartsX=x+(panel-Rules.MAX_LIVES*22)/2; RenderSystem.enableBlend();
             for(int i=0;i<Rules.MAX_LIVES;i++) {
                 draw.setShaderColor(i<lives?1:.25F,i<lives?1:.25F,i<lives?1:.25F,1);
-                draw.drawTexture(new Identifier("tecnihardcore","textures/gui/heart.png"),x+i*22,y,0,0,20,20,20,20);
+                draw.drawTexture(new Identifier("tecnihardcore","textures/gui/heart.png"),heartsX+i*22,y,0,0,20,20,20,20);
             }
             draw.setShaderColor(1,1,1,1);
             draw.drawTextWithShadow(c.textRenderer,lives==0?"ELIMINADO":lives+" / 5 vidas",x,y+23,lives==1?0xff7755:0xf4d59b);

@@ -7,8 +7,12 @@ import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.text.Text;
+import net.minecraft.scoreboard.Scoreboard;
+import net.minecraft.scoreboard.Team;
+import net.minecraft.util.Formatting;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import java.util.*;
 import static net.minecraft.server.command.CommandManager.*;
@@ -19,16 +23,18 @@ public final class Social {
     private static final Map<String,Invite> invites=new HashMap<>();
     private static final Set<String> privateChat=new HashSet<>();
     private static final Map<String,Integer> lastChat=new HashMap<>();
+    private static final Map<UUID,String> tagAssignments=new HashMap<>();
+    private static final Formatting[] TEAM_COLORS={Formatting.AQUA,Formatting.GOLD,Formatting.GREEN,Formatting.LIGHT_PURPLE,Formatting.YELLOW,Formatting.BLUE,Formatting.DARK_AQUA,Formatting.DARK_GREEN};
     public static SocialStore.Team team(String player){if(store==null)return null;return store.data.teams.values().stream().filter(t->t.members.contains(player)).findFirst().orElse(null);}
     static String teamId(String player){var t=team(player);return t==null?"":t.id;}
     public static void init(){
         ServerLifecycleEvents.SERVER_STARTED.register(s->store=new SocialStore(s));
         ServerLifecycleEvents.SERVER_STOPPING.register(s->{if(store!=null)store.save();});
-        ServerLifecycleEvents.SERVER_STOPPED.register(s->{store=null;invites.clear();privateChat.clear();lastChat.clear();});
+        ServerLifecycleEvents.SERVER_STOPPED.register(s->{store=null;invites.clear();privateChat.clear();lastChat.clear();tagAssignments.clear();});
         ServerPlayConnectionEvents.DISCONNECT.register((h,s)->s.execute(()->{privateChat.remove(h.player.getUuidAsString());lastChat.remove(h.player.getUuidAsString());if(store!=null)store.save();}));
-        ServerTickEvents.END_SERVER_TICK.register(s->{if(store==null||s.getTicks()%20!=0)return;boolean changed=false;for(var t:store.data.truces){var p=s.getPlayerManager().getPlayer(UUID.fromString(t.expelled));boolean online=p!=null&&AuthBootstrap.authenticated(p);if(online&&!t.notified){say(p,"Has salido o sido expulsado de "+t.name+". Protección mutua: "+((t.remaining+59)/60)+" minutos de conexión. Se pausa al salir.");t.notified=true;changed=true;}if(online&&t.remaining>0){t.remaining=SocialRules.remaining(t.remaining,true);if(t.remaining==0){say(p,"Terminó la protección tras tu salida de "+t.name+".");changed=true;}}}if(store.data.truces.removeIf(t->t.remaining<=0))changed=true;if(changed||s.getTicks()%1200==0)store.save();invites.values().removeIf(i->i.expires<System.currentTimeMillis());});
+        ServerTickEvents.END_SERVER_TICK.register(s->{if(store==null||s.getTicks()%20!=0)return;syncNameTags(s);boolean changed=false;for(var t:store.data.truces){var p=s.getPlayerManager().getPlayer(UUID.fromString(t.expelled));boolean online=p!=null&&AuthBootstrap.authenticated(p);if(online&&!t.notified){say(p,"Has salido o sido expulsado de "+t.name+". Protección mutua: "+((t.remaining+59)/60)+" minutos de conexión. Se pausa al salir.");t.notified=true;changed=true;}if(online&&t.remaining>0){t.remaining=SocialRules.remaining(t.remaining,true);if(t.remaining==0){say(p,"Terminó la protección tras tu salida de "+t.name+".");changed=true;}}}if(store.data.truces.removeIf(t->t.remaining<=0))changed=true;if(changed||s.getTicks()%1200==0)store.save();invites.values().removeIf(i->i.expires<System.currentTimeMillis());});
         ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity,source,damage)->{if(!(entity instanceof ServerPlayerEntity victim)||store==null)return true;var attacker=source.getAttacker();String aggressor=attacker instanceof ServerPlayerEntity p?p.getUuidAsString():attacker instanceof TameableEntity pet&&pet.getOwnerUuid()!=null?pet.getOwnerUuid().toString():"";return aggressor.isEmpty()||!SocialRules.protectedPair(aggressor,victim.getUuidAsString(),teamId(aggressor),teamId(victim.getUuidAsString()),store.data.truces);});
-        ServerMessageEvents.ALLOW_CHAT_MESSAGE.register((message,sender,parameters)->{if(!AuthBootstrap.authenticated(sender))return false;String id=sender.getUuidAsString();if(!privateChat.contains(id))return true;var t=team(id);if(t==null){privateChat.remove(id);say(sender,"Ya no pertenecés a un equipo. Chat general activado; vuelve a enviar el mensaje.");return false;}int tick=sender.getServer().getTicks();if(tick-lastChat.getOrDefault(id,-100)<5){say(sender,"Espera un momento antes de enviar otro mensaje.");return false;}lastChat.put(id,tick);Text text=Text.literal("§b[EQUIPO · "+t.name+"] §f"+sender.getName().getString()+": "+message.getContent().getString());for(String member:t.members){var p=sender.getServer().getPlayerManager().getPlayer(UUID.fromString(member));if(p!=null&&AuthBootstrap.authenticated(p))p.sendMessage(text,false);}return false;});
+        ServerMessageEvents.ALLOW_CHAT_MESSAGE.register((message,sender,parameters)->{if(!AuthBootstrap.authenticated(sender))return false;String id=sender.getUuidAsString();var t=team(id);if(!privateChat.contains(id)){if(t==null)return true;sender.getServer().getPlayerManager().broadcast(chatLine(t,sender,message.getContent().getString(),false),false);return false;}if(t==null){privateChat.remove(id);say(sender,"Ya no pertenecés a un equipo. Chat general activado; vuelve a enviar el mensaje.");return false;}int tick=sender.getServer().getTicks();if(tick-lastChat.getOrDefault(id,-100)<5){say(sender,"Espera un momento antes de enviar otro mensaje.");return false;}lastChat.put(id,tick);Text text=chatLine(t,sender,message.getContent().getString(),true);for(String member:t.members){var p=sender.getServer().getPlayerManager().getPlayer(UUID.fromString(member));if(p!=null&&AuthBootstrap.authenticated(p))p.sendMessage(text,false);}return false;});
         CommandRegistrationCallback.EVENT.register((d,r,e)->{
             // Preserve vanilla administration, then replace its OP-only /team root.
             var vanilla=d.getRoot().getChild("team");if(vanilla!=null){var alias=literal("vanillateam").requires(s->s.hasPermissionLevel(2));for(var child:vanilla.getChildren())alias.then(child);d.register(alias);try{for(String field:new String[]{"children","literals","arguments"}){var f=com.mojang.brigadier.tree.CommandNode.class.getDeclaredField(field);f.setAccessible(true);((Map<?,?>)f.get(d.getRoot())).remove("team");}}catch(Exception error){throw new IllegalStateException("Cannot register player team commands",error);}}
@@ -45,6 +51,22 @@ public final class Social {
     }
     static boolean ready(ServerPlayerEntity p){if(store==null||!AuthBootstrap.authenticated(p)){say(p,"Primero debes autenticarte con /login o /register.");return false;}return true;}
     public static void say(ServerPlayerEntity p,String text){p.sendMessage(Text.literal("§6§l[TECNI] §r§f"+text),false);}
+    private static Formatting teamColor(SocialStore.Team team){return TEAM_COLORS[Math.floorMod(team.id.hashCode(),TEAM_COLORS.length)];}
+    private static Text teamPrefix(SocialStore.Team team){return Text.literal("["+team.name+"] ").formatted(teamColor(team),Formatting.BOLD);}
+    private static Text chatLine(SocialStore.Team team,ServerPlayerEntity sender,String message,boolean privateChannel){return Text.empty().append(privateChannel?Text.literal("[EQUIPO] ").formatted(Formatting.AQUA,Formatting.BOLD):Text.empty()).append(teamPrefix(team)).append(Text.literal(sender.getName().getString()).formatted(Formatting.WHITE)).append(Text.literal(": "+message).formatted(Formatting.WHITE));}
+    private static String scoreboardTeam(SocialStore.Team team){return "th_"+team.id.replace("-","").substring(0,12);}
+    private static void syncNameTags(MinecraftServer server){
+        Scoreboard board=server.getScoreboard();Set<UUID> online=new HashSet<>();
+        for(var player:server.getPlayerManager().getPlayerList()){
+            UUID uuid=player.getUuid();online.add(uuid);SocialStore.Team social=AuthBootstrap.authenticated(player)?team(player.getUuidAsString()):null;String desired=social==null?"":scoreboardTeam(social);
+            Team current=board.getPlayerTeam(player.getGameProfile().getName());
+            if(desired.equals(tagAssignments.get(uuid))&&((desired.isEmpty()&&current==null)||(current!=null&&current.getName().equals(desired))))continue;
+            board.clearPlayerTeam(player.getGameProfile().getName());
+            if(social!=null){Team vanilla=board.getTeam(desired);if(vanilla==null)vanilla=board.addTeam(desired);vanilla.setPrefix(teamPrefix(social));vanilla.setColor(teamColor(social));board.addPlayerToTeam(player.getGameProfile().getName(),vanilla);}
+            tagAssignments.put(uuid,desired);
+        }
+        tagAssignments.keySet().removeIf(uuid->!online.contains(uuid));
+    }
     static int channel(ServerPlayerEntity p,boolean team){if(!ready(p))return 0;if(team&&team(p.getUuidAsString())==null){say(p,"No pertenecés a un equipo. Usa /team crear Nombre.");return 0;}if(team)privateChat.add(p.getUuidAsString());else privateChat.remove(p.getUuidAsString());say(p,team?"Chat privado del equipo ACTIVADO. /chat vuelve al general.":"Chat GENERAL activado.");return 1;}
     static int toggle(ServerPlayerEntity p){return channel(p,!privateChat.contains(p.getUuidAsString()));}
     static int create(ServerPlayerEntity p,String name){if(!ready(p))return 0;if(!SocialRules.teamName(name)||team(p.getUuidAsString())!=null||store.data.teams.values().stream().anyMatch(t->t.name.equalsIgnoreCase(name))){say(p,"Nombre ocupado o inválido (3–20 letras, números o _), o ya pertenecés a un equipo.");return 0;}var b=store.copy();var t=new SocialStore.Team();t.id=UUID.randomUUID().toString();t.name=name;t.owner=p.getUuidAsString();t.members.add(t.owner);b.teams.put(t.id,t);store.commit(b,"create team "+t.id);say(p,"Equipo "+name+" creado. /team invitar Nombre · /team activa el chat privado.");return 1;}

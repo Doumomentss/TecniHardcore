@@ -34,10 +34,10 @@ public final class AuthBootstrap {
         EasyAuth.extendedConfig.skipAllAuthChecks=false;
         EasyAuth.extendedConfig.preventOfflinePlayersWithOnlineUsernames=false;
         EasyAuth.extendedConfig.allowCommands=false; EasyAuth.extendedConfig.playerInvulnerable=true;
-        EasyAuth.extendedConfig.minPasswordLength=12;
+        EasyAuth.extendedConfig.minPasswordLength=1;
         EasyAuth.extendedConfig.maxPasswordLength=128;
-        EasyAuth.langConfig.loginRequired=new xyz.nikitacartes.easyauth.config.LangConfigV1.TranslatableText("tecnihardcore.auth.login_required","Primera vez: /register CLAVE CLAVE (mínimo 12 caracteres). Si ya te registraste: /login CLAVE.",true,false);
-        EasyAuth.langConfig.registerRequired=new xyz.nikitacartes.easyauth.config.LangConfigV1.TranslatableText("tecnihardcore.auth.register_required","Regístrate con /register CLAVE CLAVE. Usa entre 12 y 128 caracteres y repite la misma contraseña.",true,false);
+        EasyAuth.langConfig.loginRequired=new xyz.nikitacartes.easyauth.config.LangConfigV1.TranslatableText("tecnihardcore.auth.login_required","━━ TECNI LOGIN ━━ Primera vez: /register CLAVE CLAVE. Si ya te registraste: /login CLAVE.",true,false);
+        EasyAuth.langConfig.registerRequired=new xyz.nikitacartes.easyauth.config.LangConfigV1.TranslatableText("tecnihardcore.auth.register_required","━━ TECNI REGISTRO ━━ Usa /register CLAVE CLAVE y repite exactamente la misma contraseña.",true,false);
         EasyAuth.saveConfigs();
         pendingFile=s.getRunDirectory().toPath().resolve("config/tecnihardcore/pending-claims.json");
         try {
@@ -87,7 +87,7 @@ public final class AuthBootstrap {
         if(!enabled())return false;
         String[] args=command.trim().split("\\s+");
         String action=args[0].substring(args[0].lastIndexOf(':')+1);
-        if(action.equals("activar")) {p.sendMessage(Text.literal("Usa /register CLAVE CLAVE la primera vez y /login CLAVE al volver a entrar."),false);return true;}
+        if(action.equals("activar")) {p.sendMessage(Text.literal("§6§l[TECNI LOGIN] §r§eUsa /register CLAVE CLAVE la primera vez y /login CLAVE al volver a entrar."),false);return true;}
         if(!action.equals("register") && !action.equals("reg"))return false;
         String name=p.getGameProfile().getName().toLowerCase(Locale.ROOT);
         if(!pending.containsKey(name))return false;
@@ -109,7 +109,7 @@ public final class AuthBootstrap {
             if(!entry.password.equals(EasyAuth.DB.getUserData(p.getGameProfile().getName()).password))throw new IllegalStateException("Account update failed verification");
             auth.easyAuth$setPlayerEntryV1(entry);
             pending.remove(name);savePending();
-            p.sendMessage(Text.literal("Registro completado. Ahora usa /login CLAVE."),false);
+            p.sendMessage(Text.literal("§6§l[TECNI LOGIN] §r§aRegistro completado. Ahora usa /login CLAVE."),false);
             Hardcore.LOG.info("Existing account registered locally: {}",p.getUuid());
         }catch(Exception e){Hardcore.LOG.error("Account registration failed for {}",p.getUuid());p.networkHandler.disconnect(Text.literal("No se pudo registrar la cuenta. Contacta al administrador."));}
         return true;
@@ -127,6 +127,6 @@ public final class AuthBootstrap {
             return;
         }
         if(enabled() && pending.containsKey(p.getGameProfile().getName().toLowerCase(Locale.ROOT)))
-            p.sendMessage(Text.literal("Registra tu cuenta con /register CLAVE CLAVE y entra con /login CLAVE. El primer registro de tu identidad requiere conexión local."),false);
+            p.sendMessage(Text.literal("§6§l[TECNI LOGIN] §r§eRegistra tu cuenta con /register CLAVE CLAVE y entra con /login CLAVE. El primer registro de tu identidad requiere conexión local."),false);
     }
 }

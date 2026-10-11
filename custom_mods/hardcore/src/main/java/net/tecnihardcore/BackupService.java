@@ -7,6 +7,7 @@ import java.util.zip.*;
 
 public final class BackupService {
     private static long next;
+    private static volatile boolean running;
     public static void start(MinecraftServer s) {
         next=System.currentTimeMillis()+6*60*60*1000L;
         Path folder=s.getRunDirectory().toPath().resolve("backups/tecnihardcore");
@@ -18,12 +19,19 @@ public final class BackupService {
     public static void stop() { next=Long.MAX_VALUE; }
     public static void tick(MinecraftServer s) { if(System.currentTimeMillis()>=next) { next=System.currentTimeMillis()+6*60*60*1000L; backup(s); } }
     public static void backup(MinecraftServer s) {
-        // Runs on the server thread: flush, then freeze ticks for a consistent snapshot.
+        if(running){Hardcore.LOG.info("Backup already running; duplicate request ignored");return;}
+        // Flush on the server thread, then compress off-thread so a large world cannot trip the watchdog.
         Path world=s.getSavePath(WorldSavePath.ROOT).toAbsolutePath().normalize();
         Path folder=s.getRunDirectory().toPath().toAbsolutePath().resolve("backups/tecnihardcore");
         long start=System.currentTimeMillis();
         try {
             Hardcore.souls.save(); s.getPlayerManager().saveAllPlayerData(); s.save(false,true,true); Files.createDirectories(folder);
+            running=true;
+            java.util.concurrent.CompletableFuture.runAsync(()->compress(world,folder,start));
+        } catch(Exception e) { next=System.currentTimeMillis()+5*60*1000L;running=false;Hardcore.LOG.error("Backup could not start; previous snapshots retained",e); }
+    }
+    private static void compress(Path world,Path folder,long start) {
+        try {
             Path archive=folder.resolve("world-"+start+".zip"), tmp=folder.resolve("world-"+start+".partial");
             try(ZipOutputStream out=new ZipOutputStream(Files.newOutputStream(tmp));var paths=Files.walk(world)) {
                 for(Path file:paths.filter(Files::isRegularFile).toList()) {
@@ -43,5 +51,6 @@ public final class BackupService {
             try(var list=Files.list(folder)) { for(Path old:list.filter(p->p.getFileName().toString().matches("world-[0-9]+\\.zip")).sorted(Comparator.reverseOrder()).skip(7).toList()) Files.delete(old); }
             Hardcore.LOG.info("Consistent backup {} completed in {} ms",archive,System.currentTimeMillis()-start);
         } catch(Exception e) { next=System.currentTimeMillis()+5*60*1000L;Hardcore.LOG.error("Backup failed; previous snapshots retained",e); }
+        finally {running=false;}
     }
 }

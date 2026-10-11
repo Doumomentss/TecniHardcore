@@ -11,10 +11,10 @@ public final class RitualNetwork {
     private record Offer(BlockPos altar,UUID nonce,long expires){}
     private static final Map<UUID,Offer> offers=new HashMap<>();
     public static void init() {
-        ServerLoginConnectionEvents.QUERY_START.register((h,s,sender,sync)->{var b=PacketByteBufs.create();b.writeVarInt(14);sender.sendPacket(HELLO,b);});
+        ServerLoginConnectionEvents.QUERY_START.register((h,s,sender,sync)->{var b=PacketByteBufs.create();b.writeVarInt(15);sender.sendPacket(HELLO,b);});
         ServerLoginNetworking.registerGlobalReceiver(HELLO,(s,h,understood,b,sync,sender)->{
             boolean valid=false;try{valid=understood&&b!=null&&b.isReadable()&&b.readVarInt()==14;}catch(Exception ignored){}
-            if(!valid)h.disconnect(Text.literal("Actualiza a TecniHardcore 2.9.1. Cierra Minecraft y abre el launcher actualizado para entrar."));
+            if(!valid)h.disconnect(Text.literal("Hay una actualización de TecniHardcore. Cierra Minecraft y abre el launcher actualizado para entrar."));
         });
         ServerPlayNetworking.registerGlobalReceiver(SELECT,(s,p,h,b,r)->{
             BlockPos altar=b.readBlockPos();UUID nonce=b.readUuid(),target=b.readUuid();s.execute(()->{
@@ -29,7 +29,7 @@ public final class RitualNetwork {
     public static void forget(UUID id){offers.remove(id);}
     public static void open(ServerPlayerEntity p,BlockPos altar) {
         if(!AuthBootstrap.authenticated(p)||!Rituals.near(p,altar)||!p.getWorld().getBlockState(altar).isOf(Sanctuaries.CORE))return;
-        if(!compatible(p)){p.sendMessage(Text.literal("Actualiza tu launcher al paquete TecniHardcore 2.9.1 para usar el santuario."),false);return;}
+        if(!compatible(p)){p.sendMessage(Text.literal("Hay una actualización de TecniHardcore. Cierra Minecraft y abre el launcher actualizado."),false);return;}
         Offer previous=offers.get(p.getUuid());if(previous!=null&&previous.expires-p.getServer().getTicks()>190)return;
         UUID nonce=UUID.randomUUID();offers.put(p.getUuid(),new Offer(altar,nonce,p.getServer().getTicks()+200));
         String problem=Rituals.casterProblem(p,altar);
