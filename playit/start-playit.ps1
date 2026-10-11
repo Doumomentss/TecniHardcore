@@ -1,28 +1,14 @@
 $ErrorActionPreference='Stop'
-$agentPath=Join-Path $PSScriptRoot 'playit.exe'
-$secretPath=Join-Path $PSScriptRoot 'playit-secret.json'
-$socketPath='\\.\pipe\tecnihardcore-playitd'
-if(-not (Test-Path -LiteralPath $agentPath -PathType Leaf)){throw 'Falta playit/playit.exe. Restaura el agente antes de iniciar el tunel.'}
-if(-not (Test-Path -LiteralPath $secretPath -PathType Leaf)){throw 'Falta la vinculacion de Playit (playit-secret.json). No crees otro tunel: restaura su configuracion.'}
-$agentMutex=New-Object System.Threading.Mutex($false,'Local\TecniHardcore-Playit')
-$agentLock=$false
-try {
-  $agentLock=$agentMutex.WaitOne(10000)
-  if(-not $agentLock){throw 'Otro proceso esta iniciando Playit. Espera unos segundos y vuelve a intentar.'}
-  $agent=Get-CimInstance Win32_Process | Where-Object {
-    $_.Name -eq 'playit.exe' -and $_.ExecutablePath -eq $agentPath -and
-    $_.CommandLine -like ('*--secret-path*'+$secretPath+'*') -and
-    $_.CommandLine -like ('*--socket-path*'+$socketPath+'*')
-  } | Select-Object -First 1
-  if($agent){Write-Host "Playit ya esta abierto (PID $($agent.ProcessId)); se reutiliza el agente vinculado.";return}
-  $agentProcess=Start-Process -FilePath $agentPath -ArgumentList @(
-    '--socket-path',$socketPath,'--secret-path',('"'+$secretPath+'"'),
-    '--log-path',('"'+(Join-Path $PSScriptRoot 'tecni-daemon.log')+'"')
-  ) -WindowStyle Hidden -PassThru
+$cli='D:\playlit\bin\playit.exe'
+$config='C:\ProgramData\playit_gg\playit.toml'
+if(-not (Test-Path -LiteralPath $cli -PathType Leaf)){throw 'Falta Playit 1.0.10 en D:\playlit. Reinstálalo antes de iniciar el servidor.'}
+if(-not (Test-Path -LiteralPath $config -PathType Leaf)){throw 'Playit no está vinculado. Ejecuta playit setup antes de iniciar el servidor.'}
+$status=& $cli status 2>&1 | Out-String
+if($status -notmatch 'Secret configured:\s+true'){throw "Playit existe pero no tiene una cuenta vinculada.`n$status"}
+if($status -match 'Phase:\s+(stopped|waiting for secret)'){
+  & $cli start | Out-Null
   Start-Sleep -Seconds 1
-  if($agentProcess.HasExited){throw "Playit no pudo mantenerse abierto (codigo $($agentProcess.ExitCode)). Revisa playit/tecni-daemon.log localmente; no compartas el archivo secreto."}
-  Write-Host "Playit iniciado en segundo plano (PID $($agentProcess.Id))."
-} finally {
-  if($agentLock){$agentMutex.ReleaseMutex()}
-  $agentMutex.Dispose()
+  $status=& $cli status 2>&1 | Out-String
 }
+if($status -notmatch 'Phase:\s+(starting|running|connected)'){throw "Playit no pudo iniciar correctamente.`n$status"}
+Write-Host 'Playit 1.0.10 activo; se reutiliza el agente vinculado.'
