@@ -1,0 +1,5 @@
+014a0ec93e40284044ba8a3b8b31e6f62e0ee6fb131fe600ad2e011dfba9daca  TecniHardcore-Setup-2.9.8.exe
+025d2acf3cdfcea1976de1b715450be7b052c63e8ccaebc5c35df6d6dcca0118  tecnihardcore-2.9.2.jar
+608b9108f7e69652449599e523318a0d568df5c609d9f54c29787ea3cdd933f5  tecni-death-overlay-1.0.0.jar
+32718d77e7dc19f77129f41560cf20d4afdc9daf9d2643db6dbf4d9c7a6cc203  update.json
+7f46ab43a24fe0c773b922b5769e0fe10464aabd3d4b7439db9875113734d2f4  THIRD-PARTY-MODS.json

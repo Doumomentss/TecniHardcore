@@ -40,6 +40,7 @@ public final class Hardcore implements ModInitializer {
     public static final Item BRASA = item("brasa"), BASTION = item("bastion"), ECO = item("eco");
     public static final Item SEAL_BRASA = item("sello_brasa"), SEAL_BASTION = item("sello_bastion"), SEAL_ECO = item("sello_eco");
     public static final Item HEART = Registry.register(Registries.ITEM,id("corazon_sagrado"),new SacredHeartItem());
+    public static final Item CUSTODIAN_HEART = Registry.register(Registries.ITEM,id("corazon_custodio"),new CustodianHeartItem());
     public static MinecraftServer server;
     public static SoulStore souls;
     public static volatile String statusJson = "{}";
@@ -50,7 +51,7 @@ public final class Hardcore implements ModInitializer {
     @Override public void onInitialize() {
         Sanctuaries.init(); BossWaypoints.initServer(); RitualNetwork.init(); IntroServer.init(); WhitelistReload.init(); PhaseDay.init(); DistanceDifficulty.init(); SanctuaryEffects.init(); SpawnProtection.init(); TotemBoard.init(); TrialBoss.init(); TrialShard.init(); TrialArena.init(); BossDungeons.init(); BossRoots.init(); RescueBeacon.init(); LibraryShutdown.init(); Expansion.init(); EventDirector.init(); Social.init(); CivicNpcs.init(); SecurityBridge.init(); Moderation.init();
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> {entries.add(BRASA);entries.add(BASTION);entries.add(ECO);});
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {entries.add(SEAL_BRASA);entries.add(SEAL_BASTION);entries.add(SEAL_ECO);entries.add(HEART);entries.add(RescueBeacon.ITEM);});
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {entries.add(SEAL_BRASA);entries.add(SEAL_BASTION);entries.add(SEAL_ECO);entries.add(HEART);entries.add(CUSTODIAN_HEART);entries.add(RescueBeacon.ITEM);});
         for(String sound:new String[]{"intro.welcome","boss.wake","boss.strike","boss.melee","boss.warning","boss.prison","boss.volley","boss.phase","boss.transform","boss.death","disaster.wind","disaster.wind_thunder","disaster.quake","disaster.rain","disaster.thunder","disaster.impact","disaster.alarm","disaster.storm"})Registry.register(Registries.SOUND_EVENT,id(sound),SoundEvent.of(id(sound)));
         ServerLifecycleEvents.SERVER_STARTED.register(s -> {
             server = s;
@@ -177,10 +178,10 @@ public final class Hardcore implements ModInitializer {
             ItemStack held=p.getStackInHand(hand); Item item=held.getItem();
             if (!isRelic(item)) continue;
             ItemStack visual=held.copy(); cooldown(p); held.decrement(1);
-            p.setHealth(4F); p.clearStatusEffects();
-            if (item==BRASA) { effect(p,StatusEffects.FIRE_RESISTANCE,30,0); effect(p,StatusEffects.WEAKNESS,30,1); }
-            if (item==BASTION) { effect(p,StatusEffects.RESISTANCE,10,1); effect(p,StatusEffects.SLOWNESS,20,1); }
-            if (item==ECO) { effect(p,StatusEffects.INVISIBILITY,15,0); effect(p,StatusEffects.WEAKNESS,20,1); }
+            p.setHealth(10F); p.clearStatusEffects();
+            if (item==BRASA) { effect(p,StatusEffects.FIRE_RESISTANCE,30,0); effect(p,StatusEffects.WEAKNESS,30,1); effect(p,StatusEffects.ABSORPTION,30,1); }
+            if (item==BASTION) { effect(p,StatusEffects.RESISTANCE,10,1); effect(p,StatusEffects.SLOWNESS,20,1); effect(p,StatusEffects.ABSORPTION,20,2); }
+            if (item==ECO) { effect(p,StatusEffects.INVISIBILITY,15,0); effect(p,StatusEffects.WEAKNESS,20,1); effect(p,StatusEffects.ABSORPTION,20,1); }
             p.getServerWorld().playSound(null,p.getBlockPos(),SoundEvents.ITEM_TOTEM_USE,SoundCategory.PLAYERS,1,1);
             p.getServerWorld().spawnParticles(net.minecraft.particle.ParticleTypes.TOTEM_OF_UNDYING,p.getX(),p.getY()+1,p.getZ(),60,.4,.7,.4,.1);
             PacketByteBuf buf=PacketByteBufs.create(); buf.writeItemStack(visual); ServerPlayNetworking.send(p,ACTIVATE,buf);
