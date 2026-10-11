@@ -15,7 +15,7 @@ public final class HardcoreClient implements ClientModInitializer {
     private static long ready;
     private static boolean arena;
     public void onInitializeClient() {
-        ModerationClient.init(); IntroCinema.init(); HudSettings.init();
+        ModerationClient.init(); BossWaypoints.initClient(); IntroCinema.init(); HudSettings.init();
         ClientLoginNetworking.registerGlobalReceiver(RitualNetwork.HELLO,(c,h,b,listener)->{int protocol=b.readVarInt();var response=net.fabricmc.fabric.api.networking.v1.PacketByteBufs.create();response.writeVarInt(protocol==15?15:0);return java.util.concurrent.CompletableFuture.completedFuture(response);});
         net.minecraft.client.render.block.entity.BlockEntityRendererFactories.register(Sanctuaries.ENTITY,SanctuaryRenderer::new);
         RitualVisuals.init(); BossVisuals.init(); RescueHud.init(); ExpansionClient.init(); CivicScreen.initNetwork();
