@@ -13,7 +13,7 @@ public final class RitualNetwork {
     public static void init() {
         ServerLoginConnectionEvents.QUERY_START.register((h,s,sender,sync)->{var b=PacketByteBufs.create();b.writeVarInt(15);sender.sendPacket(HELLO,b);});
         ServerLoginNetworking.registerGlobalReceiver(HELLO,(s,h,understood,b,sync,sender)->{
-            boolean valid=false;try{valid=understood&&b!=null&&b.isReadable()&&b.readVarInt()==14;}catch(Exception ignored){}
+            boolean valid=false;try{int v=b!=null&&b.isReadable()?b.readVarInt():-1;valid=understood&&(v==15||v==14);}catch(Exception ignored){}
             if(!valid)h.disconnect(Text.literal("Hay una actualización de TecniHardcore. Cierra Minecraft y abre el launcher actualizado para entrar."));
         });
         ServerPlayNetworking.registerGlobalReceiver(SELECT,(s,p,h,b,r)->{

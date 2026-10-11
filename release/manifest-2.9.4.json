@@ -1,0 +1,32 @@
+{
+  "launcherVersion": "2.9.4",
+  "packVersion": "2.9.2",
+  "minecraft": "1.20.1",
+  "ritualProtocol": 3,
+  "soulProtocol": 3,
+  "packProtocol": 15,
+  "fabricLoader": "0.19.5",
+  "geckolib": "4.8.4",
+  "files": {
+    "TecniHardcore-Setup-2.9.4.exe": {
+      "bytes": 308200448,
+      "sha256": "2b61c6d5092a05eb595fe031fe8708aa5fe259c06e4e232486bd0cf2295b482f"
+    },
+    "tecnihardcore-2.9.2.jar": {
+      "bytes": 2781326,
+      "sha256": "52f83e2054fd1cf1294feb00b375b371206eec564908e47f42c359aedbfe8c49"
+    },
+    "tecni-death-overlay-1.0.0.jar": {
+      "bytes": 48331632,
+      "sha256": "608b9108f7e69652449599e523318a0d568df5c609d9f54c29787ea3cdd933f5"
+    },
+    "update.json": {
+      "bytes": 485,
+      "sha256": "224cc61cbe9058c1e54c9d3f4e562ac6e39a2881d7e24e18eb9e2eeaec04b00c"
+    },
+    "THIRD-PARTY-MODS.json": {
+      "bytes": 30930,
+      "sha256": "7f46ab43a24fe0c773b922b5769e0fe10464aabd3d4b7439db9875113734d2f4"
+    }
+  }
+}
