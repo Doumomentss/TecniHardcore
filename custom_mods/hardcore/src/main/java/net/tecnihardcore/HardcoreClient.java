@@ -14,6 +14,7 @@ public final class HardcoreClient implements ClientModInitializer {
     private static int resurrections;
     private static long ready;
     private static boolean arena;
+    private static String questHud="";
     public void onInitializeClient() {
         ModerationClient.init(); BossWaypoints.initClient(); IntroCinema.init(); HudSettings.init();
         ClientLoginNetworking.registerGlobalReceiver(RitualNetwork.HELLO,(c,h,b,listener)->{int protocol=b.readVarInt();var response=net.fabricmc.fabric.api.networking.v1.PacketByteBufs.create();response.writeVarInt(protocol==15?15:0);return java.util.concurrent.CompletableFuture.completedFuture(response);});
@@ -27,6 +28,7 @@ public final class HardcoreClient implements ClientModInitializer {
             int n=buf.readInt(); int r=buf.readVarInt(); long remaining=buf.readLong(); boolean zone=buf.readBoolean();
             client.execute(()->{lives=n;resurrections=r;arena=zone;ready=System.nanoTime()+remaining*1_000_000;});
         });
+        ClientPlayNetworking.registerGlobalReceiver(CivicNetwork.QUEST_HUD,(client,handler,buf,response)->{boolean active=buf.readBoolean();String value=active?buf.readString(128):"";client.execute(()->questHud= value);});
         ClientPlayNetworking.registerGlobalReceiver(Hardcore.ACTIVATE,(client,handler,buf,response)->{
             ItemStack item=buf.readItemStack(); client.execute(()->client.gameRenderer.showFloatingItem(item));
         });
@@ -45,6 +47,7 @@ public final class HardcoreClient implements ClientModInitializer {
             draw.drawTextWithShadow(c.textRenderer,seconds>0?String.format("Tótems: %d:%02d",seconds/60,seconds%60):"Tótems preparados",x,y+35,seconds>0?0xf29d74:0x8cdbb5);
             draw.drawTextWithShadow(c.textRenderer,lives==0?"Ritual disponible · Resurrecciones: "+resurrections:"Resurrecciones: "+resurrections,x,y+47,0xb1b7c7);
             if(arena)draw.drawTextWithShadow(c.textRenderer,"Zona del jefe: 1 minuto",x,y+59,0xbda5ff);
+            if(!questHud.isEmpty()){int qx=10,qy=draw.getScaledWindowHeight()/2-18;draw.fill(qx-5,qy-5,qx+235,qy+23,0xaa10241f);draw.drawTextWithShadow(c.textRenderer,"Misión activa",qx,qy,0xffe5c96f);draw.drawTextWithShadow(c.textRenderer,questHud,qx,qy+11,0xffbde8d0);}
             var ritual=RitualVisuals.nearest();if(ritual!=null){
                 double elapsed=ritual.elapsed(delta);int w=Math.min(220,draw.getScaledWindowWidth()-24),left=(draw.getScaledWindowWidth()-w)/2,top=draw.getScaledWindowHeight()-65;
                 draw.fill(left-4,top-15,left+w+4,top+12,0xaa07191a);

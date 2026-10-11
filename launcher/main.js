@@ -235,7 +235,11 @@ ipcMain.handle('install-update', async () => {
     const directory=path.join(app.getPath('userData'),'updates',result.manifest.version);
     const file=await updater.download(result.manifest,directory,progress=>send('update-progress',progress),updateDownload.signal);
     send('update-progress',{percentage:100,message:'Descarga verificada. Se abrirá el instalador; espera a que vuelva el launcher.'});
-    const helper=spawn(file,['--update',path.dirname(process.execPath),String(process.pid)],{detached:true,stdio:'ignore',windowsHide:true});
+    // Windows can reject a freshly downloaded EXE with spawn UNKNOWN (SmartScreen,
+    // zone marking or a path on another volume). Let the shell launch it while
+    // preserving the exact arguments; the installer still validates its hash.
+    const command=`start "" /b "${file.replace(/"/g,'\\"')}" --update "${path.dirname(process.execPath).replace(/"/g,'\\"')}" ${process.pid}`;
+    const helper=spawn(process.env.ComSpec||'cmd.exe',['/d','/s','/c',command],{detached:true,stdio:'ignore',windowsHide:true});
     await new Promise((resolve,reject)=>{helper.once('spawn',resolve);helper.once('error',reject);});
     helper.unref();
     // Release Electron's files immediately. The detached installer waits for
