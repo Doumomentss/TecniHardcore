@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "2.9.14",
+  "version": "2.9.15",
   "packVersion": "2.9.3",
   "minecraft": "1.20.1",
   "ritualProtocol": 3,
@@ -8,8 +8,8 @@
   "packProtocol": 16,
   "notes": "Hay una nueva actualización de TecniHardcore disponible.",
   "installer": {
-    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.9.14/TecniHardcore-Setup-2.9.14.exe",
+    "url": "https://github.com/Doumomentss/TecniHardcore/releases/download/v2.9.15/TecniHardcore-Setup-2.9.15.exe",
     "bytes": 309165056,
-    "sha256": "01bc2559bc6819f956aaf0fe83378b0e0da8f3949cc3cbdf2ceb7a65dba7d205"
+    "sha256": "c2af0e1d8f5070a75d598441662e53c8a4144aef98d021c6682077e03b765208"
   }
 }
