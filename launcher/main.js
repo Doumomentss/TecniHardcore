@@ -238,10 +238,24 @@ ipcMain.handle('install-update', async () => {
     // Windows can reject a freshly downloaded EXE with spawn UNKNOWN (SmartScreen,
     // zone marking or a path on another volume). Let the shell launch it while
     // preserving the exact arguments; the installer still validates its hash.
-    const command=`start "" /b "${file.replace(/"/g,'\\"')}" --update "${path.dirname(process.execPath).replace(/"/g,'\\"')}" ${process.pid}`;
-    const helper=spawn(process.env.ComSpec||'cmd.exe',['/d','/s','/c',command],{detached:true,stdio:'ignore',windowsHide:true});
-    await new Promise((resolve,reject)=>{helper.once('spawn',resolve);helper.once('error',reject);});
-    helper.unref();
+    const marker=path.join(directory,`installer-started-${require('crypto').randomUUID()}.txt`);
+    const args=['--update',path.dirname(process.execPath),String(process.pid),marker];
+    let directError;
+    try {
+      const installer=spawn(file,args,{detached:true,stdio:'ignore',windowsHide:false});
+      await new Promise((resolve,reject)=>{installer.once('spawn',resolve);installer.once('error',reject);});
+      installer.unref();
+    } catch(error) {
+      directError=error;
+      const command=`start "" "${file}" --update "${args[1]}" ${args[2]} "${marker}"`;
+      const helper=spawn(process.env.ComSpec||'cmd.exe',['/d','/s','/c',command],{detached:true,stdio:'ignore',windowsHide:false});
+      await new Promise((resolve,reject)=>{helper.once('spawn',resolve);helper.once('error',reject);});
+      helper.unref();
+    }
+    const deadline=Date.now()+30000;
+    while(!fs.existsSync(marker)&&Date.now()<deadline)await new Promise(resolve=>setTimeout(resolve,250));
+    if(!fs.existsSync(marker))throw Error('El instalador no confirmó que se abrió. Descarga verificada: '+file+(directError?' ('+directError.message+')':''));
+    fs.unlinkSync(marker);
     // Release Electron's files immediately. The detached installer waits for
     // this PID, verifies every lock, performs the atomic replacement, and
     // opens the updated launcher itself.

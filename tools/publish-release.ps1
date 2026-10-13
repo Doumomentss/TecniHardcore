@@ -40,7 +40,7 @@ try {
   $pack=(Get-Content installer_payload/config/tecnihardcore/connection.json -Raw | ConvertFrom-Json).packVersion
   $assets=@("dist/TecniHardcore-Setup-$version.exe",'dist/update.json',"dist/SHA256SUMS-$version.txt","dist/manifest-$version.json",'dist/THIRD-PARTY-MODS.json',"installer_payload/mods/tecnihardcore-$pack.jar",'installer_payload/mods/tecni-death-overlay-1.0.0.jar')
   $notes=Join-Path $root 'dist/release-notes.md'
-  Set-Content -LiteralPath $notes -Encoding utf8 -Value "Ruleta 3D de colores sincronizada para los jugadores conectados. La preview es visual; la ruleta real activa el paquete de dificultad cuando termina. Actualiza con el launcher TecniHardcore y cierra Minecraft antes de instalar."
+  Set-Content -LiteralPath $notes -Encoding utf8 -Value "Corrige la actualización del launcher: verifica que el instalador se abra antes de cerrar la ventana y muestra errores de instalación. El servidor acepta la huella oficial del paquete 2.9.3. Cierra Minecraft antes de actualizar."
   gh release create "v$version" @assets --repo Doumomentss/TecniHardcore --draft --target main --title "TecniHardcore $version" --notes-file $notes
   if($LASTEXITCODE -ne 0){throw 'Draft release upload failed. No release was published.'}
   gh release view "v$version" --repo Doumomentss/TecniHardcore --json assets,isDraft --jq '.assets[] | {name,size}'

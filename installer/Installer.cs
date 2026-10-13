@@ -148,7 +148,7 @@ class UpdateForm:Form {
   Controls.Add(new Label{Text="Carpeta: "+folder,Location=new Point(24,114),Size=new Size(620,34)});
   status.SetBounds(24,153,620,52);Controls.Add(status);progress.SetBounds(24,210,620,15);Controls.Add(progress);
   retry.Text="REINTENTAR";retry.SetBounds(484,239,160,30);retry.Click+=(s,e)=>StartUpdate();Controls.Add(retry);
-  Shown+=(s,e)=>StartUpdate();FormClosing+=(s,e)=>{if(working)e.Cancel=true;};
+  Shown+=(s,e)=>{TopMost=true;Activate();TopMost=false;StartUpdate();};FormClosing+=(s,e)=>{if(working)e.Cancel=true;};
  }
  async void StartUpdate(){if(working)return;working=true;retry.Enabled=false;progress.Style=ProgressBarStyle.Marquee;
   try{await Task.Run(()=>Payload.Update(destination,previousPid,msg=>BeginInvoke(new Action(()=>status.Text=msg))));working=false;Close();}
@@ -176,8 +176,18 @@ class InstallerForm:Form {
   FormClosing+=(s,e)=>{if(!install.Enabled)e.Cancel=true;};
  }
  [STAThread] static int Main(string[] args){
-  bool update=args.Length==3&&args[0]=="--update";
-  if(update){Application.EnableVisualStyles();Application.SetCompatibleTextRenderingDefault(false);Application.Run(new UpdateForm(args[1],Int32.Parse(args[2])));return 0;}
+  bool update=(args.Length==3||args.Length==4)&&args[0]=="--update";
+  if(update){
+   try{
+    File.WriteAllText(Path.Combine(Path.GetTempPath(),"tecnihardcore-install-started.txt"),DateTime.Now.ToString("O")+" "+args[1]);
+    if(args.Length==4)File.WriteAllText(args[3],DateTime.Now.ToString("O"));
+    Application.EnableVisualStyles();Application.SetCompatibleTextRenderingDefault(false);
+    Application.Run(new UpdateForm(args[1],Int32.Parse(args[2])));return 0;
+   }catch(Exception error){
+    try{File.WriteAllText(Path.Combine(Path.GetTempPath(),"tecnihardcore-install-error.txt"),error.ToString());}catch{}
+    MessageBox.Show(error.Message,"No se pudo abrir la actualización",MessageBoxButtons.OK,MessageBoxIcon.Error);return 1;
+   }
+  }
   if(args.Length==2&&args[0]=="--dir"){try{Payload.Install(args[1],s=>{});return 0;}catch(Exception e){File.WriteAllText(Path.Combine(Path.GetTempPath(),"tecnihardcore-install-error.txt"),e.ToString());return 1;}}
   Application.EnableVisualStyles();Application.SetCompatibleTextRenderingDefault(false);Application.Run(new InstallerForm());return 0;
  }
