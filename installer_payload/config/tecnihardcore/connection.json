@@ -1,6 +1,6 @@
 {
   "profile": "public",
-  "packVersion": "2.9.2",
+  "packVersion": "2.9.3",
   "profiles": {
     "local": {
       "host": "127.0.0.1",

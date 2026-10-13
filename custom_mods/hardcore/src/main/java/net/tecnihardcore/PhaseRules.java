@@ -9,6 +9,10 @@ public final class PhaseRules {
     public static int day(long afterGraceSeconds) { return 1+(int)Math.min(1000,Math.max(0,afterGraceSeconds)/DAY_SECONDS); }
     public static double dayBonus(int day) { return Math.min(1.0,Math.max(0,day-1)*.10); }
     public static double multiplier(int ring,int day) { return (1+distanceBonus(ring))*(1+dayBonus(day)); }
-    public static double extraSpawnChance(int ring) { return Math.min(.50,distanceBonus(ring)); }
+    /** Reinforcement chance grows 6%, 12%, 24%, 48% by distance ring. */
+    public static double extraSpawnChance(int ring) {
+        if (ring <= 0) return 0;
+        return Math.min(.50, Math.scalb(.06, Math.min(3, ring - 1)));
+    }
     public static String clock(long seconds) { return String.format(java.util.Locale.ROOT,"%02d:%02d:%02d",seconds/3600,(seconds/60)%60,seconds%60); }
 }

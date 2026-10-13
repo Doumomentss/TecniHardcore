@@ -6,14 +6,14 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import java.util.*;
 public final class RitualNetwork {
-    public static final Identifier HELLO=Hardcore.id("pack_v15");
+    public static final Identifier HELLO=Hardcore.id("pack_v16");
     public static final Identifier SOUL=Hardcore.id("soul_v3"), STATE=Hardcore.id("ritual_v3"), OPEN=Hardcore.id("altar_open_v3"), SELECT=Hardcore.id("altar_select_v3"), QUERY=Hardcore.id("altar_query_v3"), RELIC=Hardcore.id("relic_v2");
     private record Offer(BlockPos altar,UUID nonce,long expires){}
     private static final Map<UUID,Offer> offers=new HashMap<>();
     public static void init() {
-        ServerLoginConnectionEvents.QUERY_START.register((h,s,sender,sync)->{var b=PacketByteBufs.create();b.writeVarInt(15);sender.sendPacket(HELLO,b);});
+        ServerLoginConnectionEvents.QUERY_START.register((h,s,sender,sync)->{var b=PacketByteBufs.create();b.writeVarInt(16);sender.sendPacket(HELLO,b);});
         ServerLoginNetworking.registerGlobalReceiver(HELLO,(s,h,understood,b,sync,sender)->{
-            boolean valid=false;try{int v=b!=null&&b.isReadable()?b.readVarInt():-1;valid=understood&&(v==15||v==14);}catch(Exception ignored){}
+            boolean valid=false;try{int v=b!=null&&b.isReadable()?b.readVarInt():-1;valid=understood&&v==16;}catch(Exception ignored){}
             if(!valid)h.disconnect(Text.literal("Hay una actualización de TecniHardcore. Cierra Minecraft y abre el launcher actualizado para entrar."));
         });
         ServerPlayNetworking.registerGlobalReceiver(SELECT,(s,p,h,b,r)->{
@@ -33,7 +33,11 @@ public final class RitualNetwork {
         Offer previous=offers.get(p.getUuid());if(previous!=null&&previous.expires-p.getServer().getTicks()>190)return;
         UUID nonce=UUID.randomUUID();offers.put(p.getUuid(),new Offer(altar,nonce,p.getServer().getTicks()+200));
         String problem=Rituals.casterProblem(p,altar);
-        var candidates=p.getServer().getPlayerManager().getPlayerList().stream().filter(t->t!=p&&t.getWorld()==p.getWorld()&&Rituals.near(t,altar)&&AuthBootstrap.authenticated(t)&&Hardcore.soul(t).lives==0&&t.isSpectator()).toList();
+        // Eliminated players are held at the sanctuary by the server, so the
+        // officiant may choose any authenticated eliminated player in this
+        // world from the list; the target no longer has to be a spectator or
+        // stand beside the core.
+        var candidates=p.getServer().getPlayerManager().getPlayerList().stream().filter(t->t!=p&&t.getWorld()==p.getWorld()&&AuthBootstrap.authenticated(t)&&Hardcore.soul(t).lives==0).toList();
         var b=PacketByteBufs.create();b.writeBlockPos(altar);b.writeUuid(nonce);b.writeString(problem==null?"":problem);b.writeVarInt(candidates.size());
         for(var t:candidates){b.writeUuid(t.getUuid());b.writeString(t.getName().getString());b.writeVarInt(Hardcore.soul(t).resurrections);}
         ServerPlayNetworking.send(p,OPEN,b);

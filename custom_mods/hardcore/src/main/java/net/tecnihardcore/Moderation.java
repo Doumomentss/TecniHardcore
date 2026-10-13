@@ -134,6 +134,10 @@ public final class Moderation {
         var clip=store.data.clips.get(Integer.toString(id));if(clip==null){source.sendError(Text.literal("No existe esa muerte."));return 0;}
         String command=DeathReplays.viewCommand(clip,previous);if(command==null){source.sendError(Text.literal("Replay no disponible: "+clip.status+". "+clip.error));return 0;}
         if(source.getEntity()==null){source.sendFeedback(()->Text.literal("En el juego: /"+command),false);return 1;}
+        // ServerReplay creates a separate viewing world. Put the moderator in
+        // spectator before entering it so the recorded scene is observed and
+        // cannot be interacted with like the live survival world.
+        if(source.getEntity() instanceof ServerPlayerEntity player) player.changeGameMode(net.minecraft.world.GameMode.SPECTATOR);
         return source.getServer().getCommandManager().executeWithPrefix(source,command);
     }
     static UUID owner(Entity entity){return entity instanceof ServerPlayerEntity p?p.getUuid():entity instanceof TameableEntity pet?pet.getOwnerUuid():null;}

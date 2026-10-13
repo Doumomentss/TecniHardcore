@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.*;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.networking.v1.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
@@ -24,6 +25,7 @@ import net.minecraft.scoreboard.*;
 import net.minecraft.server.*;
 import net.minecraft.server.command.*;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.*;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
@@ -36,7 +38,7 @@ import static net.minecraft.server.command.CommandManager.*;
 
 public final class Hardcore implements ModInitializer {
     public static final Logger LOG = LoggerFactory.getLogger("TecniHardcore");
-    public static final Identifier SYNC = id("soul"), ACTIVATE = id("activate");
+    public static final Identifier SYNC = id("soul"), ACTIVATE = id("activate"), ROULETTE = id("roulette_v1");
     public static final Item BRASA = item("brasa"), BASTION = item("bastion"), ECO = item("eco");
     public static final Item SEAL_BRASA = item("sello_brasa"), SEAL_BASTION = item("sello_bastion"), SEAL_ECO = item("sello_eco");
     public static final Item HEART = Registry.register(Registries.ITEM,id("corazon_sagrado"),new SacredHeartItem());
@@ -45,19 +47,36 @@ public final class Hardcore implements ModInitializer {
     public static SoulStore souls;
     public static volatile String statusJson = "{}";
     private static int ticks;
+    private static final ArrayDeque<RouletteAnnouncement> rouletteQueue = new ArrayDeque<>();
+    private static Path difficultyStatePath;
+    private static boolean roulettePending;
+    private static long rouletteVisibleUntilTick;
+    private static long rouletteStartedAtWorldTime;
+    private static BlockPos roulettePosition;
+    private static float rouletteFinishOffset;
+    private static boolean roulettePreview;
+    private record RouletteAnnouncement(long dueTick, String text, boolean activate) {}
     public static Identifier id(String path) { return new Identifier("tecnihardcore", path); }
     private static Item item(String path) { return Registry.register(Registries.ITEM, id(path), new Item(new Item.Settings().maxCount(1).fireproof().rarity(Rarity.EPIC))); }
 
     @Override public void onInitialize() {
-        Sanctuaries.init(); BossWaypoints.initServer(); RitualNetwork.init(); IntroServer.init(); WhitelistReload.init(); PhaseDay.init(); DistanceDifficulty.init(); SanctuaryEffects.init(); SpawnProtection.init(); TotemBoard.init(); TrialBoss.init(); TrialShard.init(); TrialArena.init(); BossDungeons.init(); BossRoots.init(); RescueBeacon.init(); LibraryShutdown.init(); Expansion.init(); EventDirector.init(); Social.init(); CivicNpcs.init(); SecurityBridge.init(); Moderation.init();
+        Sanctuaries.init(); BossWaypoints.initServer(); RitualNetwork.init(); IntroServer.init(); WhitelistReload.init(); PhaseDay.init(); DistanceDifficulty.init(); DifficultyMutations.init(); SanctuaryEffects.init(); SpawnProtection.init(); TotemBoard.init(); TrialBoss.init(); TrialShard.init(); TrialArena.init(); BossDungeons.init(); BossRoots.init(); RescueBeacon.init(); LibraryShutdown.init(); Expansion.init(); EventDirector.init(); Social.init(); CivicNpcs.init(); SecurityBridge.init(); Moderation.init();
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> {entries.add(BRASA);entries.add(BASTION);entries.add(ECO);});
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {entries.add(SEAL_BRASA);entries.add(SEAL_BASTION);entries.add(SEAL_ECO);entries.add(HEART);entries.add(CUSTODIAN_HEART);entries.add(RescueBeacon.ITEM);});
         for(String sound:new String[]{"intro.welcome","boss.wake","boss.strike","boss.melee","boss.warning","boss.prison","boss.volley","boss.phase","boss.transform","boss.death","disaster.wind","disaster.wind_thunder","disaster.quake","disaster.rain","disaster.thunder","disaster.impact","disaster.alarm","disaster.storm"})Registry.register(Registries.SOUND_EVENT,id(sound),SoundEvent.of(id(sound)));
+        UseItemCallback.EVENT.register((player, world, hand) -> {
+            if (!world.isClient && player instanceof ServerPlayerEntity p && (p.getStackInHand(hand).isOf(Items.FIREWORK_ROCKET) || p.getStackInHand(hand).isOf(Items.ENDER_PEARL))
+                    && AuthBootstrap.authenticated(p) && !p.isCreative() && !p.isSpectator() && soul(p).lives > 0)
+                p.damage(p.getDamageSources().generic(), p.getStackInHand(hand).isOf(Items.ENDER_PEARL) ? 4.0f : 2.0f);
+            return net.minecraft.util.TypedActionResult.pass(player.getStackInHand(hand));
+        });
         ServerLifecycleEvents.SERVER_STARTED.register(s -> {
             server = s;
             AuthBootstrap.start(s);
             souls = new SoulStore(s.getSavePath(WorldSavePath.ROOT).resolve("tecnihardcore-souls.json"));
             souls.save();
+            difficultyStatePath = s.getSavePath(WorldSavePath.ROOT).resolve("tecnihardcore-difficulty.json");
+            loadDifficultyState();
             Sanctuaries.repairKnown(s);
             Rituals.recoverPayments(s);
             // Old functions are replaced during migration; fail closed if old tick logic survived.
@@ -68,20 +87,37 @@ public final class Hardcore implements ModInitializer {
             s.getGameRules().get(GameRules.DO_IMMEDIATE_RESPAWN).set(true, s);
             publish();
             BackupService.start(s);
-            LOG.info("TecniHardcore 2.9.2: protección, HUD, equipos y voz listos");
+            LOG.info("TecniHardcore 2.9.3: ruleta 3D, protección, HUD, equipos y voz listos");
         });
         ServerLifecycleEvents.SERVER_STOPPING.register(s -> { if (souls != null) souls.save(); BackupService.stop(); });
+        ServerTickEvents.END_SERVER_TICK.register(s -> {
+            if (rouletteVisibleUntilTick > 0 && s.getTicks() > rouletteVisibleUntilTick) rouletteVisibleUntilTick = 0;
+            while (!rouletteQueue.isEmpty() && rouletteQueue.peekFirst().dueTick() <= s.getTicks()) {
+                RouletteAnnouncement result = rouletteQueue.removeFirst();
+                if (result.activate()) {
+                    roulettePending = false;
+                    DifficultyMutations.setEnabled(true);
+                    saveDifficultyState();
+                }
+                String announcement = result.text();
+                s.getPlayerManager().broadcast(Text.literal("§6§lCAMBIO DE DIFICULTAD §8» §f" + announcement), false);
+                s.getPlayerManager().broadcast(Text.literal(result.activate()
+                    ? "§cLas nuevas reglas de dificultad ya están activas."
+                    : "§eLa preview terminó; no se cambió ninguna regla."), false);
+            }
+        });
         ServerPlayConnectionEvents.JOIN.register((h, sender, s) -> {
             AuthBootstrap.welcome(h.player);
             SoulStore.Soul soul = soul(h.player);
             soul.seen = System.currentTimeMillis(); souls.save();
             Rituals.cleanOrphanMarkers(h.player);
-            if (soul.lives == 0 && AuthBootstrap.authenticated(h.player)) h.player.changeGameMode(GameMode.SPECTATOR);
+            if (soul.lives == 0 && AuthBootstrap.authenticated(h.player)) holdEliminated(h.player);
             send(h.player); publish();
+            if (rouletteVisibleUntilTick > s.getTicks()) sendRoulette(h.player);
         });
         ServerPlayConnectionEvents.DISCONNECT.register((h,s)->Rituals.cancelFor(h.player.getUuid()));
         ServerPlayerEvents.AFTER_RESPAWN.register((old, player, alive) -> {
-            player.changeGameMode(soul(player).lives == 0 ? GameMode.SPECTATOR : GameMode.SURVIVAL);
+            if (soul(player).lives == 0) holdEliminated(player); else player.changeGameMode(GameMode.SURVIVAL);
             send(player);
         });
         ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
@@ -110,7 +146,7 @@ public final class Hardcore implements ModInitializer {
                 for (ServerPlayerEntity p : new ArrayList<>(s.getPlayerManager().getPlayerList())) {
                     if(p.age>120&&!AuthBootstrap.serverBot(p)&&!RitualNetwork.compatible(p)){p.networkHandler.disconnect(Text.literal("Hay una actualización de TecniHardcore. Cierra el juego y ejecuta el launcher actualizado."));continue;}
                     Rituals.finishRecovery(p);
-                    if(soul(p).lives==0 && AuthBootstrap.authenticated(p) && !p.isSpectator())p.changeGameMode(GameMode.SPECTATOR);
+                    if(soul(p).lives==0 && AuthBootstrap.authenticated(p)) holdEliminated(p);
                     soul(p).seen=System.currentTimeMillis();send(p);
                 }
                 publish();
@@ -129,11 +165,37 @@ public final class Hardcore implements ModInitializer {
                     .then(argument("cantidad", IntegerArgumentType.integer(0,Rules.MAX_LIVES)).executes(c -> {
                         var p = net.minecraft.command.argument.EntityArgumentType.getPlayer(c,"jugador"); var entry = soul(p);
                         int before = entry.lives; entry.lives = IntegerArgumentType.getInteger(c,"cantidad"); souls.save();
-                        p.changeGameMode(entry.lives == 0 ? GameMode.SPECTATOR : GameMode.SURVIVAL);
+                        if(entry.lives == 0) holdEliminated(p); else p.changeGameMode(GameMode.SURVIVAL);
                         LOG.warn("ADMIN {} changed {} lives {} -> {}", c.getSource().getName(), p.getUuid(), before, entry.lives);
                         send(p); publish(); return 1;
                     }))))
                 .then(literal("backup").requires(s -> s.hasPermissionLevel(4)).executes(c -> { BackupService.backup(c.getSource().getServer()); return 1; })));
+            dispatcher.register(literal("tecni").then(literal("ruleta").requires(s -> s.hasPermissionLevel(4))
+                .then(literal("preview").executes(c -> {
+                    var server = c.getSource().getServer();
+                    if (roulettePending || rouletteVisibleUntilTick > server.getTicks()) { c.getSource().sendError(Text.literal("Ya hay una ruleta en curso.")); return 0; }
+                    startRoulette(server, true);
+                    server.getPlayerManager().broadcast(Text.literal("§dRuleta de muestra: el giro es visual y no cambia ninguna regla."), false);
+                    c.getSource().sendFeedback(() -> Text.literal("La ruleta de colores comenzó para los jugadores conectados; no aplicará cambios."), false);
+                    return 1;
+                }))
+                .then(literal("activar").executes(c -> {
+                    var server = c.getSource().getServer();
+                    if (DifficultyMutations.enabled()) { c.getSource().sendError(Text.literal("El paquete de dificultad ya está activo.")); return 0; }
+                    if (roulettePending || rouletteVisibleUntilTick > server.getTicks()) { c.getSource().sendError(Text.literal("Ya hay una ruleta en curso.")); return 0; }
+                    roulettePending = true;
+                    startRoulette(server, false);
+                    rouletteQueue.addLast(new RouletteAnnouncement(server.getTicks() + 140,
+                        "Nuevas reglas de supervivencia", true));
+                    server.getPlayerManager().broadcast(Text.literal("§6§lLa ruleta de colores está girando. Las reglas cambiarán al detenerse."), false);
+                    c.getSource().sendFeedback(() -> Text.literal("Ruleta real iniciada para todos; los cambios solo se aplicarán al terminar el giro."), true);
+                    return 1;
+                }))
+                .then(literal("estado").executes(c -> {
+                    String state = DifficultyMutations.enabled() ? "activo" : roulettePending ? "ruleta en curso" : "inactivo";
+                    c.getSource().sendFeedback(() -> Text.literal("Paquete de dificultad: " + state + ". Usa /tecni ruleta preview o /tecni ruleta activar."), false);
+                    return 1;
+                }))));
         });
         ExpansionQa.init();
     }
@@ -146,6 +208,78 @@ public final class Hardcore implements ModInitializer {
             if (obj != null && board.playerHasObjective(entry.name, obj)) entry.lives = Rules.clampLives(board.getPlayerScore(entry.name,obj).getScore());
             return entry;
         });
+    }
+
+    private static void startRoulette(MinecraftServer server, boolean isPreview) {
+        ServerWorld world = server.getOverworld();
+        BlockPos spawn = world.getSpawnPos();
+        roulettePosition = new BlockPos(spawn.getX(), spawn.getY() + 7, spawn.getZ());
+        rouletteStartedAtWorldTime = world.getTime();
+        rouletteFinishOffset = world.random.nextFloat() * (float) (Math.PI * 2);
+        roulettePreview = isPreview;
+        rouletteVisibleUntilTick = server.getTicks() + 168;
+        for (ServerPlayerEntity viewer : server.getPlayerManager().getPlayerList()) sendRoulette(viewer);
+    }
+
+    private static void sendRoulette(ServerPlayerEntity player) {
+        if (!ServerPlayNetworking.canSend(player, ROULETTE)) return;
+        PacketByteBuf packet = PacketByteBufs.create();
+        packet.writeString("RULETA", 64);
+        // Keep this payload within 32 chars for already-released clients.
+        packet.writeString(roulettePreview ? "SOLO VISUAL · SIN CAMBIOS" : "CAMBIO AL FINALIZAR", 32);
+        packet.writeString("minecraft:overworld", 32);
+        packet.writeDouble(roulettePosition.getX() + .5);
+        packet.writeDouble(roulettePosition.getY());
+        packet.writeDouble(roulettePosition.getZ() + .5);
+        packet.writeLong(rouletteStartedAtWorldTime);
+        packet.writeBoolean(roulettePreview);
+        packet.writeFloat(rouletteFinishOffset);
+        ServerPlayNetworking.send(player, ROULETTE, packet);
+    }
+
+    private static void loadDifficultyState() {
+        boolean active = false;
+        try {
+            if (Files.exists(difficultyStatePath)) {
+                JsonObject state = JsonParser.parseString(Files.readString(difficultyStatePath)).getAsJsonObject();
+                active = state.has("active") && state.get("active").getAsBoolean();
+            }
+        } catch (Exception e) {
+            LOG.error("Could not read difficulty state; keeping mutations disabled", e);
+        }
+        DifficultyMutations.setEnabled(active);
+        roulettePending = false;
+        rouletteQueue.clear();
+        LOG.info("Difficulty mutation package is {}", active ? "active" : "inactive");
+    }
+
+    private static void saveDifficultyState() {
+        if (difficultyStatePath == null) return;
+        try {
+            JsonObject state = new JsonObject();
+            state.addProperty("active", DifficultyMutations.enabled());
+            state.addProperty("updatedAt", System.currentTimeMillis());
+            Path temp = difficultyStatePath.resolveSibling(difficultyStatePath.getFileName() + ".tmp");
+            Files.writeString(temp, state.toString());
+            try { Files.move(temp, difficultyStatePath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE); }
+            catch (AtomicMoveNotSupportedException ignored) { Files.move(temp, difficultyStatePath, StandardCopyOption.REPLACE_EXISTING); }
+        } catch (Exception e) { LOG.error("Could not persist difficulty state", e); }
+    }
+
+    /** Keeps eliminated players alive, immobile and visible beside the central sanctuary. */
+    public static void holdEliminated(ServerPlayerEntity p) {
+        if (soul(p).lives != 0 || p.getWorld() == null) return;
+        p.changeGameMode(GameMode.SURVIVAL);
+        BlockPos core = Sanctuaries.nearest(p.getServerWorld(), p.getServerWorld().getSpawnPos());
+        if (core != null) {
+            BlockPos anchor = core.add(2, 0, 0);
+            if (p.squaredDistanceTo(anchor.getX()+.5, anchor.getY(), anchor.getZ()+.5) > 1.5)
+                p.teleport(anchor.getX()+.5, anchor.getY(), anchor.getZ()+.5);
+        } else p.teleport(p.getServerWorld(), p.getServerWorld().getSpawnPos().getX()+.5, p.getServerWorld().getSpawnPos().getY(), p.getServerWorld().getSpawnPos().getZ()+.5, p.getYaw(), p.getPitch());
+        p.setVelocity(0, 0, 0); p.velocityModified = true;
+        p.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 40, 255, false, false));
+        p.addStatusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 40, 250, false, false));
+        p.sendMessage(Text.literal("§c§lEsperando a ser revivido"), true);
     }
     public static void send(ServerPlayerEntity p) {
         var soul = soul(p);
@@ -162,7 +296,7 @@ public final class Hardcore implements ModInitializer {
     }
     public static void publish() {
         if (souls == null) return;
-        JsonObject root = new JsonObject(); root.addProperty("protocol",2); root.addProperty("maxLives",Rules.MAX_LIVES); root.addProperty("packVersion","2.9.2"); root.addProperty("updatedAt", System.currentTimeMillis());
+        JsonObject root = new JsonObject(); root.addProperty("protocol",2); root.addProperty("maxLives",Rules.MAX_LIVES); root.addProperty("packVersion","2.9.3"); root.addProperty("updatedAt", System.currentTimeMillis());
         JsonArray players = new JsonArray();
         souls.data.players.entrySet().stream().sorted(Comparator.comparingLong((Map.Entry<String,SoulStore.Soul> e) -> e.getValue().seen).reversed()).limit(128).forEach(e -> {
             JsonObject v=new JsonObject(); v.addProperty("name",e.getValue().name); v.addProperty("lives",e.getValue().lives); v.addProperty("resurrections",e.getValue().resurrections); v.addProperty("seenAt",e.getValue().seen); var online=server.getPlayerManager().getPlayer(java.util.UUID.fromString(e.getKey()));v.addProperty("online",online!=null&&AuthBootstrap.authenticated(online));players.add(v);

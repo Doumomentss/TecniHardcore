@@ -97,7 +97,9 @@ public final class PhaseDay {
     }
     private static void applyDifficulty(MinecraftServer server) {
         if(data==null||!data.started)return;
-        Difficulty difficulty=grace()?Difficulty.EASY:day()==1?Difficulty.NORMAL:Difficulty.HARD;
+        // Once the grace period has ended, the world is always hard. Day and
+        // distance scaling are applied independently by PhaseRules.
+        Difficulty difficulty=grace()?Difficulty.EASY:Difficulty.HARD;
         server.setDifficulty(difficulty,true);
     }
     private static ItemStack book() {

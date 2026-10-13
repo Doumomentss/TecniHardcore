@@ -65,7 +65,7 @@ for name in ['spawn24-final','boss-death-fracture','boss-death-dissipation','con
 for name in ['NOVEDADES-2.7.1.md','RESULTADOS-2.7.1.md']:copy(name)
 for name in ['NOVEDADES-2.8.md','RESULTADOS-2.8.md']:copy(name)
 for name in ['NOVEDADES-2.8.1.md','RESULTADOS-2.8.1.md']:copy(name)
-for name in ['NOVEDADES-2.9.md','RESULTADOS-2.9.md']:copy(name)
+for name in ['NOVEDADES-2.9.md','RESULTADOS-2.9.md','RULETA-3D.md']:copy(name)
 for name in ['season29_spawn.py','season29_archive.py','verify-season29.py','build-intro29-audio.py','qa-season29-client.cjs']:copy('tools/'+name)
 copy('tools/build-optional-shaders29.py');copy('tools/whitelist29.py');copy('AGREGAR_JUGADOR.bat')
 for name in ['season29-intro-orbit','season29-intro-five-hearts','season29-scale4']:

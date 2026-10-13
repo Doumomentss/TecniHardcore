@@ -1,4 +1,4 @@
-param([switch]$BuildOnly)
+param([switch]$BuildOnly,[string]$LauncherBuildPath='',[string]$AppAsarPath='')
 $ErrorActionPreference='Stop'
 $root=Split-Path -Parent $PSScriptRoot
 Push-Location $root
@@ -16,9 +16,14 @@ try {
   if($LASTEXITCODE -ne 0){throw 'Updater tests failed'}
   python tools/test-installer-transactions.py
   if($LASTEXITCODE -ne 0){throw 'Installer transaction tests failed'}
-  & (Join-Path $PSScriptRoot 'package-launcher.ps1')
-  python tools/build-installer.py
-  if($LASTEXITCODE -ne 0){throw 'Installer build failed'}
+  if($AppAsarPath){& (Join-Path $PSScriptRoot 'package-launcher.ps1') -OutputPath $AppAsarPath}
+  else{& (Join-Path $PSScriptRoot 'package-launcher.ps1')}
+  $previousLauncherBuild=$env:TECNI_LAUNCHER_BUILD
+  try{
+    if($LauncherBuildPath){$env:TECNI_LAUNCHER_BUILD=[IO.Path]::GetFullPath($LauncherBuildPath)}
+    python tools/build-installer.py
+    if($LASTEXITCODE -ne 0){throw 'Installer build failed'}
+  }finally{$env:TECNI_LAUNCHER_BUILD=$previousLauncherBuild}
   python tools/create-release-manifest.py
   if($LASTEXITCODE -ne 0){throw 'Manifest generation failed'}
   python tools/export-public-repo.py
@@ -35,7 +40,7 @@ try {
   $pack=(Get-Content installer_payload/config/tecnihardcore/connection.json -Raw | ConvertFrom-Json).packVersion
   $assets=@("dist/TecniHardcore-Setup-$version.exe",'dist/update.json',"dist/SHA256SUMS-$version.txt","dist/manifest-$version.json",'dist/THIRD-PARTY-MODS.json',"installer_payload/mods/tecnihardcore-$pack.jar",'installer_payload/mods/tecni-death-overlay-1.0.0.jar')
   $notes=Join-Path $root 'dist/release-notes.md'
-  Set-Content -LiteralPath $notes -Encoding utf8 -Value "TecniHardcore $version inaugura una temporada nueva: Overworld, Nether y End generados de cero, plaza original en 0,96,0 y cinco vidas para todos. El progreso de juego se reinicia; cuentas, contraseñas, UUID y permisos se conservan. Cada jugador ve una cinemática individual de 30 segundos después de autenticarse por primera vez en el mundo nuevo. Incluye el botón ENTRAR AL SERVIDOR y actualización automática del launcher. Consulta NOVEDADES-2.9.md y RESULTADOS-2.9.md. Cierra Minecraft antes de instalar la actualización."
+  Set-Content -LiteralPath $notes -Encoding utf8 -Value "Ruleta 3D de colores sincronizada para los jugadores conectados. La preview es visual; la ruleta real activa el paquete de dificultad cuando termina. Actualiza con el launcher TecniHardcore y cierra Minecraft antes de instalar."
   gh release create "v$version" @assets --repo Doumomentss/TecniHardcore --draft --target main --title "TecniHardcore $version" --notes-file $notes
   if($LASTEXITCODE -ne 0){throw 'Draft release upload failed. No release was published.'}
   gh release view "v$version" --repo Doumomentss/TecniHardcore --json assets,isDraft --jq '.assets[] | {name,size}'

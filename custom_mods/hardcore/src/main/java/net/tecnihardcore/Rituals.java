@@ -51,12 +51,13 @@ public final class Rituals {
         player.setHealth(player.getMaxHealth());player.getHungerManager().setFoodLevel(20);player.getServer().getPlayerManager().saveAllPlayerData();
         soul.revivePosition=null;soul.reviveDimension=null;Hardcore.souls.save();
     }
-    public static boolean near(ServerPlayerEntity p,BlockPos altar){return p.squaredDistanceTo(altar.getX()+.5,altar.getY()+.5,altar.getZ()+.5)<=16;}
+    /** Maximum distance for an officiant to use a sanctuary. */
+    public static boolean near(ServerPlayerEntity p,BlockPos altar){return p.squaredDistanceTo(altar.getX()+.5,altar.getY()+.5,altar.getZ()+.5)<=900;}
     private static void message(ServerPlayerEntity p,String text){p.sendMessage(Text.literal(text),false);}
     public static String casterProblem(ServerPlayerEntity p,BlockPos altar) {
         if(Hardcore.soul(p).lives<=0||p.isSpectator()||p.isCreative())return "Necesitas estar en supervivencia y tener vidas.";
         if(!p.getMainHandStack().isOf(Hardcore.HEART)&&!p.getOffHandStack().isOf(Hardcore.HEART))return "Sostén un Corazón Sagrado en una mano.";
-        if(!near(p,altar)||p.hurtTime>0)return "Acércate al núcleo y espera a dejar de recibir daño.";
+        if(!near(p,altar)||p.hurtTime>0)return "Debes estar a menos de 30 bloques del santuario y no recibir daño.";
         if(active.values().stream().anyMatch(r->r.dimension==p.getWorld().getRegistryKey()&&r.altar.equals(altar)))return "Este santuario está ocupado.";
         return null;
     }
@@ -68,7 +69,7 @@ public final class Rituals {
         if(!RitualNetwork.compatible(c)||!RitualNetwork.compatible(t)){message(c,"Ambos necesitan TecniHardcore 2.4.0. Actualiza el launcher.");return 0;}
         if(!c.getWorld().getBlockState(altar).isOf(Sanctuaries.CORE)){message(c,"El núcleo ya no existe.");return 0;}
         String problem=casterProblem(c,altar);if(problem!=null){message(c,problem);return 0;}
-        if(c==t||Hardcore.soul(t).lives!=0||!t.isSpectator()||c.getWorld()!=t.getWorld()||!near(t,altar)){message(c,"Elige un eliminado cercano, en espectador y autenticado.");return 0;}
+        if(c==t||Hardcore.soul(t).lives!=0||c.getWorld()!=t.getWorld()){message(c,"Elige un eliminado autenticado de la lista.");return 0;}
         if(active.values().stream().anyMatch(r->r.caster.equals(c.getUuid())||r.target.equals(t.getUuid())||r.target.equals(c.getUuid())||r.caster.equals(t.getUuid()))){message(c,"Ya hay un ritual en curso para estos jugadores.");return 0;}
         Hand hand=c.getMainHandStack().isOf(Hardcore.HEART)?Hand.MAIN_HAND:Hand.OFF_HAND;
         Ritual r=new Ritual(c,t,altar,hand);active.put(t.getUuid(),r);broadcast(c.getServer(),r,0,0);
@@ -98,8 +99,8 @@ public final class Rituals {
             if(r.committed){if(elapsed>=680){broadcast(s,r,elapsed,3);it.remove();}else if(elapsed%10==0)broadcast(s,r,elapsed,1);continue;}
             var c=s.getPlayerManager().getPlayer(r.caster);var t=s.getPlayerManager().getPlayer(r.target);var w=s.getWorld(r.dimension);
             boolean valid=c!=null&&t!=null&&w!=null&&c.getWorld()==w&&t.getWorld()==w&&AuthBootstrap.authenticated(c)&&AuthBootstrap.authenticated(t)
-                &&near(c,r.altar)&&near(t,r.altar)&&w.getBlockState(r.altar).isOf(Sanctuaries.CORE)&&c.hurtTime==0&&t.hurtTime==0
-                &&!c.isSpectator()&&!c.isCreative()&&Hardcore.soul(c).lives>0&&t.isSpectator()&&Hardcore.soul(t).lives==0&&c.getStackInHand(r.hand).isOf(Hardcore.HEART);
+                &&near(c,r.altar)&&w.getBlockState(r.altar).isOf(Sanctuaries.CORE)&&c.hurtTime==0&&t.hurtTime==0
+                &&!c.isSpectator()&&!c.isCreative()&&Hardcore.soul(c).lives>0&&Hardcore.soul(t).lives==0&&c.getStackInHand(r.hand).isOf(Hardcore.HEART);
             if(!valid){it.remove();cancelled(s,r);continue;}
             if(elapsed%10==0)broadcast(s,r,elapsed,0);
             if(elapsed<600)continue;
