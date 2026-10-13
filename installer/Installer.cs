@@ -159,11 +159,24 @@ class UpdateForm:Form {
 }
 class InstallerForm:Form {
  TextBox destination=new TextBox();Label status=new Label();Button install=new Button();bool finished;string installedFolder;
+ static string PriorInstallation(){
+  try{
+   string linkPath=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory),"TecniHardcore.lnk");
+   if(!File.Exists(linkPath))return null;
+   Type type=Type.GetTypeFromProgID("WScript.Shell");object shell=Activator.CreateInstance(type);
+   object link=type.InvokeMember("CreateShortcut",BindingFlags.InvokeMethod,null,shell,new object[]{linkPath});
+   string target=(string)link.GetType().InvokeMember("TargetPath",BindingFlags.GetProperty,null,link,null);
+   System.Runtime.InteropServices.Marshal.FinalReleaseComObject(link);
+   System.Runtime.InteropServices.Marshal.FinalReleaseComObject(shell);
+   if(String.IsNullOrWhiteSpace(target)||!File.Exists(target)||!Path.GetFileName(target).Equals("TecniHardcore Launcher.exe",StringComparison.OrdinalIgnoreCase))return null;
+   return Path.GetDirectoryName(Path.GetFullPath(target));
+  }catch{return null;}
+ }
  public InstallerForm(){
   Text="TecniHardcore "+BuildInfo.Version;Size=new Size(640,330);StartPosition=FormStartPosition.CenterScreen;BackColor=Color.FromArgb(14,16,24);ForeColor=Color.White;Font=new Font("Segoe UI",10);FormBorderStyle=FormBorderStyle.FixedDialog;MaximizeBox=false;
   Controls.Add(new Label{Text="TECNIHARDCORE",AutoSize=true,Font=new Font("Segoe UI",20,FontStyle.Bold),ForeColor=Color.Goldenrod,Location=new Point(24,20)});
   Controls.Add(new Label{Text="Minecraft 1.20.1 · Santuarios 3D · Launcher con actualizaciones",AutoSize=true,Location=new Point(26,70)});
-  destination.Text=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"TecniHardcore");destination.SetBounds(26,112,560,30);Controls.Add(destination);
+  destination.Text=PriorInstallation()??Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"TecniHardcore");destination.SetBounds(26,112,560,30);Controls.Add(destination);
   var browse=new Button{Text="Carpeta…",Location=new Point(26,150),Width=110};browse.Click+=(s,e)=>{using(var dialog=new FolderBrowserDialog()){dialog.SelectedPath=destination.Text;if(dialog.ShowDialog()==DialogResult.OK)destination.Text=dialog.SelectedPath;}};Controls.Add(browse);
   status.SetBounds(26,193,560,40);status.Text="Conserva tus ajustes. Java 17 se verifica al abrir el juego.";Controls.Add(status);
   install.Text="INSTALAR / REPARAR";install.SetBounds(350,238,236,35);install.Click+=async(s,e)=>{
